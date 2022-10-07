@@ -1,17 +1,11 @@
-package Engine.UI.Buttons;
-
-import Engine.UI.UIComponent;
+package Engine.UI;
 
 import java.awt.event.MouseEvent;
 
 /**
  * An abstract Button class.
  */
-public abstract class Button extends UIComponent {
-    public Button(int x, int y, int width, int height){
-        super(x, y, width, height);
-    }
-
+public abstract class ButtonComponent extends UIComponent {
     /**
      * @param e A mouse event.
      * @return Whether the mouse event occurred over the button

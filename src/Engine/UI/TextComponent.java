@@ -7,57 +7,33 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-public class Text extends UIComponent {
+public class TextComponent extends UIComponent {
     protected static final TextStyle DEFAULT_STYLE = new TextStyle();
 
     protected String text;
     protected final TextStyle style;
     protected int offsetX, offsetY;
 
-    public static int getRenderedWidth(TextStyle style, String text){
+    public int getRenderedWidth(){
         Rectangle2D size = style.font.getStringBounds(text, new FontRenderContext(new AffineTransform(),true,true));
         return (int) size.getWidth();
     }
 
-    public Text(String text){
+    public TextComponent(String text){
         this(text, DEFAULT_STYLE);
     }
 
-    public Text(String text, Font font){
+    public TextComponent(String text, Font font){
         this(text, new TextStyle(font));
     }
 
-    public Text(String text, TextStyle style){
-        this(text, style, getRenderedWidth(style, text));
-    }
-
-    public Text(String text, int width){
-        this(text, DEFAULT_STYLE, width);
-    }
-
-    public Text(String text, TextStyle style, int width){
-        this(text, style, width, style.font.getSize());
-    }
-
-    public Text(String text, int width, int height){
-        this(text, DEFAULT_STYLE, width, height, 0, 0);
-    }
-
-    public Text(String text, TextStyle style, int width, int height){
-        this(text, style, width, height, 0, 0);
-    }
-
-    public Text(String text, int width, int height, int x, int y){
-        this(text, DEFAULT_STYLE, width, height, x, y);
-    }
-
-    public Text(String text, TextStyle style, int width, int height, int x, int y){
+    public TextComponent(String text, TextStyle style){
         this.text = text;
         this.style = style;
         recalculate_text_position();
     }
 
-    public Text setText(String text){
+    public TextComponent setText(String text){
         this.text = text;
         recalculate_text_position();
         return this;
@@ -77,8 +53,8 @@ public class Text extends UIComponent {
     private void recalculate_text_position(){
         offsetX = -switch(style.getHorizontalAlignment()){
             case START -> 0;
-            case CENTER -> getRenderedWidth(style, text) / 2;
-            case END -> getRenderedWidth(style, text);
+            case CENTER -> getRenderedWidth() / 2;
+            case END -> getRenderedWidth();
         };
         offsetY = -switch(style.getVerticalAlignment()){
             case START -> 0;
@@ -99,17 +75,19 @@ public class Text extends UIComponent {
         canvas.graphics.setFont(style.font);
 
         int text_start_x = switch(style.getHorizontalAlignment()){
-            case START -> rect_start_y;
-            case CENTER -> rect_start_y + offsetY;
-            case END -> rect_start_y + height + offsetY;
+            case START -> rect_start_x;
+            case CENTER -> rect_start_x + offsetY;
+            case END -> rect_start_x + height + offsetY;
         };
 
         int text_start_y = switch(style.getHorizontalAlignment()){
             case START -> rect_start_y;
-            case CENTER -> rect_start_y + offsetY;
+            case CENTER -> rect_start_y + + height / 2 + offsetY;
             case END -> rect_start_y + height + offsetY;
         };
 
         canvas.graphics.drawString(text, text_start_x, text_start_y);
+
+        System.out.println("draw text " + text + " at " + text_start_x + ", " + text_start_y);
     }
 }

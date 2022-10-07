@@ -5,17 +5,17 @@ import javax.swing.*;
 import java.awt.event.*;
 
 /**
- * A class that runs an {@link Action} in an event loop. An action may schedule <i>pre-actions</i> to be run
+ * A class that runs an {@link Scene} in an event loop. An action may schedule <i>pre-actions</i> to be run
  * before the action executes and <i>post-actions</i> to be run after the action executes. Post-actions are queried
  * after the action finishes execution.
  */
-public class ActionScheduler {
+public class SceneManager {
 
-    public static void run(Action a, GameCanvas component){run(a, component, 16);}
-    public static void run(Action a, GameCanvas component, int delay){new ActionScheduler(a, delay, component);}
+    public static void run(Scene a, GameCanvas component){run(a, component, 16);}
+    public static void run(Scene a, GameCanvas component, int delay){new SceneManager(a, delay, component);}
 
-    protected final Deque<Iterator<? extends Action>> scheduleStack;
-    protected final Deque<Action> actionStack;
+    protected final Deque<Iterator<? extends Scene>> scheduleStack;
+    protected final Deque<Scene> actionStack;
 
     protected final MouseEvent[] lastMouseEvent = new MouseEvent[1];
     protected final KeyEvent[] lastKeyEvent = new KeyEvent[1];
@@ -24,7 +24,7 @@ public class ActionScheduler {
 
     protected final int delay;
 
-    protected ActionScheduler(Action a, int delay, GameCanvas canvas){
+    protected SceneManager(Scene a, int delay, GameCanvas canvas){
         actionStack = new ArrayDeque<>();
         scheduleStack = new ArrayDeque<>();
 
@@ -46,8 +46,8 @@ public class ActionScheduler {
             }
         });
 
-        scheduleAction(new Action(){
-            @Override public Iterator<Action> getPreActions() {
+        scheduleAction(new Scene(){
+            @Override public Iterator<Scene> getPreActions() {
                 return Collections.singletonList(a).iterator();
             }
         });
@@ -60,7 +60,7 @@ public class ActionScheduler {
             while(true){
                 if(actionStack.isEmpty()) break;
 
-                Action currentAction = actionStack.peekFirst();
+                Scene currentAction = actionStack.peekFirst();
 
                 if(currentAction.isFinished()){
                     // Finish this action
@@ -68,10 +68,10 @@ public class ActionScheduler {
                     // Remove action from stack
                     actionStack.pop();
 
-                    Iterator<? extends Action> postActions = currentAction.getPostActions();
+                    Iterator<? extends Scene> postActions = currentAction.getPostActions();
                     if(postActions != null && postActions.hasNext()){
-                        scheduleAction(new Action() {
-                            @Override public Iterator<? extends Action> getPreActions() {
+                        scheduleAction(new Scene() {
+                            @Override public Iterator<? extends Scene> getPreActions() {
                                 return postActions;
                             }
                         });
@@ -93,13 +93,13 @@ public class ActionScheduler {
         }).start();
     }
 
-    protected void scheduleAction(Action a){
+    protected void scheduleAction(Scene a){
 
         actionStack.push(a);
 
         a.onStart();
 
-        Iterator<? extends Action> preActions = a.getPreActions();
+        Iterator<? extends Scene> preActions = a.getPreActions();
         if(preActions != null && preActions.hasNext()) {
             scheduleStack.push(preActions);
             scheduleAction(preActions.next());
@@ -109,10 +109,10 @@ public class ActionScheduler {
     protected void scheduleNextAction(){
         if(scheduleStack.isEmpty() || actionStack.isEmpty()) throw new Error("Pop off schedule stack when empty");   //hopefully never happens
 
-        Iterator<? extends Action> schedule = scheduleStack.peekFirst();
+        Iterator<? extends Scene> schedule = scheduleStack.peekFirst();
 
         if(schedule != null && schedule.hasNext()){
-            Action nextAction = schedule.next();
+            Scene nextAction = schedule.next();
             scheduleAction(nextAction);
         }
         else{
@@ -122,7 +122,7 @@ public class ActionScheduler {
         }
     }
 
-    protected void executeAction(Action action){
+    protected void executeAction(Scene action){
         canvas.repaint(action);
         action.processEvents(lastMouseEvent[0], lastKeyEvent[0]);
         lastMouseEvent[0] = null;

@@ -7,34 +7,34 @@ import java.util.Iterator;
 /**
  * A "scene" in an app.
  */
-public abstract class Action {
+public abstract class Scene {
     /**
      * @return An {@code Iterator} of {@code Actions} that should be run before this actions executes, may return an
-     * indefinite number of Actions. This is queried immediately after the {@link Action#onStart()} method is called
+     * indefinite number of Actions. This is queried immediately after the {@link Scene#onStart()} method is called
      */
-    public Iterator<? extends Action> getPreActions(){return null;}
+    public Iterator<? extends Scene> getPreActions(){return null;}
     
     /**
      * @return An {@code Iterator} of {@code Action}s that should be run after this actions executes, may
-     * return an indefinite number of Actions. This is queried after the {@link Action#onFinish} method is called
+     * return an indefinite number of Actions. This is queried after the {@link Scene#onFinish} method is called
      */
-    public Iterator<? extends Action> getPostActions(){return null;}
+    public Iterator<? extends Scene> getPostActions(){return null;}
     
     /**
-     * Called every frame after the {@link Action#draw} method is called. This method should  handle mouse and key clicks
+     * Called every frame after the {@link Scene#draw} method is called. This method should  handle mouse and key clicks
      * @param me The last mouse click that occurred during the frame (can be null if no mouse click occurred)
      * @param ke The last key press that occurred during the frame (can be null if no key press occurred)
      */
     public void processEvents(MouseEvent me, KeyEvent ke){}
     
     /**
-     * Called every frame after the {@link Action#processEvents} method is called. This method should handle any logic
-     * that does not belong in the {@link Action#processEvents} or {@link Action#draw} methods
+     * Called every frame after the {@link Scene#processEvents} method is called. This method should handle any logic
+     * that does not belong in the {@link Scene#processEvents} or {@link Scene#draw} methods
      */
     public void update(){}
     
     /**
-     * Called at the beginning of each frame after {@link Action#isFinished} is queried. This method should handle all
+     * Called at the beginning of each frame after {@link Scene#isFinished} is queried. This method should handle all
      * drawing logic
      * @param canvas The {@link GameCanvas} on which to draw things
      */
@@ -65,10 +65,10 @@ public abstract class Action {
      * @param actions Action to chain together
      * @return A single Action formed by chaining together the actions passed in
      */
-    public static Action chain(Action... actions){
-        return new Action() {
+    public static Scene chain(Scene... actions){
+        return new Scene() {
             @Override
-            public Iterator<? extends Action> getPreActions() {
+            public Iterator<? extends Scene> getPreActions() {
                 return Arrays.stream(actions).iterator();
             }
         };

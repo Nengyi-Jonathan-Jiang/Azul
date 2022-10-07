@@ -4,6 +4,7 @@ import Engine.Core.GameCanvas;
 
 import java.awt.*;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class UIObject {
     private Map<String, UIComponent> components;
@@ -13,6 +14,7 @@ public class UIObject {
 
     public UIObject(int x, int y, int width, int height){
         this.setPosition(x, y).setSize(width, height);
+        this.components = new TreeMap<>();
     }
 
     /**
@@ -133,6 +135,7 @@ public class UIObject {
     
     public final <Type extends UIComponent> UIObject addComponent(Type t){
         components.put(t.getClass().getName(), t);
+        System.out.println("Added component of type " + t.getClass().getName());
         return this;
     }
 

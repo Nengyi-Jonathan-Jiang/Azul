@@ -7,15 +7,15 @@ import java.awt.*;
  * A double-buffered canvas on which to draw stuff.
  */
 public class GameCanvas extends JPanel {
-    private Action currAction = null;
+    private Scene currAction = null;
     public Graphics2D graphics = null;
     public int width = -1, height = -1;
 
     /**
-     * Repaints the canvas, using the {@link Action#draw} method of the {@link Action} supplied
+     * Repaints the canvas, using the {@link Scene#draw} method of the {@link Scene} supplied
      * @param a The function to call to paint the canvas
      */
-    public void repaint(Action a) {
+    public void repaint(Scene a) {
         currAction = a;
         super.repaint();
     }

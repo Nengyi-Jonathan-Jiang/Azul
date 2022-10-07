@@ -10,7 +10,8 @@ import java.awt.image.BufferedImage;
  */
 public class ImageButton extends Button {
     protected final BufferedImage image;
-    public ImageButton(String imgName){
+    public ImageButton(String imgName, int x, int y, int width, int height){
+        super(x, y, width, height);
         image = ImageLoader.get(imgName);
     }
     

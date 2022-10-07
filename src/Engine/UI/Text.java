@@ -52,7 +52,6 @@ public class Text extends UIComponent {
     }
 
     public Text(String text, TextStyle style, int width, int height, int x, int y){
-        super(width, height, x, y);
         this.text = text;
         this.style = style;
         recalculate_text_position();
@@ -110,5 +109,7 @@ public class Text extends UIComponent {
             case CENTER -> rect_start_y + offsetY;
             case END -> rect_start_y + height + offsetY;
         };
+
+        canvas.graphics.drawString(text, text_start_x, text_start_y);
     }
 }

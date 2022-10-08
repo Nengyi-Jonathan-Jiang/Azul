@@ -56,10 +56,10 @@ public class TextComponent extends UIComponent {
             case CENTER -> getRenderedWidth() / 2;
             case END -> getRenderedWidth();
         };
-        offsetY = -switch(style.getVerticalAlignment()){
-            case START -> 0;
+        offsetY = switch(style.getVerticalAlignment()){
+            case START -> style.font.getSize();
             case CENTER -> (int)(style.font.getSize() * .4);
-            case END -> style.font.getSize();
+            case END -> 0;
         };
     }
 
@@ -74,20 +74,18 @@ public class TextComponent extends UIComponent {
         canvas.graphics.setColor(style.fg_color);
         canvas.graphics.setFont(style.font);
 
-        int text_start_x = switch(style.getHorizontalAlignment()){
-            case START -> rect_start_x;
-            case CENTER -> rect_start_x + offsetY;
-            case END -> rect_start_x + height + offsetY;
+        int text_start_x = rect_start_x + offsetX + switch(style.getHorizontalAlignment()){
+            case START -> 0;
+            case CENTER -> width / 2;
+            case END -> width;
         };
 
-        int text_start_y = switch(style.getHorizontalAlignment()){
-            case START -> rect_start_y;
-            case CENTER -> rect_start_y + + height / 2 + offsetY;
-            case END -> rect_start_y + height + offsetY;
+        int text_start_y = rect_start_y + offsetY + switch(style.getVerticalAlignment()){
+            case START -> 0;
+            case CENTER -> height / 2;
+            case END -> height;
         };
 
         canvas.graphics.drawString(text, text_start_x, text_start_y);
-
-        System.out.println("draw text " + text + " at " + text_start_x + ", " + text_start_y);
     }
 }

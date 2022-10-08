@@ -2,19 +2,21 @@ package Engine.UI;
 
 import Engine.Core.GameCanvas;
 
-import java.awt.*;
-import java.util.Map;
-import java.util.TreeMap;
+import java.awt.Dimension;
+import java.util.*;
 
 public class UIObject {
-    private Map<String, UIComponent> components;
-
+    private final Map<String, UIComponent> componentMap;
+    private final List<UIComponent> componentList;
 
     protected int x, y, width, height;
 
-    public UIObject(int x, int y, int width, int height){
+    public UIObject(int x, int y, int width, int height, UIComponent... components){
         this.setPosition(x, y).setSize(width, height);
-        this.components = new TreeMap<>();
+        this.componentMap = new TreeMap<>();
+        this.componentList = new ArrayList<>();
+
+        addComponents(components);
     }
 
     /**
@@ -112,7 +114,7 @@ public class UIObject {
      * @param canvas The {@link GameCanvas} on which to draw the UIObject
      */
     public final void draw(GameCanvas canvas){
-        for(UIComponent component : components.values()) component.draw(canvas, x, y, width, height);
+        for(UIComponent component : componentList) component.draw(canvas, x, y, width, height);
     }
 
     /**
@@ -124,22 +126,54 @@ public class UIObject {
         draw(canvas);
     }
 
+
+    /**
+     * Sets the size of the UIObject then draws the UIObject
+     * @param canvas The {@link GameCanvas} on which to draw the UIObject
+     */
+    public final void draw(GameCanvas canvas, Dimension d){
+        setSize(d);
+        draw(canvas);
+    }
+
     /**
      * Sets the position and size of the UIObject then draws the UIObject
      * @param canvas The {@link GameCanvas} on which to draw the UIObject
      */
     public final void draw(GameCanvas canvas, int x, int y, int width, int height){
         setSize(width, height);
-        draw(canvas, x, y);
+        setPosition(x, y);
+        draw(canvas);
+    }
+
+
+    /**
+     * Sets the position and size of the UIObject then draws the UIObject
+     * @param canvas The {@link GameCanvas} on which to draw the UIObject
+     */
+    public final void draw(GameCanvas canvas, int x, int y, Dimension d){
+        setSize(d);
+        setPosition(x, y);
+        draw(canvas);
     }
     
-    public final <Type extends UIComponent> UIObject addComponent(Type t){
-        components.put(t.getClass().getName(), t);
-        System.out.println("Added component of type " + t.getClass().getName());
+    public final UIObject addComponent(UIComponent component){
+        componentList.add(component);
+        componentMap.put(component.getClass().getName(), component);
         return this;
     }
 
+    public final UIObject addComponents(UIComponent... components){
+        for(UIComponent component : components){
+            addComponent(component);
+        }
+        return this;
+    }
+
+    /**
+     * @noinspection unchecked
+     */
     public final <Type extends UIComponent> Type getComponent(Class<Type> type){
-        return (Type) components.get(type.getName());
+        return (Type) componentMap.get(type.getName());
     }
 }

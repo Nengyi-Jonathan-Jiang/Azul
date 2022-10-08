@@ -7,11 +7,11 @@ import java.awt.*;
 public final class TextStyle {
 
     public static final int ALIGN_LEFT = 0;
-    public static final int ALIGN_HORIZONTAL = 3;
-    public static final int ALIGN_RIGHT = 2;
+    public static final int ALIGN_HORIZONTAL = 2;
+    public static final int ALIGN_RIGHT = 3;
     public static final int ALIGN_TOP = 0;
-    public static final int ALIGN_VERTICAL = 12;
-    public static final int ALIGN_BOTTOM = 8;
+    public static final int ALIGN_VERTICAL = 8;
+    public static final int ALIGN_BOTTOM = 12;
 
     private static Font DEFAULT_FONT = new Font("Times New Roman", Font.PLAIN, 12);
     private static Color DEFAULT_FG_COLOR = Color.BLACK;

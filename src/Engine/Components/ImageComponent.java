@@ -1,4 +1,4 @@
-package Engine.UI;
+package Engine.Components;
 
 import Engine.Core.GameCanvas;
 import Engine.Util.ImageLoader;
@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 /**
  * A Button that displays an image
  */
-public class ImageComponent extends UIComponent {
+public class ImageComponent extends Component {
     protected final BufferedImage image;
     public ImageComponent(String imgName){
         image = ImageLoader.load(imgName);

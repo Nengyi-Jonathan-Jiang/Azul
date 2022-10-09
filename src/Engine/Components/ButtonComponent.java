@@ -1,4 +1,4 @@
-package Engine.UI;
+package Engine.Components;
 
 import Engine.Core.GameCanvas;
 
@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 /**
  * An abstract Button class.
  */
-public class ButtonComponent extends UIComponent {
+public class ButtonComponent extends Component {
     protected static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
     protected final Color borderColor;
 
@@ -28,10 +28,7 @@ public class ButtonComponent extends UIComponent {
         return !(e.getX() < x || e.getX() > x + width || e.getY() < y || e.getY() > y + height);
     }
 
-
+    //Button is invisible
     @Override
-    public void draw(GameCanvas canvas) {
-        canvas.graphics.setColor(borderColor);
-        canvas.graphics.drawRect(x - width / 2, y - height / 2, width, height);
-    }
+    public void draw(GameCanvas canvas) {}
 }

@@ -1,4 +1,4 @@
-package Engine.UI;
+package Engine.Components;
 
 import Engine.Core.GameCanvas;
 
@@ -7,7 +7,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-public class TextComponent extends UIComponent {
+public class LabelComponent extends Component {
     protected static final TextStyle DEFAULT_STYLE = new TextStyle();
 
     protected String text;
@@ -19,21 +19,21 @@ public class TextComponent extends UIComponent {
         return (int) size.getWidth();
     }
 
-    public TextComponent(String text){
+    public LabelComponent(String text){
         this(text, DEFAULT_STYLE);
     }
 
-    public TextComponent(String text, Font font){
+    public LabelComponent(String text, Font font){
         this(text, new TextStyle(font));
     }
 
-    public TextComponent(String text, TextStyle style){
+    public LabelComponent(String text, TextStyle style){
         this.text = text;
         this.style = style;
         recalculate_text_position();
     }
 
-    public TextComponent setText(String text){
+    public LabelComponent setText(String text){
         this.text = text;
         recalculate_text_position();
         return this;

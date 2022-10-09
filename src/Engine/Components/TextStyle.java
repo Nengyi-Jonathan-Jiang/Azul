@@ -1,6 +1,4 @@
-package Engine.UI;
-
-import Engine.Core.GameCanvas;
+package Engine.Components;
 
 import java.awt.*;
 

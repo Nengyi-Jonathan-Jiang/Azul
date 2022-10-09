@@ -22,7 +22,7 @@ public class App extends JFrame {
 
         SceneManager.run(new Scene() {
             @Override
-            public Iterator<? extends Scene> getPreActions() {
+            public Iterator<? extends Scene> getScenesBefore() {
                 return new Iterator<>() {
                     @Override
                     public boolean hasNext() {

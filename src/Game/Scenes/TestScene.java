@@ -1,20 +1,20 @@
 package Game.Scenes;
 
 import Engine.Core.*;
-import Engine.UI.*;
-import Engine.UI.TextComponent;
+import Engine.Components.*;
+import Engine.Components.LabelComponent;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public class TestScene extends Scene {
-    UIObject play_button;
+    GameObject play_button;
 
     public TestScene(){
-        play_button = new UIObject(150, 150, 100, 100,
+        play_button = new GameObject(150, 150, 100, 100,
                 new ImageComponent("Img.png"),
-                new TextComponent("Play", new TextStyle(Color.RED, new Color(127, 127, 127, 127))),
+                new LabelComponent("Play", new TextStyle(Color.RED, new Color(127, 127, 127, 127))),
                 new ButtonComponent()
         );
     }

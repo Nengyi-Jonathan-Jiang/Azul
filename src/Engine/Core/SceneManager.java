@@ -47,7 +47,7 @@ public class SceneManager {
         });
 
         scheduleAction(new Scene(){
-            @Override public Iterator<Scene> getPreActions() {
+            @Override public Iterator<Scene> getScenesBefore() {
                 return Collections.singletonList(a).iterator();
             }
         });
@@ -68,10 +68,10 @@ public class SceneManager {
                     // Remove action from stack
                     actionStack.pop();
 
-                    Iterator<? extends Scene> postActions = currentAction.getPostActions();
+                    Iterator<? extends Scene> postActions = currentAction.getScenesAfter();
                     if(postActions != null && postActions.hasNext()){
                         scheduleAction(new Scene() {
-                            @Override public Iterator<? extends Scene> getPreActions() {
+                            @Override public Iterator<? extends Scene> getScenesBefore() {
                                 return postActions;
                             }
                         });
@@ -99,7 +99,7 @@ public class SceneManager {
 
         a.onStart();
 
-        Iterator<? extends Scene> preActions = a.getPreActions();
+        Iterator<? extends Scene> preActions = a.getScenesBefore();
         if(preActions != null && preActions.hasNext()) {
             scheduleStack.push(preActions);
             scheduleAction(preActions.next());

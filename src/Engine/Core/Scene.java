@@ -12,13 +12,13 @@ public abstract class Scene {
      * @return An {@code Iterator} of {@code Actions} that should be run before this actions executes, may return an
      * indefinite number of Actions. This is queried immediately after the {@link Scene#onStart()} method is called
      */
-    public Iterator<? extends Scene> getPreActions(){return null;}
+    public Iterator<? extends Scene> getScenesBefore(){return null;}
     
     /**
      * @return An {@code Iterator} of {@code Action}s that should be run after this actions executes, may
      * return an indefinite number of Actions. This is queried after the {@link Scene#onFinish} method is called
      */
-    public Iterator<? extends Scene> getPostActions(){return null;}
+    public Iterator<? extends Scene> getScenesAfter(){return null;}
     
     /**
      * Called every frame after the {@link Scene#draw} method is called. This method should  handle mouse and key clicks
@@ -68,7 +68,7 @@ public abstract class Scene {
     public static Scene chain(Scene... actions){
         return new Scene() {
             @Override
-            public Iterator<? extends Scene> getPreActions() {
+            public Iterator<? extends Scene> getScenesBefore() {
                 return Arrays.stream(actions).iterator();
             }
         };

@@ -1,13 +1,11 @@
-package Engine.UI;
+package Engine.Components;
 
 import Engine.Core.GameCanvas;
-
-import java.awt.*;
 
 /**
  * An abstract UI Component class.
  */
-public abstract class UIComponent {
+public abstract class Component {
     protected int x, y, width, height;
 
     /**

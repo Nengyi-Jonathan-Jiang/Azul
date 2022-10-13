@@ -9,16 +9,7 @@ import java.awt.event.MouseEvent;
  * An abstract Button class.
  */
 public class ButtonComponent extends Component {
-    protected static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
-    protected final Color borderColor;
-
-    public ButtonComponent(){
-        this(DEFAULT_BORDER_COLOR);
-    }
-
-    public ButtonComponent(Color borderColor){
-        this.borderColor = borderColor;
-    }
+    public ButtonComponent(){}
 
     /**
      * @param e A mouse event.

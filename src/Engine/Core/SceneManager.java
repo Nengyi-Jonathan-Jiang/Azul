@@ -17,8 +17,8 @@ public class SceneManager {
     protected final Deque<Iterator<? extends Scene>> scheduleStack;
     protected final Deque<Scene> actionStack;
 
-    protected final MouseEvent[] lastMouseEvent = new MouseEvent[1];
-    protected final KeyEvent[] lastKeyEvent = new KeyEvent[1];
+    protected final Queue<MouseEvent> mouseEvents = new ArrayDeque<>();
+    protected final Queue<KeyEvent> keyEvents = new ArrayDeque<>();
 
     protected final GameCanvas canvas;
 
@@ -35,14 +35,14 @@ public class SceneManager {
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                lastMouseEvent[0] = e;
+                mouseEvents.add(e);
             }
         });
 
         SwingUtilities.getWindowAncestor(canvas).addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                lastKeyEvent[0] = e;
+                keyEvents.add(e);
             }
         });
 
@@ -60,15 +60,15 @@ public class SceneManager {
             while(true){
                 if(actionStack.isEmpty()) break;
 
-                Scene currentAction = actionStack.peekFirst();
+                Scene currentScene = actionStack.peekFirst();
 
-                if(currentAction.isFinished()){
+                if(currentScene.isFinished()){
                     // Finish this action
-                    currentAction.onFinish();
+                    currentScene.onExecutionEnd();
                     // Remove action from stack
                     actionStack.pop();
 
-                    Iterator<? extends Scene> postActions = currentAction.getScenesAfter();
+                    Iterator<? extends Scene> postActions = currentScene.getScenesAfter();
                     if(postActions != null && postActions.hasNext()){
                         scheduleAction(new Scene() {
                             @Override public Iterator<? extends Scene> getScenesBefore() {
@@ -84,7 +84,7 @@ public class SceneManager {
                     }
                 }
                 else{
-                    executeAction(currentAction);
+                    executeAction(currentScene);
 
                     try{Thread.sleep(delay);}
                     catch(Exception e){/*Nothing*/}
@@ -97,7 +97,7 @@ public class SceneManager {
 
         actionStack.push(a);
 
-        a.onStart();
+        a.onSchedule();
 
         Iterator<? extends Scene> preActions = a.getScenesBefore();
         if(preActions != null && preActions.hasNext()) {
@@ -117,16 +117,18 @@ public class SceneManager {
         }
         else{
             scheduleStack.pop();
-            //noinspection ConstantConditions
-            actionStack.peekFirst().onExecute();
+            actionStack.peekFirst().onExecutionStart();
         }
     }
 
     protected void executeAction(Scene action){
         canvas.repaint(action);
-        action.processEvents(lastMouseEvent[0], lastKeyEvent[0]);
-        lastMouseEvent[0] = null;
-        lastKeyEvent[0] = null;
+        while(!mouseEvents.isEmpty()){
+            action.onMouseClick(mouseEvents.remove());
+        }
+        while(!keyEvents.isEmpty()){
+            action.onKeyPress(keyEvents.remove());
+        }
         action.update();
     }
 }

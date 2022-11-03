@@ -2,25 +2,24 @@ package Game.Scenes;
 
 import Engine.Core.*;
 import Engine.Components.*;
-import Engine.Components.LabelComponent;
+import Engine.Components.TextRendererComponent;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public class TestScene extends Scene {
     GameObject play_button;
 
     public TestScene(){
-        play_button = new GameObject(150, 150, 100, 100,
-                new ImageComponent("Img.png"),
-                new LabelComponent("Play", new TextStyle(Color.RED, new Color(127, 127, 127, 127))),
+        play_button = new GameObject(new Point2D(150, 150), new Dimension(100, 100),
+                new ImageRendererComponent("Img.png"),
+                new TextRendererComponent("Play", new TextStyle(Color.RED, new Color(127, 127, 127, 127))),
                 new ButtonComponent()
         );
     }
 
     @Override
-    public void processEvents(MouseEvent me, KeyEvent ke) {
+    public void onMouseClick(MouseEvent me) {
         if(me != null && play_button.getComponent(ButtonComponent.class).contains(me)){
             System.out.println("Click");
         }

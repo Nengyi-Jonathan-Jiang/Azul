@@ -7,7 +7,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-public class LabelComponent extends Component {
+public class TextRendererComponent extends Component {
     protected static final TextStyle DEFAULT_STYLE = new TextStyle();
 
     protected String text;
@@ -19,21 +19,21 @@ public class LabelComponent extends Component {
         return (int) size.getWidth();
     }
 
-    public LabelComponent(String text){
+    public TextRendererComponent(String text){
         this(text, DEFAULT_STYLE);
     }
 
-    public LabelComponent(String text, Font font){
+    public TextRendererComponent(String text, Font font){
         this(text, new TextStyle(font));
     }
 
-    public LabelComponent(String text, TextStyle style){
+    public TextRendererComponent(String text, TextStyle style){
         this.text = text;
         this.style = style;
         recalculate_text_position();
     }
 
-    public LabelComponent setText(String text){
+    public TextRendererComponent setText(String text){
         this.text = text;
         recalculate_text_position();
         return this;
@@ -64,7 +64,7 @@ public class LabelComponent extends Component {
     }
 
     @Override
-    public void draw(GameCanvas canvas) {
+    public void drawAndUpdate(GameCanvas canvas) {
         int rect_start_x = x - width / 2;
         int rect_start_y = y - height / 2;
 

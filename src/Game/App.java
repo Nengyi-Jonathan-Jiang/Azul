@@ -23,17 +23,7 @@ public class App extends JFrame {
         SceneManager.run(new Scene() {
             @Override
             public Iterator<? extends Scene> getScenesBefore() {
-                return new Iterator<>() {
-                    @Override
-                    public boolean hasNext() {
-                        return true;
-                    }
-
-                    @Override
-                    public Scene next() {
-                        return new TestScene();
-                    }
-                };
+                return Scene.makeLoopIterator(TestScene::new, () -> true);
             }
         }, canvas);
 

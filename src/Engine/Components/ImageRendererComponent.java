@@ -9,14 +9,14 @@ import java.awt.image.BufferedImage;
 /**
  * A Button that displays an image
  */
-public class ImageComponent extends Component {
+public class ImageRendererComponent extends Component {
     protected final BufferedImage image;
-    public ImageComponent(String imgName){
-        image = ImageLoader.load(imgName);
+    public ImageRendererComponent(String fileName){
+        image = ImageLoader.get(fileName);
     }
     
     @Override
-    public void draw(GameCanvas canvas) {
+    public void drawAndUpdate(GameCanvas canvas) {
         canvas.graphics.drawImage(image, x - width / 2, y - height / 2, width, height, null);
     }
 

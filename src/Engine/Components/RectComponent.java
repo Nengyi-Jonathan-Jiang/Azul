@@ -23,7 +23,7 @@ public class RectComponent extends Component{
     }
 
     @Override
-    public void draw(GameCanvas canvas) {
+    public void drawAndUpdate(GameCanvas canvas) {
         canvas.graphics.setColor(fill_color);
         canvas.graphics.fillRect(x - width / 2, y - height / 2, width, height);
         canvas.graphics.setColor(border_color);

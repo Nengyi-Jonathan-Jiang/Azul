@@ -22,13 +22,13 @@ public class ButtonComponent extends Component {
 
     /**
      * @param e A mouse event.
-     * @return Whether the mouse event occurred over the button
+     * @return Whether the mouse event occurred over the GameObject
      */
     public final boolean contains(MouseEvent e){
-        return !(e.getX() < x || e.getX() > x + width || e.getY() < y || e.getY() > y + height);
+        return !(e.getX() < x - width / 2 || e.getX() > x + width / 2 || e.getY() < y - height / 2 || e.getY() > y + height / 2);
     }
 
     //Button is invisible
     @Override
-    public void draw(GameCanvas canvas) {}
+    public void drawAndUpdate(GameCanvas canvas) {}
 }

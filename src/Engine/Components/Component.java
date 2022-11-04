@@ -1,15 +1,13 @@
 package Engine.Components;
 
 import Engine.Core.GameCanvas;
-import Engine.Core.Point2D;
-
-import java.awt.*;
+import Engine.Core.GameObject;
 
 /**
  * An abstract UI Component class.
  */
 public abstract class Component {
-    protected int x, y, width, height;
+    protected GameObject gameObject;
 
     /**
      * Draws the UIComponent
@@ -18,14 +16,11 @@ public abstract class Component {
     public abstract void drawAndUpdate(GameCanvas canvas);
 
     /**
-     * Sets the position and size of the UIComponent then draws the UIComponent
-     * @param canvas The {@link GameCanvas} on which to draw the UIComponent
+     * Should not be called by client code
+     * Sets the parent game object of this component
+     * @param gameObject
      */
-    public final void drawAndUpdate(GameCanvas canvas, Point2D position, Dimension size){
-        this.width = size.width;
-        this.height = size.height;
-        this.x = (int) position.x();
-        this.y = (int) position.y();
-        drawAndUpdate(canvas);
+    public final void setGameObject(GameObject gameObject){
+        this.gameObject = gameObject;
     }
 }

@@ -1,6 +1,7 @@
 package Engine.Components;
 
 import Engine.Core.GameCanvas;
+import Engine.Core.Vec2;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -25,7 +26,8 @@ public class ButtonComponent extends Component {
      * @return Whether the mouse event occurred over the GameObject
      */
     public final boolean contains(MouseEvent e){
-        return !(e.getX() < x - width / 2 || e.getX() > x + width / 2 || e.getY() < y - height / 2 || e.getY() > y + height / 2);
+        Vec2 difference = new Vec2(e.getX(), e.getY()).minus(gameObject.getAbsolutePosition());
+        return difference.scaledBy(2).compareCoordinates(gameObject.getSize());
     }
 
     //Button is invisible

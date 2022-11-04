@@ -1,6 +1,7 @@
 package Engine.Components;
 
 import Engine.Core.GameCanvas;
+import Engine.Core.Vec2;
 import Engine.Util.ImageLoader;
 
 import java.awt.*;
@@ -17,11 +18,15 @@ public class ImageRendererComponent extends Component {
     
     @Override
     public void drawAndUpdate(GameCanvas canvas) {
-        canvas.graphics.drawImage(image, x - width / 2, y - height / 2, width, height, null);
+        canvas.drawImage(
+            image,
+            gameObject.getAbsoluteTopLeft(),
+            gameObject.getSize()
+        );
     }
 
-    public Dimension getImageSize(){
-        return new Dimension(image.getWidth(), image.getHeight());
+    public Vec2 getImageSize(){
+        return new Vec2(image.getWidth(), image.getHeight());
     }
 
     public double getAspectRatio(){

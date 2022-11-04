@@ -3,15 +3,18 @@ package Game.Scenes;
 import Engine.Core.*;
 import Engine.Components.*;
 import Engine.Components.TextRendererComponent;
+import Game.Backend.Game;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class TestScene extends Scene {
     GameObject play_button;
+    Game game;
 
     public TestScene(){
-        play_button = new GameObject(new Point2D(150, 150), new Dimension(100, 100),
+        game = new Game();
+        play_button = new GameObject(new Vec2(150, 150), new Vec2(100, 100),
                 new ImageRendererComponent("Img.png"),
                 new TextRendererComponent("Play", new TextStyle(Color.RED, new Color(127, 127, 127, 127))),
                 new ButtonComponent()
@@ -28,6 +31,7 @@ public class TestScene extends Scene {
     @Override
     public void draw(GameCanvas canvas) {
         play_button.draw(canvas);
+        game.getGameObject().draw(canvas);
     }
 
     @Override

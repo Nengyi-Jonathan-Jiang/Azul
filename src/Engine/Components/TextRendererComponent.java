@@ -1,6 +1,7 @@
 package Engine.Components;
 
 import Engine.Core.GameCanvas;
+import Engine.Core.Vec2;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -12,7 +13,7 @@ public class TextRendererComponent extends Component {
 
     protected String text;
     protected final TextStyle style;
-    protected int offsetX, offsetY;
+    private Vec2 textOffset;
 
     public int getRenderedWidth(){
         Rectangle2D size = style.font.getStringBounds(text, new FontRenderContext(new AffineTransform(),true,true));
@@ -51,41 +52,42 @@ public class TextRendererComponent extends Component {
     }
 
     private void recalculate_text_position(){
-        offsetX = -switch(style.getHorizontalAlignment()){
-            case START -> 0;
-            case CENTER -> getRenderedWidth() / 2;
-            case END -> getRenderedWidth();
-        };
-        offsetY = switch(style.getVerticalAlignment()){
-            case START -> style.font.getSize();
-            case CENTER -> (int)(style.font.getSize() * .4);
-            case END -> 0;
-        };
+        textOffset = new Vec2(
+            -switch(style.getHorizontalAlignment()){
+                case START -> 0;
+                case CENTER -> getRenderedWidth() / 2;
+                case END -> getRenderedWidth();
+            },
+            switch(style.getVerticalAlignment()){
+                case START -> style.font.getSize();
+                case CENTER -> (int)(style.font.getSize() * .4);
+                case END -> 0;
+            }
+        );
     }
 
     @Override
     public void drawAndUpdate(GameCanvas canvas) {
-        int rect_start_x = x - width / 2;
-        int rect_start_y = y - height / 2;
+        Vec2 rect_start = gameObject.getAbsoluteTopLeft();
+        Vec2 text_start = rect_start.plus(textOffset).plus(new Vec2(
+            switch(style.getHorizontalAlignment()){
+                case START -> 0;
+                case CENTER -> gameObject.getSize().x() / 2.;
+                case END -> gameObject.getSize().x();
+            },
+            switch(style.getVerticalAlignment()){
+                case START -> 0;
+                case CENTER -> gameObject.getSize().y() / 2.;
+                case END -> gameObject.getSize().y();
+            })
+        );
 
-        canvas.graphics.setColor(style.bg_color);
-        canvas.graphics.fillRect(rect_start_x, rect_start_y, width, height);
+        canvas
+            .setColor(style.bg_color)
+            .fillRect(rect_start, gameObject.getSize())
 
-        canvas.graphics.setColor(style.fg_color);
-        canvas.graphics.setFont(style.font);
-
-        int text_start_x = rect_start_x + offsetX + switch(style.getHorizontalAlignment()){
-            case START -> 0;
-            case CENTER -> width / 2;
-            case END -> width;
-        };
-
-        int text_start_y = rect_start_y + offsetY + switch(style.getVerticalAlignment()){
-            case START -> 0;
-            case CENTER -> height / 2;
-            case END -> height;
-        };
-
-        canvas.graphics.drawString(text, text_start_x, text_start_y);
+            .setColor(style.fg_color)
+            .setDrawFont(style.font)
+            .drawText(text, text_start);
     }
 }

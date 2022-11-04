@@ -11,6 +11,8 @@ public final class TextStyle {
     public static final int ALIGN_VERTICAL = 8;
     public static final int ALIGN_BOTTOM = 12;
 
+    public static final int ALIGN_CENTER = 10;
+
     private static Font DEFAULT_FONT = new Font("Times New Roman", Font.PLAIN, 12);
     private static Color DEFAULT_FG_COLOR = Color.BLACK;
     private static Color DEFAULT_BG_COLOR = new Color(0, 0, 0, 0);

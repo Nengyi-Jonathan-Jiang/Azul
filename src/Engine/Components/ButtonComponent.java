@@ -27,7 +27,7 @@ public class ButtonComponent extends Component {
      */
     public final boolean contains(MouseEvent e){
         Vec2 difference = new Vec2(e.getX(), e.getY()).minus(gameObject.getAbsolutePosition());
-        return difference.scaledBy(2).compareCoordinates(gameObject.getSize());
+        return difference.map(Math::abs).scaledBy(2).compareCoordinates(gameObject.getSize());
     }
 
     //Button is invisible

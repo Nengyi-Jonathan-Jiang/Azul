@@ -2,10 +2,15 @@ package Engine.Core;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.function.Function;
 
 public final class Vec2 {
     public final double x;
     public final double y;
+
+    public Vec2(double v){
+        this(v, v);
+    }
 
     public Vec2(double x, double y) {
         this.x = x;
@@ -115,5 +120,10 @@ public final class Vec2 {
         return compareCoordinates(this, other);
     }
 
+    public Vec2 map(Function<Double, Double> func){
+        return new Vec2(func.apply(x), func.apply(y));
+    }
+
     public static final Vec2 zero = new Vec2(0, 0);
+
 }

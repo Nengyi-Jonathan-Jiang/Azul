@@ -7,7 +7,7 @@ import java.awt.*;
 public class RectRendererComponent extends Component{
     protected final static Color DEFAULT_BORDER_COLOR = Color.BLACK,
         DEFAULT_FILL_COLOR = new Color(255, 255, 255, 0);
-    protected final Color border_color, fill_color;
+    protected Color border_color, fill_color;
 
     public RectRendererComponent(){
         this(DEFAULT_BORDER_COLOR);
@@ -35,5 +35,15 @@ public class RectRendererComponent extends Component{
                 gameObject.getAbsoluteTopLeft(),
                 gameObject.getSize()
             );
+    }
+
+    public RectRendererComponent setBorderColor(Color color){
+        border_color = color;
+        return this;
+    }
+
+    public RectRendererComponent setFillColor(Color color){
+        fill_color = color;
+        return this;
     }
 }

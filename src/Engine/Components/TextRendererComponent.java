@@ -15,9 +15,9 @@ public class TextRendererComponent extends Component {
     protected final TextStyle style;
     private Vec2 textOffset;
 
-    public int getRenderedWidth(){
+    public Vec2 getRenderedSize(){
         Rectangle2D size = style.font.getStringBounds(text, new FontRenderContext(new AffineTransform(),true,true));
-        return (int) size.getWidth();
+        return new Vec2(size.getWidth(), style.font.getSize());
     }
 
     public TextRendererComponent(String text){
@@ -55,8 +55,8 @@ public class TextRendererComponent extends Component {
         textOffset = new Vec2(
             -switch(style.getHorizontalAlignment()){
                 case START -> 0;
-                case CENTER -> getRenderedWidth() / 2;
-                case END -> getRenderedWidth();
+                case CENTER -> getRenderedSize().x / 2;
+                case END -> getRenderedSize().x;
             },
             switch(style.getVerticalAlignment()){
                 case START -> style.font.getSize();

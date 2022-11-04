@@ -3,6 +3,7 @@ package Engine.Core;
 import Engine.Components.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameObject {
     private final Map<String, Component> componentMap;
@@ -221,5 +222,19 @@ public class GameObject {
 
     public List<GameObject> getChildren(){
         return children;
+    }
+
+
+    @Override
+    public String toString() {
+        return "\nGameObject{\n  Components : ["
+                + componentList.stream().map(i->i.getClass().getName()).collect(Collectors.joining(", "))
+                + "]\n  Children: ["+ (
+                    children.size() == 0 ? "" :
+                    children.stream().map(
+                        i -> "    " + i.toString().replaceAll("\n", "\n    ")
+                    ).collect(Collectors.joining("")) + "\n  "
+                )
+                + "]\n}";
     }
 }

@@ -16,7 +16,7 @@ public class PlayerGameObject extends GameObject {
     private GameObject imageObject;
 
     private final float LABEL_HEIGHT = 30f;
-    private final float LABEL_TEXT_SIZE = 30f;
+    private final float LABEL_TEXT_SIZE = 20f;
 
     public PlayerGameObject(){
         imageObject = new GameObject(new ImageRendererComponent("Azul Board.jpg"));
@@ -25,7 +25,7 @@ public class PlayerGameObject extends GameObject {
         textObject = new GameObject(
             new RectRendererComponent(Color.BLACK, Color.WHITE),
             new TextRendererComponent("Player 1",
-                new TextStyle(Style.font.deriveFont(LABEL_TEXT_SIZE), TextStyle.ALIGN_CENTER)
+                new TextStyle(Style.font_medium.deriveFont(LABEL_TEXT_SIZE), TextStyle.ALIGN_CENTER)
             )
         );
 

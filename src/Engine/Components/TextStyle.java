@@ -20,8 +20,8 @@ public final class TextStyle {
 
     public final Font font;
     public final int alignment;
-    public final Color fg_color;
-    public final Color bg_color;
+    public Color fg_color;
+    public Color bg_color;
 
     public enum Alignment {START, CENTER, END};
 

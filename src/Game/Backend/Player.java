@@ -11,7 +11,7 @@ public class Player {
 
     private GameObject playerObject;
 
-    private int score;
+    private ScoreMarker scoreMarker;
     private PatternLines patternLines;
     private FloorLine floorLine;
     private Wall wall;
@@ -31,7 +31,16 @@ public class Player {
         patternLines.getGameObject().setTopRight(new Vec2(-264, 178).plus(playerObject.getTopRightOffset()));
 
 
+        scoreMarker = new ScoreMarker(this);
+        playerObject.addChild(scoreMarker.getGameObject());
 
+        // TESTING FLOOR LINE
+        floorLine.push(new Tile(Tile.TileColor.BLUE));
+        floorLine.push(new Tile(Tile.TileColor.FIRST_PLAYER));
+        floorLine.push(new Tile(Tile.TileColor.YELLOW));
+        floorLine.push(new Tile(Tile.TileColor.YELLOW));
+
+        // TESTING PATTERN LINES
         patternLines.getRow(0).addTile(new Tile(Tile.TileColor.YELLOW));
         patternLines.getRow(2).addTile(new Tile(Tile.TileColor.BLUE));
         patternLines.getRow(3).addTile(new Tile(Tile.TileColor.BLACK));
@@ -47,6 +56,4 @@ public class Player {
     public GameObject getGameObject(){
         return playerObject;
     }
-
-
 }

@@ -9,7 +9,7 @@ public class Tile{
     public enum TileColor{
         RED,
         YELLOW,
-        TEAL,
+        WHITE,
         BLUE,
         BLACK,
         NONE,
@@ -36,7 +36,7 @@ public class Tile{
         return switch(color){
             case RED -> "Red";
             case YELLOW -> "Yellow";
-            case TEAL -> "Teal";
+            case WHITE -> "White";
             case BLUE -> "Blue";
             case BLACK -> "Black";
             case NONE -> "None";

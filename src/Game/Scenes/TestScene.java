@@ -10,8 +10,9 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import Game.App;
+
 public class TestScene extends Scene {
-    GameObject play_button;
     Game game;
 
     public TestScene(){
@@ -19,18 +20,11 @@ public class TestScene extends Scene {
             new Player("Player 1"),
             new Player("Player 2")
         ));
-        play_button = new GameObject(new Vec2(150, 150), new Vec2(100, 100),
-                new ImageRendererComponent("Img.png"),
-                new TextRendererComponent("Play", new TextStyle(Color.RED, new Color(127, 127, 127, 127))),
-                new ButtonComponent()
-        );
     }
 
     @Override
     public void onMouseClick(MouseEvent me) {
-        if(me != null && play_button.getComponent(ButtonComponent.class).contains(me)){
-            System.out.println("Click");
-        }
+        // IDK
     }
 
 
@@ -38,9 +32,21 @@ public class TestScene extends Scene {
     @Override
     public void update() {
         if(Input.isMouseLeftDown()){
-            Vec2 oldPosition = game.getGameObject().getPosition();
-            Vec2 newPosition = oldPosition.plus(Input.getMousePosition()).minus(lastMousePos);
-            game.getGameObject().setPosition(newPosition);
+            GameObject gObject = game.getGameObject();
+            gObject.move(Input.getMousePosition().minus(lastMousePos));
+
+            if(gObject.getTopLeft().x >= 0){
+                gObject.move(new Vec2(-gObject.getTopLeft().x, 0));
+            }
+            if(gObject.getTopRight().x <= App.WIDTH){
+                gObject.move(new Vec2(App.WIDTH - gObject.getTopRight().x, 0));
+            }
+            if(gObject.getTopLeft().y >= 0){
+                gObject.move(new Vec2(0, -gObject.getTopLeft().y));
+            }
+            if(gObject.getBottomLeft().y <= App.HEIGHT){
+                gObject.move(new Vec2(0, App.HEIGHT - gObject.getBottomLeft().y));
+            }
         }
 
         lastMousePos = Input.getMousePosition();
@@ -49,7 +55,6 @@ public class TestScene extends Scene {
 
     @Override
     public void draw(GameCanvas canvas) {
-        play_button.draw(canvas);
         game.getGameObject().draw(canvas);
     }
 

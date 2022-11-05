@@ -75,7 +75,7 @@ public class GameObject {
      * @return position of top left corner relative to the parent gameObject
      */
     public final Vec2 getTopLeft(){
-        return position.minus(getTopLeftOffset());
+        return position.plus(getTopLeftOffset());
     }
     /**
      * @return position of top right corner relative to the parent gameObject
@@ -151,6 +151,13 @@ public class GameObject {
      */
     public final GameObject setBottomRight(Vec2 position){
         return setPosition(position.minus(getBottomRightOffset()));
+    }
+
+    /**
+     * Adds the given {@link Vec2} to the position
+     */
+    public final GameObject move(Vec2 delta){
+        return setPosition(position.plus(delta));
     }
 
     /**

@@ -4,6 +4,8 @@ import Engine.Core.GameObject;
 import Engine.Core.Vec2;
 import Game.Frontend.PlayerGameObject;
 
+import java.awt.*;
+
 public class Player {
     private String name;
 
@@ -17,21 +19,29 @@ public class Player {
     public Player(String playerName){
         name = playerName;
         floorLine = new FloorLine();
+        patternLines = new PatternLines();
 
 
         playerObject = new PlayerGameObject(playerName);
+
         playerObject.addChild(floorLine.getGameObject());
         floorLine.getGameObject().setTopLeft(new Vec2(17, 437).plus(playerObject.getTopLeftOffset()));
 
+        playerObject.addChild(patternLines.getGameObject());
+        patternLines.getGameObject().setTopRight(new Vec2(-264, 178).plus(playerObject.getTopRightOffset()));
 
 
-        floorLine.push(new Tile(Tile.TileColor.YELLOW));
-        floorLine.push(new Tile(Tile.TileColor.BLACK));
-        floorLine.push(new Tile(Tile.TileColor.BLUE));
-        floorLine.push(new Tile(Tile.TileColor.RED));
-        floorLine.push(new Tile(Tile.TileColor.FIRST_PLAYER));
-        floorLine.push(new Tile(Tile.TileColor.FIRST_PLAYER));
-        floorLine.push(new Tile(Tile.TileColor.FIRST_PLAYER));
+
+        patternLines.getRow(0).addTile(new Tile(Tile.TileColor.YELLOW));
+        patternLines.getRow(2).addTile(new Tile(Tile.TileColor.BLUE));
+        patternLines.getRow(3).addTile(new Tile(Tile.TileColor.BLACK));
+        patternLines.getRow(3).addTile(new Tile(Tile.TileColor.BLACK));
+        patternLines.getRow(3).addTile(new Tile(Tile.TileColor.BLACK));
+        patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
+        patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
+        patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
+        patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
+        patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
     }
 
     public GameObject getGameObject(){

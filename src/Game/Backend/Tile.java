@@ -4,6 +4,8 @@ import Engine.Core.GameObject;
 import Engine.Core.Vec2;
 
 public class Tile{
+    public static final double SIZE = 40;
+
     public enum TileColor{
         RED,
         YELLOW,
@@ -19,7 +21,7 @@ public class Tile{
     public Tile(TileColor color){
         this.color = color;
         gameObj = new GameObject(new ImageRendererComponent("Tile " + getTileColorName(color) + ".png"));
-        gameObj.setSize(new Vec2(40));
+        gameObj.setSize(new Vec2(SIZE));
     }
 
     public TileColor getColor(){

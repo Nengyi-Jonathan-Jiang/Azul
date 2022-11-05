@@ -36,8 +36,8 @@ public abstract class Scene {
     public void onKeyPress(KeyEvent ke){}
     
     /**
-     * Called every frame after the {@link Scene#onMouseClick} and {@link Scene#onKeyPress} methods are called. This
-     * method should handle any logic that does not belong in the {@link Scene#onMouseClick} or {@link Scene#draw}
+     * Called every frame after event listeners and {@link Scene#onKeyPress} methods are called. This
+     * method should handle any logic that does not belong in event listeners or {@link Scene#draw}
      * methods
      */
     public void update(){}

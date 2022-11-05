@@ -19,8 +19,8 @@ public class Game {
         gObject.setSize(gObject.getComponent(ImageRendererComponent.class).getImageSize());
 
         // Temporary, just testing the player board display and correctness of the gameObject hierarchy
-        gObject.addChild(new PlayerGameObject().setPosition(new Vec2(-App.WIDTH / 3., -App.HEIGHT / 3.)));
-        gObject.addChild(new PlayerGameObject().setPosition(new Vec2(App.WIDTH / 3., -App.HEIGHT / 3.)));
+        gObject.addChild(new PlayerGameObject("Player 1").setPosition(new Vec2(-App.WIDTH / 3., -App.HEIGHT / 3.)));
+        gObject.addChild(new PlayerGameObject("Player 2").setPosition(new Vec2(App.WIDTH / 3., -App.HEIGHT / 3.)));
     }
 
     public GameObject getGameObject(){

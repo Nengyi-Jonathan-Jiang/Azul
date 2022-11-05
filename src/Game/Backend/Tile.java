@@ -1,7 +1,9 @@
+package Game.Backend;
+import Engine.Components.ImageRendererComponent;
 import Engine.Core.GameObject;
 
 public class Tile{
-    enum TileColor{
+    public enum TileColor{
         RED,
         YELLOW,
         TEAL,
@@ -10,18 +12,32 @@ public class Tile{
         NONE,
         FIRST_PLAYER
     }
-    private TileColor color;
-    private GameObject gameObj;
+    private final TileColor color;
+    private final GameObject gameObj;
+
     public Tile(TileColor color){
         this.color = color;
-        gameObj = new GameObject(null, null, null); // idk what to put for this part
+        gameObj = new GameObject(new ImageRendererComponent("Tile " + getTileColorName(color) + ".png"));
+        gameObj.setSize(gameObj.getComponent(ImageRendererComponent.class).getImageSize());
     }
-    public GameObject getGameObject(){
-        return gameObj;
-    }
+
     public TileColor getColor(){
         return color;
     }
 
+    public GameObject getGameObject(){
+        return gameObj;
+    }
 
+    public static String getTileColorName(TileColor color){
+        return switch(color){
+            case RED -> "Red";
+            case YELLOW -> "Yellow";
+            case TEAL -> "Teal";
+            case BLUE -> "Blue";
+            case BLACK -> "Black";
+            case NONE -> "None";
+            case FIRST_PLAYER -> "First Player";
+        };
+    }
 }

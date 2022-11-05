@@ -28,6 +28,19 @@ public class TestScene extends Scene {
         }
     }
 
+
+    private Vec2 lastMousePos;
+    @Override
+    public void update() {
+        if(Input.isMouseLeftDown()){
+            Vec2 p = game.getGameObject().getPosition();
+            game.getGameObject().setPosition(p.plus(Input.getMousePosition()).minus(lastMousePos));
+        }
+
+        lastMousePos = Input.getMousePosition();
+    }
+
+
     @Override
     public void draw(GameCanvas canvas) {
         play_button.draw(canvas);

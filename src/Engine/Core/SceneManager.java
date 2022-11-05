@@ -1,5 +1,6 @@
 package Engine.Core;
 
+import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -35,14 +36,29 @@ public class SceneManager {
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) Input.mouseDownL = true;
+                if(SwingUtilities.isRightMouseButton(e)) Input.mouseDownR = true;
                 mouseEvents.add(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) Input.mouseDownL = false;
+                if(SwingUtilities.isRightMouseButton(e)) Input.mouseDownR = false;
             }
         });
 
         SwingUtilities.getWindowAncestor(canvas).addKeyListener(new KeyAdapter() {
+
             @Override
             public void keyPressed(KeyEvent e) {
+                Input.keysDown.add(e.getKeyChar());
                 keyEvents.add(e);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                Input.keysDown.remove(e.getKeyChar());
             }
         });
 
@@ -122,6 +138,10 @@ public class SceneManager {
     }
 
     protected void executeAction(Scene action){
+        Point mousePosition = canvas.getMousePosition(true);
+        if(mousePosition != null)
+            Input.mousePosition = new Vec2(mousePosition.x, mousePosition.y);
+
         canvas.repaint(action);
         while(!mouseEvents.isEmpty()){
             action.onMouseClick(mouseEvents.remove());

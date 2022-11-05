@@ -65,8 +65,6 @@ public class TitleScene extends Scene {
         gObject.addChildren(playerSelectBtns);
         gObject.addChild(startButton);
 
-        System.out.println(gObject);
-
         selectNumPlayers(2);
     }
 

@@ -125,5 +125,4 @@ public final class Vec2 {
     }
 
     public static final Vec2 zero = new Vec2(0, 0);
-
 }

@@ -227,7 +227,9 @@ public class GameObject {
 
     @Override
     public String toString() {
-        return "\nGameObject{\n  Components : ["
+        return "\n" + getClass().getName() + "{\n  Position:"
+                + getPosition()
+                + "\n  Components : ["
                 + componentList.stream().map(i->i.getClass().getName()).collect(Collectors.joining(", "))
                 + "]\n  Children: ["+ (
                     children.size() == 0 ? "" :

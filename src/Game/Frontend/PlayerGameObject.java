@@ -6,6 +6,7 @@ import Engine.Components.TextRendererComponent;
 import Engine.Components.TextStyle;
 import Engine.Core.GameObject;
 import Engine.Core.Vec2;
+import Game.App;
 import Game.Style;
 
 import java.awt.*;

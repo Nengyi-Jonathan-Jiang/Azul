@@ -3,6 +3,7 @@ package Engine.Core;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.*;
 
 /**
@@ -91,6 +92,37 @@ public abstract class Scene {
             @Override
             public Scene next() {
                 return supplier.get();
+            }
+        };
+    }
+
+    /**
+     * Make a foreach-loop-like scene iterator
+     * @param lst The input list to iterate through
+     * @param map How to convert the input into a Scene
+     */
+    public static <T> Iterator<Scene> makeLoopIterator(List<T> lst, Function<T, Scene> map){
+        return lst.stream().map(map).iterator();
+    }
+
+    @SafeVarargs
+    public static Iterator<Scene> concatIterators(Iterator<? extends Scene>... its){
+        return new Iterator<>() {
+            private final Iterator<Iterator<? extends Scene>> ii = List.of(its).iterator();
+            private Iterator<? extends Scene> current = null;
+
+            @Override
+            public boolean hasNext() {
+                while(current == null || !current.hasNext()){
+                    if(!ii.hasNext()) return false;
+                    current = ii.next();
+                }
+                return true;
+            }
+
+            @Override
+            public Scene next() {
+                return current.next();
             }
         };
     }

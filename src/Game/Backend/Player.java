@@ -56,4 +56,12 @@ public class Player {
     public GameObject getGameObject(){
         return playerObject;
     }
+
+    public Wall getWall(){
+        return wall;
+    }
+
+    public PatternLines getPatternLines(){
+        return patternLines;
+    }
 }

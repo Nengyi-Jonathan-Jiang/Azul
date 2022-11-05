@@ -4,6 +4,10 @@ import Engine.Core.GameObject;
 import Engine.Core.Vec2;
 import Game.Frontend.PatternLinesGameObject;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class PatternLines {
     public static final double TILE_SPACING = 45.5;
 
@@ -31,5 +35,9 @@ public class PatternLines {
 
     public GameObject getGameObject(){
         return gameObject;
+    }
+
+    public List<PatternLine> getAvailableLines(Tile.TileColor color){
+        return Arrays.stream(lines).filter(l -> l.canPlaceTile(color)).collect(Collectors.toList());
     }
 }

@@ -29,8 +29,8 @@ public class PatternLine {
         gameObject.addChild(t.getGameObject());
     }
 
-    public boolean canPlaceTile(Tile t){
-        return currentTileColor == Tile.TileColor.NONE || t.getColor() == Tile.TileColor.FIRST_PLAYER || t.getColor() == currentTileColor;
+    public boolean canPlaceTile(Tile.TileColor t){
+        return currentTileColor == Tile.TileColor.NONE || t == Tile.TileColor.FIRST_PLAYER || t == currentTileColor;
     }
 
     public Tile popFirstTile(){

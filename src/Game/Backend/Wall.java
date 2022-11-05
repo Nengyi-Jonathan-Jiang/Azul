@@ -11,5 +11,22 @@ public class Wall {
         {TileColor.YELLOW, TileColor.RED, TileColor.BLACK, TileColor.WHITE, TileColor.BLUE},
     };
 
+    private final Tile[][] grid;
 
+    public Wall(){
+        grid = new Tile[5][5];
+
+    }
+
+    public boolean hasCompletedRow(){
+        for(int i = 0; i < 5; i++){
+            int n = 0;
+            for(int j = 0; j < 5; j++)
+                if(grid[n] != null)
+                    n++;
+
+            if(n == 5) return true;
+        }
+        return false;
+    }
 }

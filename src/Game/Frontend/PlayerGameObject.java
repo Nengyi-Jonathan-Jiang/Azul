@@ -16,6 +16,8 @@ public class PlayerGameObject extends GameObject {
     private GameObject textObject;
     private GameObject imageObject;
 
+    private GameObject scoreMarkerObject;
+
     private final float LABEL_HEIGHT = 30f;
     private final float LABEL_TEXT_SIZE = 20f;
 

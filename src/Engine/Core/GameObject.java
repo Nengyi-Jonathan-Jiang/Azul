@@ -205,6 +205,7 @@ public class GameObject {
 
 
     private void setParent(GameObject object){
+        if(parent != null) parent.children.remove(this);
         parent = object;
     }
 

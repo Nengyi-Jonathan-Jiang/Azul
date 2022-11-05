@@ -1,6 +1,7 @@
 package Game.Backend;
 import Engine.Components.ImageRendererComponent;
 import Engine.Core.GameObject;
+import Engine.Core.Vec2;
 
 public class Tile{
     public enum TileColor{
@@ -18,7 +19,7 @@ public class Tile{
     public Tile(TileColor color){
         this.color = color;
         gameObj = new GameObject(new ImageRendererComponent("Tile " + getTileColorName(color) + ".png"));
-        gameObj.setSize(gameObj.getComponent(ImageRendererComponent.class).getImageSize());
+        gameObj.setSize(new Vec2(40));
     }
 
     public TileColor getColor(){

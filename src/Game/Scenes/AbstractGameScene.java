@@ -4,14 +4,14 @@ import Engine.Core.*;
 import Game.Backend.Game;
 import Game.App;
 
-public class AbstractGameScene extends Scene {
+public abstract class AbstractGameScene extends AbstractScene {
     protected final Game game;
 
     public AbstractGameScene(Game game){
         this.game = game;
     }
 
-    private Vec2 lastMousePos;
+    private Vec2 lastMousePos = Vec2.zero;
     @Override
     public void update() {
         if(Input.isMouseLeftDown()){

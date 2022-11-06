@@ -13,11 +13,12 @@ public class Game {
     private final GameObject gObject;
 
     private final List<Player> players;
+    private final Bag bag;
 
     // Todo: add players argument, must wait for Player class
     public Game(List<Player> players){
         this.players = players;
-
+        this.bag = new Bag();
 
         gObject = new GameGameObject(this);
         gObject.setPosition(new Vec2(App.WIDTH / 2f, App.HEIGHT / 2f));

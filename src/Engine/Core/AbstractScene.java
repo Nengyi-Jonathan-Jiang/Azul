@@ -9,18 +9,18 @@ import java.util.function.*;
 /**
  * A "scene" in an app.
  */
-public abstract class Scene {
+public abstract class AbstractScene {
     /**
      * @return An {@code Iterator} of {@code Actions} that should be run before this actions executes, may return an
-     * indefinite number of Actions. This is queried immediately after the {@link Scene#onSchedule()} method is called
+     * indefinite number of Actions. This is queried immediately after the {@link AbstractScene#onSchedule()} method is called
      */
-    public Iterator<? extends Scene> getScenesBefore(){return null;}
+    public Iterator<? extends AbstractScene> getScenesBefore(){return null;}
     
     /**
      * @return An {@code Iterator} of {@code Action}s that should be run after this actions executes, may
-     * return an indefinite number of Actions. This is queried after the {@link Scene#onExecutionEnd} method is called
+     * return an indefinite number of Actions. This is queried after the {@link AbstractScene#onExecutionEnd} method is called
      */
-    public Iterator<? extends Scene> getScenesAfter(){return null;}
+    public Iterator<? extends AbstractScene> getScenesAfter(){return null;}
     
     /**
      * Called whenever the scene is active and the mouse is clicked. Guaranteed to be called before update is called
@@ -37,14 +37,14 @@ public abstract class Scene {
     public void onKeyPress(KeyEvent ke){}
     
     /**
-     * Called every frame after event listeners and {@link Scene#onKeyPress} methods are called. This
-     * method should handle any logic that does not belong in event listeners or {@link Scene#draw}
+     * Called every frame after event listeners and {@link AbstractScene#onKeyPress} methods are called. This
+     * method should handle any logic that does not belong in event listeners or {@link AbstractScene#draw}
      * methods
      */
     public void update(){}
     
     /**
-     * Called at the beginning of each frame after {@link Scene#isFinished} is queried. This method should handle all
+     * Called at the beginning of each frame after {@link AbstractScene#isFinished} is queried. This method should handle all
      * drawing logic
      * @param canvas The {@link GameCanvas} on which to draw things
      */
@@ -73,7 +73,7 @@ public abstract class Scene {
     /**
      * Makes an iterator through the scenes provided
      */
-    public static Iterator<Scene> makeIterator(Scene... scenes){
+    public static Iterator<AbstractScene> makeIterator(AbstractScene... scenes){
         return Arrays.stream(scenes).iterator();
     }
 
@@ -82,7 +82,7 @@ public abstract class Scene {
      * @param supplier A function that returns a Scene, is called repeatedly in the loop
      * @param condition Returns true as long as the loop should execute
      */
-    public static Iterator<Scene> makeLoopIterator(Supplier<Scene> supplier, Supplier<Boolean> condition){
+    public static Iterator<AbstractScene> makeLoopIterator(Supplier<AbstractScene> supplier, Supplier<Boolean> condition){
         return new Iterator<>() {
             @Override
             public boolean hasNext() {
@@ -90,7 +90,7 @@ public abstract class Scene {
             }
 
             @Override
-            public Scene next() {
+            public AbstractScene next() {
                 return supplier.get();
             }
         };
@@ -101,15 +101,15 @@ public abstract class Scene {
      * @param lst The input list to iterate through
      * @param map How to convert the input into a Scene
      */
-    public static <T> Iterator<Scene> makeLoopIterator(List<T> lst, Function<T, Scene> map){
+    public static <T> Iterator<AbstractScene> makeLoopIterator(List<T> lst, Function<T, AbstractScene> map){
         return lst.stream().map(map).iterator();
     }
 
     @SafeVarargs
-    public static Iterator<Scene> concatIterators(Iterator<? extends Scene>... its){
+    public static Iterator<AbstractScene> concatIterators(Iterator<? extends AbstractScene>... its){
         return new Iterator<>() {
-            private final Iterator<Iterator<? extends Scene>> ii = List.of(its).iterator();
-            private Iterator<? extends Scene> current = null;
+            private final Iterator<Iterator<? extends AbstractScene>> ii = List.of(its).iterator();
+            private Iterator<? extends AbstractScene> current = null;
 
             @Override
             public boolean hasNext() {
@@ -121,7 +121,7 @@ public abstract class Scene {
             }
 
             @Override
-            public Scene next() {
+            public AbstractScene next() {
                 return current.next();
             }
         };

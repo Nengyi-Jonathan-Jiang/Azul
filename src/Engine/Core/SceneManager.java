@@ -6,17 +6,17 @@ import javax.swing.*;
 import java.awt.event.*;
 
 /**
- * A class that runs an {@link Scene} in an event loop. An action may schedule <i>pre-actions</i> to be run
+ * A class that runs an {@link AbstractScene} in an event loop. An action may schedule <i>pre-actions</i> to be run
  * before the action executes and <i>post-actions</i> to be run after the action executes. Post-actions are queried
  * after the action finishes execution.
  */
 public class SceneManager {
 
-    public static void run(Scene a, GameCanvas component){run(a, component, 16);}
-    public static void run(Scene a, GameCanvas component, int delay){new SceneManager(a, delay, component);}
+    public static void run(AbstractScene a, GameCanvas component){run(a, component, 16);}
+    public static void run(AbstractScene a, GameCanvas component, int delay){new SceneManager(a, delay, component);}
 
-    protected final Deque<Iterator<? extends Scene>> scheduleStack;
-    protected final Deque<Scene> actionStack;
+    protected final Deque<Iterator<? extends AbstractScene>> scheduleStack;
+    protected final Deque<AbstractScene> actionStack;
 
     protected final Queue<MouseEvent> mouseEvents = new ArrayDeque<>();
     protected final Queue<KeyEvent> keyEvents = new ArrayDeque<>();
@@ -25,7 +25,7 @@ public class SceneManager {
 
     protected final int delay;
 
-    protected SceneManager(Scene a, int delay, GameCanvas canvas){
+    protected SceneManager(AbstractScene a, int delay, GameCanvas canvas){
         actionStack = new ArrayDeque<>();
         scheduleStack = new ArrayDeque<>();
 
@@ -62,8 +62,8 @@ public class SceneManager {
             }
         });
 
-        scheduleAction(new Scene(){
-            @Override public Iterator<Scene> getScenesBefore() {
+        scheduleAction(new AbstractScene(){
+            @Override public Iterator<AbstractScene> getScenesBefore() {
                 return Collections.singletonList(a).iterator();
             }
         });
@@ -76,7 +76,7 @@ public class SceneManager {
             while(true){
                 if(actionStack.isEmpty()) break;
 
-                Scene currentScene = actionStack.peekFirst();
+                AbstractScene currentScene = actionStack.peekFirst();
 
                 if(currentScene.isFinished()){
                     // Finish this action
@@ -84,10 +84,10 @@ public class SceneManager {
                     // Remove action from stack
                     actionStack.pop();
 
-                    Iterator<? extends Scene> postActions = currentScene.getScenesAfter();
+                    Iterator<? extends AbstractScene> postActions = currentScene.getScenesAfter();
                     if(postActions != null && postActions.hasNext()){
-                        scheduleAction(new Scene() {
-                            @Override public Iterator<? extends Scene> getScenesBefore() {
+                        scheduleAction(new AbstractScene() {
+                            @Override public Iterator<? extends AbstractScene> getScenesBefore() {
                                 return postActions;
                             }
                         });
@@ -109,13 +109,15 @@ public class SceneManager {
         }).start();
     }
 
-    protected void scheduleAction(Scene a){
+    protected void scheduleAction(AbstractScene a){
+
+        System.out.println("Scheduled scene " + a.getClass().getName());
 
         actionStack.push(a);
 
         a.onSchedule();
 
-        Iterator<? extends Scene> preActions = a.getScenesBefore();
+        Iterator<? extends AbstractScene> preActions = a.getScenesBefore();
         if(preActions != null && preActions.hasNext()) {
             scheduleStack.push(preActions);
             scheduleAction(preActions.next());
@@ -125,10 +127,10 @@ public class SceneManager {
     protected void scheduleNextAction(){
         if(scheduleStack.isEmpty() || actionStack.isEmpty()) throw new Error("Pop off schedule stack when empty");   //hopefully never happens
 
-        Iterator<? extends Scene> schedule = scheduleStack.peekFirst();
+        Iterator<? extends AbstractScene> schedule = scheduleStack.peekFirst();
 
         if(schedule != null && schedule.hasNext()){
-            Scene nextAction = schedule.next();
+            AbstractScene nextAction = schedule.next();
             scheduleAction(nextAction);
         }
         else{
@@ -137,7 +139,7 @@ public class SceneManager {
         }
     }
 
-    protected void executeAction(Scene action){
+    protected void executeAction(AbstractScene action){
         Point mousePosition = canvas.getMousePosition(true);
         if(mousePosition != null)
             Input.mousePosition = new Vec2(mousePosition.x, mousePosition.y);

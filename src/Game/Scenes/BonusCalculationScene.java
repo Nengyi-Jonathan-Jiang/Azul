@@ -1,6 +1,5 @@
 package Game.Scenes;
 
-import Engine.Core.Scene;
 import Game.Backend.Game;
 import Game.Backend.Player;
 

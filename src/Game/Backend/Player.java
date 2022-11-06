@@ -20,7 +20,7 @@ public class Player {
         name = playerName;
         floorLine = new FloorLine();
         patternLines = new PatternLines();
-
+        wall = new Wall();
 
         playerObject = new PlayerGameObject(playerName);
 

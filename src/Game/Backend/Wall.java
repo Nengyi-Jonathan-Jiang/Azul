@@ -1,5 +1,7 @@
 package Game.Backend;
 
+import java.util.List;
+
 import static Game.Backend.Tile.TileColor;
 
 public class Wall {
@@ -28,5 +30,9 @@ public class Wall {
             if(n == 5) return true;
         }
         return false;
+    }
+
+    public boolean rowHasTileColor(int i, TileColor color){
+        return List.of(grid[i]).stream().map(Tile::getColor).anyMatch(c -> c == color);
     }
 }

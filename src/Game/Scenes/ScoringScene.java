@@ -1,10 +1,10 @@
 package Game.Scenes;
 
-import Engine.Core.Scene;
+import Engine.Core.AbstractScene;
 import Game.Backend.Game;
 
 // TODO
-public class ScoringScene extends Scene {
+public class ScoringScene extends AbstractScene {
     private Game game;
 
     public ScoringScene(Game game) {

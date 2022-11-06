@@ -1,9 +1,8 @@
 package Game;
 
 import Engine.Core.SceneManager;
-import Engine.Core.Scene;
+import Engine.Core.AbstractScene;
 import Engine.Core.GameCanvas;
-import Game.Scenes.TestScene;
 import Game.Scenes.TitleScene;
 
 import javax.swing.*;
@@ -24,10 +23,10 @@ public class App extends JFrame {
 
         add(canvas);
 
-        SceneManager.run(new Scene() {
+        SceneManager.run(new AbstractScene() {
             @Override
-            public Iterator<? extends Scene> getScenesBefore() {
-                return Scene.makeLoopIterator(TitleScene::new, () -> true);
+            public Iterator<? extends AbstractScene> getScenesBefore() {
+                return AbstractScene.makeLoopIterator(TitleScene::new, () -> true);
             }
         }, canvas);
 

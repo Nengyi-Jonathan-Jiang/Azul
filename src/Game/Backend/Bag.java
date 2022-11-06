@@ -21,6 +21,16 @@ public class Bag{
     }
 
     public Tile popTile(){
+        if(tiles.isEmpty()){
+            if(returnedTiles.isEmpty()){
+                // No more Tiles! OH NO!!!!!! WHAT SHALL WE DO????
+                // We throw an obnoxious error, obviously
+                // At least its not a null pointer exception
+                // Too lazy to actually implement graceful handling of this situation haha
+                throw new Error("Out of Tiles");
+            }
+            refillBack();
+        }
         return tiles.remove(tiles.size() - 1);
     }
 

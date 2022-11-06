@@ -26,7 +26,5 @@ public class GameGameObject extends GameObject {
                 ((i & 2) - 1)
             ));
         }
-
-        System.out.println(this);
     }
 }

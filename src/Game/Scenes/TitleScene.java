@@ -1,17 +1,17 @@
 package Game.Scenes;
 
 import Engine.Components.*;
-import Engine.Core.GameCanvas;
-import Engine.Core.GameObject;
-import Engine.Core.Scene;
-import Engine.Core.Vec2;
+import Engine.Core.*;
 import Game.*;
+import Game.Backend.*;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class TitleScene extends Scene {
+public class TitleScene extends AbstractScene {
     private GameObject bkgd, logo, playerSelectText, playerSelectBtns[], startButton;
     private int numPlayers;
     private GameObject gObject;
@@ -104,8 +104,10 @@ public class TitleScene extends Scene {
     }
 
     @Override
-    public Iterator<? extends Scene> getScenesAfter() {
+    public Iterator<? extends AbstractScene> getScenesAfter() {
         // TODO: after GameScene is implemented, change to return a GameScene
-        return Scene.makeIterator(new TestScene());
+        return AbstractScene.makeIterator(new GameScene(new Game(
+            (IntStream.range(0, numPlayers)).mapToObj(i -> new Player("Player " + (i + 1))).collect(Collectors.toList())
+        )));
     }
 }

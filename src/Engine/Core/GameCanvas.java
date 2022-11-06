@@ -8,15 +8,15 @@ import java.awt.image.BufferedImage;
  * A double-buffered canvas on which to draw stuff.
  */
 public class GameCanvas extends JPanel {
-    private Scene currAction = null;
+    private AbstractScene currAction = null;
     public Graphics2D graphics = null;
     public int width = -1, height = -1;
 
     /**
-     * Repaints the canvas, using the {@link Scene#draw} method of the {@link Scene} supplied
+     * Repaints the canvas, using the {@link AbstractScene#draw} method of the {@link AbstractScene} supplied
      * @param a The function to call to paint the canvas
      */
-    public void repaint(Scene a) {
+    public void repaint(AbstractScene a) {
         currAction = a;
         super.repaint();
     }

@@ -1,30 +1,29 @@
 package Game.Scenes;
 
-import Engine.Core.Scene;
+import Engine.Core.AbstractScene;
 import Game.Backend.Game;
 
 import java.util.Iterator;
 
-// TODO
-public class RoundScene extends Scene {
-    private Game game;
+public class RoundScene extends AbstractScene {
+    private final Game game;
 
     public RoundScene(Game game){
-
+        this.game = game;
     }
 
     @Override
-    public Iterator<? extends Scene> getScenesAfter() {
-        return Scene.concatIterators(
+    public Iterator<? extends AbstractScene> getScenesAfter() {
+        return AbstractScene.concatIterators(
             // Distribute tiles
-            Scene.makeIterator(new TileDistributionScene(game)),
+            AbstractScene.makeIterator(new TileDistributionScene(game)),
             // Player turns
-            Scene.makeLoopIterator(() -> new PlayerTurnScene(game),
+            AbstractScene.makeLoopIterator(() -> new PlayerTurnScene(game),
                 // TODO: check if factories and middle are empty
                 () -> false
             ),
             // Scoring
-            Scene.makeLoopIterator(game.getPlayers(), p -> new ScoringScene(game))
+            AbstractScene.makeLoopIterator(game.getPlayers(), p -> new ScoringScene(game))
         );
     }
 }

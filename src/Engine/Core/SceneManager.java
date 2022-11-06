@@ -87,7 +87,8 @@ public class SceneManager {
                     Iterator<? extends AbstractScene> postActions = currentScene.getScenesAfter();
                     if(postActions != null && postActions.hasNext()){
                         scheduleAction(new AbstractScene() {
-                            @Override public Iterator<? extends AbstractScene> getScenesBefore() {
+                            @Override
+                            public Iterator<? extends AbstractScene> getScenesBefore() {
                                 return postActions;
                             }
                         });

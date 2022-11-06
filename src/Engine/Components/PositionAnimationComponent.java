@@ -24,7 +24,5 @@ public class PositionAnimationComponent extends Component{
         this.gameObject.setPosition(startPosition.plus(
             targetPosition.minus(startPosition).scaledBy(elapsedTime / animationDuration)
         ));
-
-        System.out.println(targetPosition.minus(startPosition).scaledBy(elapsedTime / animationDuration));
     }
 }

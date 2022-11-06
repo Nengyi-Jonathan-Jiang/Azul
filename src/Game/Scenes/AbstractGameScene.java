@@ -11,12 +11,12 @@ public abstract class AbstractGameScene extends AbstractScene {
         this.game = game;
     }
 
-    private Vec2 lastMousePos = Vec2.zero;
+    private static Vec2 lastMousePos = Vec2.zero;
     @Override
     public void update() {
         if(Input.isMouseLeftDown()){
             GameObject gObject = game.getGameObject();
-            gObject.move(Input.getMousePosition().minus(lastMousePos));
+            gObject.move(Input.getMousePosition().minus(lastMousePos).scaledBy(3));
 
             if(gObject.getTopLeft().x >= 0){
                 gObject.move(new Vec2(-gObject.getTopLeft().x, 0));

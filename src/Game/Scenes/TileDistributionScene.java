@@ -11,9 +11,8 @@ import Game.App;
 import java.util.Collections;
 import java.util.List;
 
-// TODO
 public class TileDistributionScene extends AbstractGameScene {
-    // We do a victor style distribution animation lol
+    // We do a victor style tile distribution animation lol
 
     public TileDistributionScene(Game game) {
         super(game);
@@ -48,7 +47,12 @@ public class TileDistributionScene extends AbstractGameScene {
         Vec2 targetPosition = tile.getGameObject().getPosition();
 
         tile.getGameObject().setPosition(
-                tile.getGameObject().getAbsolutePosition().scaledBy(-1)
+            // Calculate where the center of the game table is relative to the factory
+            tile.getGameObject()
+                .getAbsolutePosition()
+                .minus(game.getGameObject().getAbsolutePosition())
+                .plus(new Vec2(App.WIDTH / 2., App.HEIGHT / 2.))
+                .scaledBy(-1)
                 .plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5))
         );
         tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPosition, 10);
@@ -58,6 +62,6 @@ public class TileDistributionScene extends AbstractGameScene {
 
     @Override
     public boolean isFinished() {
-        return animation > game.getMiddle().getFactories().size() * 4 * 6 + 20;
+        return animation > game.getMiddle().getFactories().size() * 4 * 6 + 100;
     }
 }

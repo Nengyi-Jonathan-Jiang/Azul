@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
  * A double-buffered canvas on which to draw stuff.
  */
 public class GameCanvas extends JPanel {
-    private AbstractScene currAction = null;
+    private AbstractScene currScene = null;
     public Graphics2D graphics = null;
     public int width = -1, height = -1;
 
@@ -17,7 +17,7 @@ public class GameCanvas extends JPanel {
      * @param a The function to call to paint the canvas
      */
     public void repaint(AbstractScene a) {
-        currAction = a;
+        currScene = a;
         super.repaint();
     }
 
@@ -31,7 +31,7 @@ public class GameCanvas extends JPanel {
         graphics = (Graphics2D) g;
         width = getWidth();
         height = getHeight();
-        if(currAction != null && !currAction.isFinished()) {
+        if(currScene != null) {
             graphics.setRenderingHint(
                     RenderingHints.KEY_TEXT_ANTIALIASING,
                     RenderingHints.VALUE_TEXT_ANTIALIAS_ON
@@ -40,7 +40,7 @@ public class GameCanvas extends JPanel {
                     RenderingHints.KEY_INTERPOLATION,
                     RenderingHints.VALUE_INTERPOLATION_BILINEAR
             );
-            currAction.draw(this);
+            currScene.draw(this);
         }
     }
 

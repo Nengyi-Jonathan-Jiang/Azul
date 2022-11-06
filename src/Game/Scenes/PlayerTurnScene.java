@@ -1,6 +1,7 @@
 package Game.Scenes;
 
 import Engine.Core.AbstractScene;
+import Engine.Core.GameCanvas;
 import Game.Backend.Game;
 import Game.Backend.Player;
 
@@ -15,8 +16,6 @@ public class PlayerTurnScene extends AbstractScene {
         this.game = game;
         this.player = player;
     }
-
-
 
     @Override
     public Iterator<AbstractScene> getScenesAfter() {

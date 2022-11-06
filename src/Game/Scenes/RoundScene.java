@@ -1,6 +1,7 @@
 package Game.Scenes;
 
 import Engine.Core.AbstractScene;
+import Engine.Core.GameCanvas;
 import Game.Backend.Game;
 
 import java.util.Iterator;
@@ -27,8 +28,8 @@ public class RoundScene extends AbstractScene {
                         return new PlayerTurnScene(game, game.getPlayers().get(player++ % game.getPlayers().size()));
                     }
                 },
-                // TODO: check if factories and middle are empty
-                () -> false
+                // TODO: check if center is empty too
+                () -> !game.getMiddle().getFactories().isEmpty()
             ),
             // Scoring
             AbstractScene.makeLoopIterator(game.getPlayers(), p -> new ScoringScene(game))

@@ -64,4 +64,8 @@ public class Player {
     public PatternLines getPatternLines(){
         return patternLines;
     }
+
+    public String getName(){
+        return name;
+    }
 }

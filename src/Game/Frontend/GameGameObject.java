@@ -21,7 +21,7 @@ public class GameGameObject extends GameObject {
         for(int i = 0; i < game.getPlayers().size(); i++){
             GameObject o = game.getPlayers().get(i).getGameObject();
             addChild(o);
-            o.setPosition(new Vec2(App.WIDTH / 3., App.WIDTH / 4.).scaledBy(
+            o.setPosition(new Vec2(500).scaledBy(
                 ((i & 1) * 2 - 1),
                 ((i & 2) - 1)
             ));

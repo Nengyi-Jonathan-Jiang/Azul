@@ -8,6 +8,7 @@ import Engine.Core.GameObject;
  */
 public abstract class Component {
     protected GameObject gameObject;
+    private boolean disabled;
 
     /**
      * Draws the UIComponent
@@ -22,5 +23,32 @@ public abstract class Component {
      */
     public final void setGameObject(GameObject gameObject){
         this.gameObject = gameObject;
+    }
+
+    /**
+     * Whether the Component is disabled
+     * @return
+     */
+    public final boolean isDisabled(){
+        return disabled;
+    }
+
+    protected void onDisable(){}
+    protected void onEnable(){}
+
+    /**
+     * Enable the component
+     */
+    public final void enable(){
+        disabled = true;
+        onEnable();
+    }
+
+    /**
+     * Disable the component
+     */
+    public final void disable(){
+        disabled = false;
+        onDisable();
     }
 }

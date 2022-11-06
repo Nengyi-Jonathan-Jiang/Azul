@@ -2,6 +2,7 @@ package Game.Backend;
 
 import Engine.Core.GameObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -21,6 +22,9 @@ public abstract class AbstractTileSet {
 
     public void addTiles(List<Tile> lst){
         for(Tile t : lst){
+            if(!tiles.containsKey(t.getColor())){
+                tiles.put(t.getColor(), new ArrayList<>());
+            }
             tiles.get(t.getColor()).add(t);
             gameObject.addChild(t.getGameObject());
         }
@@ -42,5 +46,9 @@ public abstract class AbstractTileSet {
         List<Tile> res = getAllTiles();
         tiles.clear();
         return res;
+    }
+
+    public GameObject getGameObject(){
+        return gameObject;
     }
 }

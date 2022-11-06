@@ -1,7 +1,12 @@
 package Game.Backend;
+import Engine.Components.ButtonComponent;
 import Engine.Components.ImageRendererComponent;
+import Engine.Components.PositionAnimationComponent;
+import Engine.Components.RectRendererComponent;
 import Engine.Core.GameObject;
 import Engine.Core.Vec2;
+
+import Game.Style;
 
 public class Tile{
     public static final double SIZE = 40;
@@ -20,7 +25,13 @@ public class Tile{
 
     public Tile(TileColor color){
         this.color = color;
-        gameObj = new GameObject(new ImageRendererComponent("Tile " + getTileColorName(color) + ".png"));
+        gameObj = new GameObject(
+                new ImageRendererComponent("Tile " + getTileColorName(color) + ".png"),
+                new ButtonComponent(),
+                new RectRendererComponent(Style.HL_COLOR),
+                new PositionAnimationComponent()
+        );
+        gameObj.getComponent(RectRendererComponent.class).disable();
         gameObj.setSize(new Vec2(SIZE));
     }
 
@@ -42,5 +53,13 @@ public class Tile{
             case NONE -> "None";
             case FIRST_PLAYER -> "First Player";
         };
+    }
+
+    public void highlight(){
+        gameObj.getComponent(RectRendererComponent.class).enable();
+    }
+
+    public void unHighlight(){
+        gameObj.getComponent(RectRendererComponent.class).disable();
     }
 }

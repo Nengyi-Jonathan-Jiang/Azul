@@ -180,7 +180,11 @@ public class GameObject {
      * @param canvas The {@link GameCanvas} on which to draw the GameObject
      */
     public final GameObject draw(GameCanvas canvas){
-        for(Component component : componentList) component.drawAndUpdate(canvas);
+        for(Component component : componentList){
+            if(!component.isDisabled()) {
+                component.drawAndUpdate(canvas);
+            }
+        }
 
         for(GameObject child : children){
             child.draw(canvas);

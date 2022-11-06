@@ -4,6 +4,7 @@ import Engine.Core.AbstractScene;
 import Game.Backend.Game;
 
 import java.util.Iterator;
+import java.util.function.Supplier;
 
 public class RoundScene extends AbstractScene {
     private final Game game;
@@ -18,7 +19,14 @@ public class RoundScene extends AbstractScene {
             // Distribute tiles
             AbstractScene.makeIterator(new TileDistributionScene(game)),
             // Player turns
-            AbstractScene.makeLoopIterator(() -> new PlayerTurnScene(game),
+            AbstractScene.makeLoopIterator(
+                new Supplier<AbstractScene>() {
+                    int player = 0;
+                    @Override
+                    public AbstractScene get() {
+                        return new PlayerTurnScene(game, game.getPlayers().get(player++ % game.getPlayers().size()));
+                    }
+                },
                 // TODO: check if factories and middle are empty
                 () -> false
             ),

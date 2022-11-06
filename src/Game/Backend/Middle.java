@@ -21,7 +21,16 @@ public class Middle {
             gameObject.addChild(fact.getGameObject());
         }
 
-        positionFactories(0);
+        for(int i = 0; i < numFactories; i++){
+            Factory fact = factories.get(i);
+
+            Vec2 offset = new Vec2(
+                    Math.sin(2 * Math.PI * i / numFactories),
+                    Math.cos(2 * Math.PI * i / numFactories)
+            );
+
+            fact.getGameObject().setPosition(offset.scaledBy(250));
+        }
     }
 
     public void positionFactories(double rot){

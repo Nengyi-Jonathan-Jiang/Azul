@@ -10,4 +10,9 @@ public class ScoringScene extends AbstractScene {
     public ScoringScene(Game game) {
 
     }
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

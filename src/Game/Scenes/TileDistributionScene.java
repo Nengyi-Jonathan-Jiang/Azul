@@ -6,6 +6,8 @@ import Game.Backend.Factory;
 import Game.Backend.Game;
 import Game.Backend.Tile;
 
+import Game.App;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -17,48 +19,45 @@ public class TileDistributionScene extends AbstractGameScene {
         super(game);
     }
 
-    public double rot = 0;
     public int factory = 0;
-
-    public boolean state = true;   // true -> rotating, false -> adding tile
-    public double animationTime;
+    public int cooldown = 0;
+    public int animation = 0;
 
     @Override
     public void update() {
         // Must call to allow dragging of table
         super.update();
 
-        if(factory >= game.getMiddle().getFactories().size() * 4 && state) return;
+        List<Factory> factories = game.getMiddle().getFactories();
 
-        if(state) {
-            if(animationTime >= 1) {
-                state = false;
-                animationTime = 0;
+        animation++;
 
-                List<Factory> factories = game.getMiddle().getFactories();
-                Tile tile = game.getBag().popTile();
+        if(factory >= 4 * factories.size()) return;
 
-                factories.get((factory++) % factories.size()).addTiles(Collections.singletonList(tile));
+        game.getMiddle().positionFactories(animation / 20.);
 
-                tile.getGameObject().setPosition(tile.getGameObject().getAbsolutePosition().scaledBy(-1));
-                tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(Vec2.zero, 10);
-            }
-
-            rot += 0.1;
-            animationTime += 0.1;
-            game.getMiddle().positionFactories(-rot);
+        if(cooldown != 0){
+            cooldown--;
+            return;
         }
-        else{
-            if(animationTime >= 1){
-                state = true;
-                animationTime = 0;
-            }
-            animationTime += 0.1;
-        }
+
+        Tile tile = game.getBag().popTile();
+
+        factories.get((factory++) % factories.size()).addTiles(Collections.singletonList(tile));
+
+        Vec2 targetPosition = tile.getGameObject().getPosition();
+
+        tile.getGameObject().setPosition(
+                tile.getGameObject().getAbsolutePosition().scaledBy(-1)
+                .plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5))
+        );
+        tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPosition, 10);
+
+        cooldown = 5;
     }
 
     @Override
     public boolean isFinished() {
-        // return factory >= game.getMiddle().getFactories().size() * 4 && state;
+        return animation > game.getMiddle().getFactories().size() * 4 * 6 + 20;
     }
 }

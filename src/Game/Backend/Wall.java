@@ -1,6 +1,7 @@
 package Game.Backend;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static Game.Backend.Tile.TileColor;
 
@@ -22,9 +23,6 @@ public class Wall {
         score = 0;
         finalScore = 0;
     }
-
-
-
 
     public boolean hasCompletedRow(){
         for(int i = 0; i < 5; i++){
@@ -66,9 +64,7 @@ public class Wall {
         return score;
     }
 
-
-
     public boolean rowHasTileColor(int i, TileColor color){
-        return List.of(grid[i]).stream().map(Tile::getColor).anyMatch(c -> c == color);
+        return Stream.of(grid[i]).map(Tile::getColor).anyMatch(c -> c == color);
     }
 }

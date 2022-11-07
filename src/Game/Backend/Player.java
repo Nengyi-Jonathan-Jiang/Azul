@@ -38,24 +38,6 @@ public class Player implements Comparable<Player> {
         hand = new Hand();
         playerObject.addChild(hand.getGameObject());
         hand.getGameObject().setPosition(playerObject.getBottomLeft().scaledBy(0, 1.25));
-
-        // TESTING FLOOR LINE
-        floorLine.push(new Tile(Tile.TileColor.BLUE));
-        floorLine.push(new Tile(Tile.TileColor.FIRST_PLAYER));
-        floorLine.push(new Tile(Tile.TileColor.YELLOW));
-        floorLine.push(new Tile(Tile.TileColor.YELLOW));
-
-        // TESTING PATTERN LINES
-        patternLines.getRow(0).addTile(new Tile(Tile.TileColor.YELLOW));
-        patternLines.getRow(2).addTile(new Tile(Tile.TileColor.BLUE));
-        patternLines.getRow(3).addTile(new Tile(Tile.TileColor.BLACK));
-        patternLines.getRow(3).addTile(new Tile(Tile.TileColor.BLACK));
-        patternLines.getRow(3).addTile(new Tile(Tile.TileColor.BLACK));
-        patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
-        patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
-        patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
-        patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
-        patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
     }
     
     public ScoreMarker getScoreMarker(){

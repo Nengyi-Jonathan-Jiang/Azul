@@ -1,7 +1,6 @@
 package Game.Scenes;
 
 import Engine.Components.*;
-import Engine.Core.AbstractScene;
 import Engine.Core.GameCanvas;
 import Engine.Core.GameObject;
 import Engine.Core.Vec2;
@@ -59,6 +58,8 @@ public class FactoryOfferingScene extends AbstractGameScene {
 
     @Override
     public void onMouseClick(MouseEvent me) {
+        // Handle click on tile in factory
+
         List<Factory> factories = game.getMiddle().getFactories();
 
         boolean found = false;
@@ -67,7 +68,7 @@ public class FactoryOfferingScene extends AbstractGameScene {
             List<Tile> allTiles = factory.getAllTiles();
             for (Tile t : allTiles) {
                 if (t.getGameObject().getComponent(ButtonComponent.class).contains(me)) {
-                    selectTile(factory, t);
+                    selectFactoryTile(factory, t);
                     found = true;
                     break outer;
                 }
@@ -81,6 +82,9 @@ public class FactoryOfferingScene extends AbstractGameScene {
             if (selectedTiles.contains(t)) t.highlight();
             else t.unHighlight();
         }));
+
+
+        // Handle click in
     }
 
     @Override
@@ -88,7 +92,7 @@ public class FactoryOfferingScene extends AbstractGameScene {
         game.getMiddle().getFactories().forEach(f -> f.getAllTiles().forEach(Tile::unHighlight));
     }
 
-    private void selectTile(Factory f, Tile t) {
+    private void selectFactoryTile(Factory f, Tile t) {
         if (selectedTiles.contains(t)) {
             // Unhighlight all tiles
             game.getMiddle().getFactories().stream().map(Factory::getAllTiles).forEach(l -> l.forEach(Tile::unHighlight));
@@ -99,7 +103,7 @@ public class FactoryOfferingScene extends AbstractGameScene {
             for (Tile tile : selectedTiles) {
                 Vec2 originalPos = tile.getGameObject()
                         .getAbsolutePosition()
-                        .minus(game.getGameObject().getAbsolutePosition());
+                        .minus(player.getHand().getGameObject().getAbsolutePosition());
 
                 player.getHand().addTile(tile);
 

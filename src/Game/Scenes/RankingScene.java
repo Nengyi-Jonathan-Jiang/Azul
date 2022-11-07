@@ -1,10 +1,16 @@
 package Game.Scenes;
 
 import Engine.Core.AbstractScene;
+import Engine.Core.GameObject;
 import Game.Backend.Game;
+import Game.Backend.Player;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 // TODO
-public class RankingScene extends AbstractScene {
+public class RankingScene extends AbstractGameScene {
     private List<GameObject> playerNames;
     private GameObject winText;
     private boolean finished = false;
@@ -12,11 +18,10 @@ public class RankingScene extends AbstractScene {
         super(game);
         List<Player> players = game.getPlayers();
         Collections.sort(players);
-        playerNames = new ArrayList<GameObject>();
+        playerNames = new ArrayList<>();
         for(Player p: players){
             playerNames.add(p.getGameObject());   
         }
-        
     }
     public GameObject getWinner(){
         return playerNames.get(0);  
@@ -25,7 +30,4 @@ public class RankingScene extends AbstractScene {
     public boolean isFinished(){
          return finished;   
     }
-    
-    
-    
 }

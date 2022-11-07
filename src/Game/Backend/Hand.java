@@ -36,7 +36,7 @@ public class Hand {
     }
 
     public void clear(){
-        this.tiles = null;
+        this.tiles.clear();
     }
 
     public GameObject getGameObject(){

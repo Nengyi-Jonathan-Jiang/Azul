@@ -6,7 +6,7 @@ import Game.Frontend.PlayerGameObject;
 
 import java.awt.*;
 
-public class Player {
+public class Player implements Comparable {
     private String name;
 
     private GameObject playerObject;
@@ -15,15 +15,12 @@ public class Player {
     private PatternLines patternLines;
     private FloorLine floorLine;
     private Wall wall;
-
-    private Hand hand;
-
+    
     public Player(String playerName){
         name = playerName;
         floorLine = new FloorLine();
         patternLines = new PatternLines();
         wall = new Wall();
-        hand = new Hand();
 
         playerObject = new PlayerGameObject(playerName);
 
@@ -36,9 +33,6 @@ public class Player {
 
         scoreMarker = new ScoreMarker(this);
         playerObject.addChild(scoreMarker.getGameObject());
-
-        playerObject.addChild(hand.getGameObject());
-        hand.getGameObject().setPosition(playerObject.getBottomLeftOffset().scaledBy(0, 1.3));
 
         // TESTING FLOOR LINE
         floorLine.push(new Tile(Tile.TileColor.BLUE));
@@ -58,7 +52,10 @@ public class Player {
         patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
         patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
     }
-
+    
+    public ScoreMarker getScoreMarker(){
+        return scoreMarker;   
+    }
     public GameObject getGameObject(){
         return playerObject;
     }
@@ -74,8 +71,8 @@ public class Player {
     public String getName(){
         return name;
     }
-
-    public Hand getHand() {
-        return hand;
+    
+    public int compareTo(Player o){
+        return this.scoreMarker.getScore() - o.getScoreMarker().getScore();
     }
 }

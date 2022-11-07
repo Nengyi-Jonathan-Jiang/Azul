@@ -40,6 +40,7 @@ public class GameCanvas extends JPanel {
                     RenderingHints.KEY_INTERPOLATION,
                     RenderingHints.VALUE_INTERPOLATION_BILINEAR
             );
+            graphics.setStroke(new BasicStroke(2));
             currScene.draw(this);
         }
     }

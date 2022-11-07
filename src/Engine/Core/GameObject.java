@@ -181,7 +181,7 @@ public class GameObject {
      */
     public final GameObject draw(GameCanvas canvas){
         for(Component component : componentList){
-            if(!component.isDisabled()) {
+            if(component.isEnabled()) {
                 component.drawAndUpdate(canvas);
             }
         }

@@ -62,6 +62,6 @@ public class TileDistributionScene extends AbstractGameScene {
 
     @Override
     public boolean isFinished() {
-        return animation > game.getMiddle().getFactories().size() * 4 * 6 + 100;
+        return animation > game.getMiddle().getFactories().size() * 4 * 6 + 50;
     }
 }

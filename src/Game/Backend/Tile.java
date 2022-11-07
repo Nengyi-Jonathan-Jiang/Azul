@@ -31,8 +31,9 @@ public class Tile{
                 new RectRendererComponent(Style.HL_COLOR),
                 new PositionAnimationComponent()
         );
-        gameObj.getComponent(RectRendererComponent.class).disable();
         gameObj.setSize(new Vec2(SIZE));
+
+        unHighlight();
     }
 
     public TileColor getColor(){
@@ -61,5 +62,9 @@ public class Tile{
 
     public void unHighlight(){
         gameObj.getComponent(RectRendererComponent.class).disable();
+    }
+
+    public boolean isHighlighted(){
+        return gameObj.getComponent(RectRendererComponent.class).isEnabled();
     }
 }

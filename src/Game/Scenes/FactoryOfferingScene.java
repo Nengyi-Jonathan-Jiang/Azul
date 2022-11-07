@@ -1,20 +1,25 @@
 package Game.Scenes;
 
-import Engine.Components.RectRendererComponent;
-import Engine.Components.TextRendererComponent;
-import Engine.Components.TextStyle;
+import Engine.Components.*;
 import Engine.Core.AbstractScene;
 import Engine.Core.GameCanvas;
 import Engine.Core.GameObject;
 import Engine.Core.Vec2;
+import Game.Backend.Factory;
 import Game.Backend.Game;
 import Game.Backend.Player;
+import Game.Backend.Tile;
 import Game.Style;
 import Game.App;
+
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FactoryOfferingScene extends AbstractGameScene{
     private final GameObject playerTurnIndicator;
     private GameObject instructions;
+    private boolean finished = false;
 
     public FactoryOfferingScene(Game game, Player player) {
         super(game);
@@ -46,6 +51,61 @@ public class FactoryOfferingScene extends AbstractGameScene{
         instructions.setTopRight(new Vec2(App.WIDTH, 0));
     }
 
+
+    private List<Tile> selectedTiles = new ArrayList<>();
+    @Override
+    public void onMouseClick(MouseEvent me) {
+        List<Factory> factories = game.getMiddle().getFactories();
+
+        boolean found = false;
+        outer: for (Factory factory : factories) {
+            List<Tile> allTiles = factory.getAllTiles();
+            for (Tile t : allTiles) {
+                if (t.getGameObject().getComponent(ButtonComponent.class).contains(me)) {
+                    selectTile(factory, t);
+                    found = true;
+                    break outer;
+                }
+            }
+        }
+
+        if(!found) selectedTiles.clear();
+
+        // Unhighlight all non-selected tiles
+        factories.forEach(f -> f.getAllTiles().forEach(t -> {
+            if(selectedTiles.contains(t)) t.highlight();
+            else t.unHighlight();
+        }));
+    }
+
+    private void selectTile(Factory f, Tile t){
+        if(selectedTiles.contains(t)){
+            // Unhighlight all tiles
+            game.getMiddle().getFactories().stream().map(Factory::getAllTiles).forEach(l -> l.forEach(Tile::unHighlight));
+
+            f.removeTilesOfColor(t.getColor());
+
+            List<Tile> rest = f.removeAllTiles();
+            rest.forEach(tile -> {
+                tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(
+                        // Calculate where the center of the game table is relative to the factory
+                        tile.getGameObject()
+                                .getAbsolutePosition()
+                                .minus(game.getGameObject().getAbsolutePosition())
+                                .plus(new Vec2(App.WIDTH / 2., App.HEIGHT / 2.))
+                                .scaledBy(-1)
+                                .plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5))
+                        , 10
+                );
+            });
+
+            finished = true;
+        }
+        else{
+            selectedTiles = f.getTilesOfColor(t.getColor());
+        }
+    }
+
     @Override
     public void draw(GameCanvas canvas) {
         super.draw(canvas);
@@ -55,6 +115,6 @@ public class FactoryOfferingScene extends AbstractGameScene{
 
     @Override
     public boolean isFinished() {
-        return false;
+        return finished;
     }
 }

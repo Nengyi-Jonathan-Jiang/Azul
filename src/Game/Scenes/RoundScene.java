@@ -1,7 +1,6 @@
 package Game.Scenes;
 
 import Engine.Core.AbstractScene;
-import Engine.Core.GameCanvas;
 import Game.Backend.Game;
 
 import java.util.Iterator;
@@ -21,7 +20,7 @@ public class RoundScene extends AbstractScene {
             AbstractScene.makeIterator(new TileDistributionScene(game)),
             // Player turns
             AbstractScene.makeLoopIterator(
-                new Supplier<AbstractScene>() {
+                new Supplier<>() {
                     int player = 0;
                     @Override
                     public AbstractScene get() {

@@ -8,7 +8,7 @@ import Engine.Core.GameObject;
  */
 public abstract class Component {
     protected GameObject gameObject;
-    private boolean disabled;
+    private boolean disabled = false;
 
     /**
      * Draws the UIComponent
@@ -29,8 +29,8 @@ public abstract class Component {
      * Whether the Component is disabled
      * @return
      */
-    public final boolean isDisabled(){
-        return disabled;
+    public final boolean isEnabled(){
+        return !disabled;
     }
 
     protected void onDisable(){}
@@ -40,7 +40,7 @@ public abstract class Component {
      * Enable the component
      */
     public final void enable(){
-        disabled = true;
+        disabled = false;
         onEnable();
     }
 
@@ -48,7 +48,7 @@ public abstract class Component {
      * Disable the component
      */
     public final void disable(){
-        disabled = false;
+        disabled = true;
         onDisable();
     }
 }

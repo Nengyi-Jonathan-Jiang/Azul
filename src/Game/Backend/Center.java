@@ -58,25 +58,3 @@ public class Center extends AbstractTileSet{
         return res;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

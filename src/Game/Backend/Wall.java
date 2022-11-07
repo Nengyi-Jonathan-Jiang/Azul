@@ -14,11 +14,17 @@ public class Wall {
     };
 
     private final Tile[][] grid;
+    private int score;
+    private int finalScore = 0;
 
     public Wall(){
         grid = new Tile[5][5];
-
+        score = 0;
+        finalScore = 0;
     }
+
+
+
 
     public boolean hasCompletedRow(){
         for(int i = 0; i < 5; i++){
@@ -30,6 +36,34 @@ public class Wall {
             if(n == 5) return true;
         }
         return false;
+    }
+
+    public int getScore(){
+
+        if(!hasCompletedRow()){
+            for(int i=0; i<grid.length; i++){
+                for(int k=0; k<grid[i].length; k++){
+                    if(grid[i][k] != null){
+                        score++;
+                        if(grid[i+1][k] != null){
+                            score++;
+                        }
+                        if(grid[i-1][k] != null){
+                            score++;
+                        }
+
+                        score++;
+                        if(grid[i][k+1] != null){
+                            score++;
+                        }
+                        if(grid[i][k-1]!=null){
+                            score++;
+                        }
+                    }
+                }
+            }
+        }
+        return score;
     }
 
     public boolean rowHasTileColor(int i, TileColor color){

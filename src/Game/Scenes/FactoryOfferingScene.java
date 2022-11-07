@@ -4,16 +4,14 @@ import Engine.Components.*;
 import Engine.Core.GameCanvas;
 import Engine.Core.GameObject;
 import Engine.Core.Vec2;
-import Game.Backend.Factory;
-import Game.Backend.Game;
-import Game.Backend.Player;
-import Game.Backend.Tile;
+import Game.Backend.*;
 import Game.Style;
 import Game.App;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FactoryOfferingScene extends AbstractGameScene {
     private final GameObject playerTurnIndicator;
@@ -75,6 +73,19 @@ public class FactoryOfferingScene extends AbstractGameScene {
             }
         }
 
+
+        // Handle click in center
+        if(!found) {
+            List<Tile> allTiles = game.getMiddle().getCenter().getAllTiles();
+            for (Tile t : allTiles) {
+                if (t.getGameObject().getComponent(ButtonComponent.class).contains(me)) {
+                    selectFactoryTile(game.getMiddle().getCenter(), t);
+                    found = true;
+                    break;
+                }
+            }
+        }
+
         if (!found) selectedTiles.clear();
 
         // Unhighlight all non-selected tiles
@@ -82,9 +93,12 @@ public class FactoryOfferingScene extends AbstractGameScene {
             if (selectedTiles.contains(t)) t.highlight();
             else t.unHighlight();
         }));
+        game.getMiddle().getCenter().getAllTiles().forEach(t -> {
+            if (selectedTiles.contains(t)) t.highlight();
+            else t.unHighlight();
+        });
 
-
-        // Handle click in
+        if(found) return;
     }
 
     @Override
@@ -92,12 +106,13 @@ public class FactoryOfferingScene extends AbstractGameScene {
         game.getMiddle().getFactories().forEach(f -> f.getAllTiles().forEach(Tile::unHighlight));
     }
 
-    private void selectFactoryTile(Factory f, Tile t) {
+    private void selectFactoryTile(AbstractTileSet s, Tile t) {
         if (selectedTiles.contains(t)) {
             // Unhighlight all tiles
             game.getMiddle().getFactories().stream().map(Factory::getAllTiles).forEach(l -> l.forEach(Tile::unHighlight));
+            game.getMiddle().getCenter().getAllTiles().forEach(Tile::unHighlight);
 
-            f.removeTilesOfColor(t.getColor());
+            s.removeTilesOfColor(t.getColor());
 
             player.getHand().clear();
             for (Tile tile : selectedTiles) {
@@ -114,25 +129,28 @@ public class FactoryOfferingScene extends AbstractGameScene {
 
             }
 
-            //game.getMiddle().getCenter().addTiles(f.removeTilesOfColor(t.getColor()));
+            List<Tile> removed = s.removeAllTiles();
+            List<Vec2> originalPositions = removed.stream().map(Tile::getGameObject).map(GameObject::getAbsolutePosition).collect(Collectors.toList());
+            removed.stream().map(Tile::getGameObject).forEach(GameObject::removeFromParent);
 
-            f.removeAllTiles().forEach(tile -> {
-                Vec2 originalPos = tile.getGameObject()
-                        .getAbsolutePosition()
-                        .minus(game.getGameObject().getAbsolutePosition());
+            for(int i = 0; i < removed.size(); i++) {
+                Tile tile = removed.get(i);
+                Vec2 originalPos = originalPositions.get(i);
 
                 game.getMiddle().getCenter().addTile(tile);
 
                 Vec2 targetPos = tile.getGameObject().getPosition();
 
-                tile.getGameObject().setPosition(originalPos);
-                tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
+                Vec2 newPosition = tile.getGameObject().getAbsolutePosition();
+                Vec2 delta = newPosition.minus(originalPos);
 
-            });
+                tile.getGameObject().setPosition(targetPos.minus(delta));
+                tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
+            }
 
             finished = true;
         } else {
-            selectedTiles = f.getTilesOfColor(t.getColor());
+            selectedTiles = s.getTilesOfColor(t.getColor());
         }
     }
 

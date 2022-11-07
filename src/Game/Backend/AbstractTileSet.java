@@ -33,7 +33,7 @@ public abstract class AbstractTileSet {
     }
 
     public List<Tile> getTilesOfColor(Tile.TileColor color){
-        return tiles.get(color);
+        return tiles.getOrDefault(color, new ArrayList<>());
     }
 
     public List<Tile> removeTilesOfColor(Tile.TileColor color){

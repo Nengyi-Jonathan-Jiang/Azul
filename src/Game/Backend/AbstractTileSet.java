@@ -20,14 +20,16 @@ public abstract class AbstractTileSet {
 
     abstract protected GameObject createGameObject();
 
-    public void addTiles(List<Tile> lst){
-        for(Tile t : lst){
-            if(!tiles.containsKey(t.getColor())){
-                tiles.put(t.getColor(), new ArrayList<>());
-            }
-            tiles.get(t.getColor()).add(t);
-            gameObject.addChild(t.getGameObject());
+    public final void addTile(Tile t){
+        if(!tiles.containsKey(t.getColor())){
+            tiles.put(t.getColor(), new ArrayList<>());
         }
+        tiles.get(t.getColor()).add(t);
+        gameObject.addChild(t.getGameObject());
+    }
+
+    public void addTiles(List<Tile> lst){
+        for(Tile t : lst) addTile(t);
     }
 
     public List<Tile> getTilesOfColor(Tile.TileColor color){

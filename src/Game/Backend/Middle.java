@@ -8,13 +8,14 @@ import java.util.List;
 
 public class Middle {
     private List<Factory> factories;
-    // TODO: Add Center class
+    private Center center;
 
     private GameObject gameObject;
 
     public Middle(int numFactories){
         gameObject = new GameObject();
         factories = new ArrayList<>();
+        center = new Center();
         for(int i = 0; i < numFactories; i++){
             Factory fact = new Factory();
             factories.add(fact);
@@ -31,6 +32,8 @@ public class Middle {
 
             fact.getGameObject().setPosition(offset.scaledBy(250));
         }
+
+        gameObject.addChild(center.getGameObject());
     }
 
     public void positionFactories(double rot){
@@ -49,6 +52,9 @@ public class Middle {
 
     public List<Factory> getFactories(){
         return factories;
+    }
+    public Center getCenter(){
+        return center;
     }
 
     public GameObject getGameObject(){

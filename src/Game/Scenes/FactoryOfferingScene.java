@@ -84,19 +84,21 @@ public class FactoryOfferingScene extends AbstractGameScene{
             game.getMiddle().getFactories().stream().map(Factory::getAllTiles).forEach(l -> l.forEach(Tile::unHighlight));
 
             f.removeTilesOfColor(t.getColor());
+            //game.getMiddle().getCenter().addTiles(f.removeTilesOfColor(t.getColor()));
 
-            List<Tile> rest = f.removeAllTiles();
-            rest.forEach(tile -> {
-                tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(
-                        // Calculate where the center of the game table is relative to the factory
-                        tile.getGameObject()
-                                .getAbsolutePosition()
-                                .minus(game.getGameObject().getAbsolutePosition())
-                                .plus(new Vec2(App.WIDTH / 2., App.HEIGHT / 2.))
-                                .scaledBy(-1)
-                                .plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5))
-                        , 10
-                );
+            f.removeAllTiles().forEach(tile -> {
+                Vec2 originalPos = tile.getGameObject()
+                    .getAbsolutePosition()
+                    .minus(game.getGameObject().getAbsolutePosition())
+                ;
+
+                game.getMiddle().getCenter().addTile(tile);
+
+                Vec2 targetPos = tile.getGameObject().getPosition();
+
+                tile.getGameObject().setPosition(originalPos);
+                tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
+
             });
 
             finished = true;

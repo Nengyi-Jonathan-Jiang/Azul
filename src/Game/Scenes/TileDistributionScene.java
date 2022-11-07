@@ -51,9 +51,7 @@ public class TileDistributionScene extends AbstractGameScene {
             tile.getGameObject()
                 .getAbsolutePosition()
                 .minus(game.getGameObject().getAbsolutePosition())
-                .plus(new Vec2(App.WIDTH / 2., App.HEIGHT / 2.))
                 .scaledBy(-1)
-                .plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5))
         );
         tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPosition, 10);
 

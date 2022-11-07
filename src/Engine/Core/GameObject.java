@@ -6,8 +6,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameObject {
-    private final Map<String, Component> componentMap;
-    private final List<Component> componentList;
+    protected final Map<String, Component> componentMap;
+    protected final List<Component> componentList;
 
     protected Vec2 position, size;
     protected GameObject parent;
@@ -179,7 +179,7 @@ public class GameObject {
      * Draws the GameObject
      * @param canvas The {@link GameCanvas} on which to draw the GameObject
      */
-    public final GameObject draw(GameCanvas canvas){
+    public GameObject draw(GameCanvas canvas){
         for(Component component : componentList){
             if(component.isEnabled()) {
                 component.drawAndUpdate(canvas);

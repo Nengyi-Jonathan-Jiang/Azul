@@ -1,6 +1,7 @@
 package Game.Backend;
 
 import Engine.Core.GameObject;
+import Game.Frontend.TilePileGameObject;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class Hand {
 
     public Hand(){
         // TODO: change to specific hand object
-        gameObject = new GameObject();
+        gameObject = new TilePileGameObject();
     }
 
     public boolean hasTiles(){

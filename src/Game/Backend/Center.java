@@ -1,23 +1,24 @@
 package Game.Backend;
 
 import Engine.Core.GameObject;
+import Engine.Core.Vec2;
+import Game.Frontend.TilePileGameObject;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Center extends AbstractTileSet{
+public class Center extends AbstractTileSet {
     private Tile firstPlayerTile;
-    protected final GameObject gameObject;
 
     public Center(){
         super();
-        firstPlayerTile =  new Tile(Tile.TileColor.FIRST_PLAYER);
-        gameObject = createGameObject();
+
+        addFirstPlayerTile(new Tile(Tile.TileColor.FIRST_PLAYER));
     }
 
     @Override
     protected GameObject createGameObject() {
-        return null;
+        return new TilePileGameObject();
     }
 
     public boolean hasFirstPlayerTile(){
@@ -56,5 +57,13 @@ public class Center extends AbstractTileSet{
             firstPlayerTile = null;
         }
         return res;
+    }
+
+    public void addFirstPlayerTile(Tile t){
+        if(t.getColor() != Tile.TileColor.FIRST_PLAYER){
+            throw new Error("ERROR: passed non first player tile to addFirstPlayerTile");
+        }
+        firstPlayerTile = t;
+        gameObject.addChild(t.getGameObject());
     }
 }

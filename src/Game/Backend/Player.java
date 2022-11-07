@@ -6,7 +6,7 @@ import Game.Frontend.PlayerGameObject;
 
 import java.awt.*;
 
-public class Player {
+public class Player implements Comparable {
     private String name;
 
     private GameObject playerObject;
@@ -15,7 +15,7 @@ public class Player {
     private PatternLines patternLines;
     private FloorLine floorLine;
     private Wall wall;
-
+    
     public Player(String playerName){
         name = playerName;
         floorLine = new FloorLine();
@@ -52,7 +52,10 @@ public class Player {
         patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
         patternLines.getRow(4).addTile(new Tile(Tile.TileColor.BLACK));
     }
-
+    
+    public ScoreMarker getScoreMarker(){
+        return scoreMarker;   
+    }
     public GameObject getGameObject(){
         return playerObject;
     }
@@ -67,5 +70,9 @@ public class Player {
 
     public String getName(){
         return name;
+    }
+    
+    public int compareTo(Player o){
+        return this.scoreMarker.getScore() - o.getScoreMarker().getScore();
     }
 }

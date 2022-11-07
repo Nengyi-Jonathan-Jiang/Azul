@@ -16,11 +16,14 @@ public class Player {
     private FloorLine floorLine;
     private Wall wall;
 
+    private Hand hand;
+
     public Player(String playerName){
         name = playerName;
         floorLine = new FloorLine();
         patternLines = new PatternLines();
         wall = new Wall();
+        hand = new Hand();
 
         playerObject = new PlayerGameObject(playerName);
 
@@ -33,6 +36,9 @@ public class Player {
 
         scoreMarker = new ScoreMarker(this);
         playerObject.addChild(scoreMarker.getGameObject());
+
+        playerObject.addChild(hand.getGameObject());
+        hand.getGameObject().setPosition(playerObject.getBottomLeftOffset().scaledBy(0, 1.3));
 
         // TESTING FLOOR LINE
         floorLine.push(new Tile(Tile.TileColor.BLUE));
@@ -67,5 +73,9 @@ public class Player {
 
     public String getName(){
         return name;
+    }
+
+    public Hand getHand() {
+        return hand;
     }
 }

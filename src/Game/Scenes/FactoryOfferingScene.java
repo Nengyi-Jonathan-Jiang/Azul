@@ -16,17 +16,20 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FactoryOfferingScene extends AbstractGameScene{
+public class FactoryOfferingScene extends AbstractGameScene {
     private final GameObject playerTurnIndicator;
     private GameObject instructions;
     private boolean finished = false;
 
+    private Player player;
+
     public FactoryOfferingScene(Game game, Player player) {
         super(game);
+        this.player = player;
 
         playerTurnIndicator = new GameObject(
-            new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
-            new TextRendererComponent(player.getName() + "'s Turn", new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_CENTER))
+                new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
+                new TextRendererComponent(player.getName() + "'s Turn", new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_CENTER))
         );
         Vec2 TEXT_SIZE = playerTurnIndicator.getComponent(TextRendererComponent.class).getRenderedSize()
                 .plus(new Vec2(Style.TEXT_PADDING * 2.5));
@@ -42,7 +45,7 @@ public class FactoryOfferingScene extends AbstractGameScene{
         setInstructions("Click on a tile in the factories or the center to select it");
     }
 
-    public void setInstructions(String text){
+    public void setInstructions(String text) {
         instructions.getComponent(TextRendererComponent.class).setText(text);
         Vec2 TEXT_SIZE = instructions.getComponent(TextRendererComponent.class)
                 .getRenderedSize()
@@ -53,12 +56,14 @@ public class FactoryOfferingScene extends AbstractGameScene{
 
 
     private List<Tile> selectedTiles = new ArrayList<>();
+
     @Override
     public void onMouseClick(MouseEvent me) {
         List<Factory> factories = game.getMiddle().getFactories();
 
         boolean found = false;
-        outer: for (Factory factory : factories) {
+        outer:
+        for (Factory factory : factories) {
             List<Tile> allTiles = factory.getAllTiles();
             for (Tile t : allTiles) {
                 if (t.getGameObject().getComponent(ButtonComponent.class).contains(me)) {
@@ -69,28 +74,48 @@ public class FactoryOfferingScene extends AbstractGameScene{
             }
         }
 
-        if(!found) selectedTiles.clear();
+        if (!found) selectedTiles.clear();
 
         // Unhighlight all non-selected tiles
         factories.forEach(f -> f.getAllTiles().forEach(t -> {
-            if(selectedTiles.contains(t)) t.highlight();
+            if (selectedTiles.contains(t)) t.highlight();
             else t.unHighlight();
         }));
     }
 
-    private void selectTile(Factory f, Tile t){
-        if(selectedTiles.contains(t)){
+    @Override
+    public void onExecutionEnd() {
+        game.getMiddle().getFactories().forEach(f -> f.getAllTiles().forEach(Tile::unHighlight));
+    }
+
+    private void selectTile(Factory f, Tile t) {
+        if (selectedTiles.contains(t)) {
             // Unhighlight all tiles
             game.getMiddle().getFactories().stream().map(Factory::getAllTiles).forEach(l -> l.forEach(Tile::unHighlight));
 
             f.removeTilesOfColor(t.getColor());
+
+            player.getHand().clear();
+            for (Tile tile : selectedTiles) {
+                Vec2 originalPos = tile.getGameObject()
+                        .getAbsolutePosition()
+                        .minus(game.getGameObject().getAbsolutePosition());
+
+                player.getHand().addTile(tile);
+
+                Vec2 targetPos = tile.getGameObject().getPosition();
+
+                tile.getGameObject().setPosition(originalPos);
+                tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
+
+            }
+
             //game.getMiddle().getCenter().addTiles(f.removeTilesOfColor(t.getColor()));
 
             f.removeAllTiles().forEach(tile -> {
                 Vec2 originalPos = tile.getGameObject()
-                    .getAbsolutePosition()
-                    .minus(game.getGameObject().getAbsolutePosition())
-                ;
+                        .getAbsolutePosition()
+                        .minus(game.getGameObject().getAbsolutePosition());
 
                 game.getMiddle().getCenter().addTile(tile);
 
@@ -102,8 +127,7 @@ public class FactoryOfferingScene extends AbstractGameScene{
             });
 
             finished = true;
-        }
-        else{
+        } else {
             selectedTiles = f.getTilesOfColor(t.getColor());
         }
     }

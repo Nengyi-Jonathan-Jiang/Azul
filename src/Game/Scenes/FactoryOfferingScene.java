@@ -79,7 +79,7 @@ public class FactoryOfferingScene extends AbstractGameScene {
         // Handle click in center
         if (!found) {
             List<Tile> allTiles = game.getMiddle().getCenter().getAllTiles()
-                    .stream().filter(t -> t.getColor() != Tile.TileColor.FIRST_PLAYER)
+                    .stream().filter(Tile::isColorTile)
                     .collect(Collectors.toList());
 
             for (Tile t : allTiles) {
@@ -153,8 +153,6 @@ public class FactoryOfferingScene extends AbstractGameScene {
             finished = true;
         } else {
             selectedTiles = s.getTilesOfColor(t.getColor());
-            System.out.println(s.getClass().getName());
-            System.out.println(selectedTiles);
         }
     }
 

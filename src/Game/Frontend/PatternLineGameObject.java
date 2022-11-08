@@ -1,16 +1,17 @@
 package Game.Frontend;
 
+import Engine.Components.ButtonComponent;
 import Engine.Components.RectRendererComponent;
 import Engine.Core.GameObject;
 import Engine.Core.Vec2;
 import Game.Backend.PatternLine;
 import Game.Backend.Tile;
-
-import java.awt.Color;
+import Game.Style;
 
 public class PatternLineGameObject extends GameObject {
     public PatternLineGameObject(int size){
-        super(new Vec2(size * PatternLine.TILE_SPACING, Tile.SIZE));
+        super(new Vec2(size * PatternLine.TILE_SPACING, Tile.SIZE), new RectRendererComponent(Style.HL_COLOR), new ButtonComponent());
+        getComponent(RectRendererComponent.class).disable();
     }
 
     @Override

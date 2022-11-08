@@ -4,7 +4,8 @@ import Engine.Core.GameObject;
 import Engine.Core.Vec2;
 import Game.Frontend.PlayerGameObject;
 
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player implements Comparable<Player> {
     private String name;
@@ -55,6 +56,18 @@ public class Player implements Comparable<Player> {
         return patternLines;
     }
 
+    public List<PatternLine> getAvailablePatternLinesForColor(Tile.TileColor color){
+        List<PatternLine> res = new ArrayList<>();
+        for(int row = 0; row < 5; row++){
+            PatternLine line = patternLines.getRow(row);
+            if(line.canPlaceTile(color) && !wall.rowHasTileColor(row, color)){
+                res.add(line);
+            }
+        }
+
+        return res;
+    }
+
     public String getName(){
         return name;
     }
@@ -65,5 +78,9 @@ public class Player implements Comparable<Player> {
 
     public Hand getHand() {
         return hand;
+    }
+
+    public FloorLine getFloorLine() {
+        return floorLine;
     }
 }

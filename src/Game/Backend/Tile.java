@@ -29,6 +29,10 @@ public class Tile implements Comparable<Tile>{
     private final GameObject gameObj;
 
     public Tile(TileColor color){
+        if(color == TileColor.NONE){
+            throw new Error("Cannot instantiate Tile with no color");
+        }
+
         this.color = color;
         gameObj = new GameObject(
                 new ImageRendererComponent("Tiles/Tile " + getTileColorName(color) + ".png"),
@@ -76,5 +80,13 @@ public class Tile implements Comparable<Tile>{
     @Override
     public String toString() {
         return "Tile{" + getTileColorName(color) + '}';
+    }
+
+    public boolean isFirstPlayerMarker(){
+        return color == TileColor.FIRST_PLAYER;
+    }
+
+    public boolean isColorTile(){
+        return !isFirstPlayerMarker();
     }
 }

@@ -1,8 +1,6 @@
 package Game.Backend;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 import static Game.Backend.Tile.TileColor;
 
@@ -24,6 +22,9 @@ public class Wall {
         score = 0;
         finalScore = 0;
     }
+
+
+
 
     public boolean hasCompletedRow(){
         for(int i = 0; i < 5; i++){
@@ -65,7 +66,44 @@ public class Wall {
         return score;
     }
 
+        public int placeTile(int row, Tile square){
+        int colIdx = 0;
+        if(rowHasTileColor(row, square.getColor())) {
+            for(Tile x : row){
+                colIdx++;
+                if(x.getColor() == square.getColor() ){
+                    grid[row][colIdx] = square;
+                    colIdx = 0;
+                }
+            }
+        }
+            if(!hasCompletedRow()){
+                for(int i=0; i<grid.length; i++){
+                    for(int k=0; k<grid[i].length; k++){
+                        if(grid[i][k] != null){
+                            score++;
+                            if(grid[i+1][k] != null){
+                                score++;
+                            }
+                            if(grid[i-1][k] != null){
+                                score++;
+                            }
+
+                            score++;
+                            if(grid[i][k+1] != null){
+                                score++;
+                            }
+                            if(grid[i][k-1]!=null){
+                                score++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
     public boolean rowHasTileColor(int i, TileColor color){
-        return Stream.of(grid[i]).filter(Objects::nonNull).map(Tile::getColor).anyMatch(c -> c == color);
+        return List.of(grid[i]).stream().map(Tile::getColor).anyMatch(c -> c == color);
     }
 }

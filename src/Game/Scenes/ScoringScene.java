@@ -10,7 +10,7 @@ public class ScoringScene extends AbstractScene {
     private Player player
 
     private boolean finished;
-    
+
     public ScoringScene(Game g, Player p) {
         game = g;
         player = p;

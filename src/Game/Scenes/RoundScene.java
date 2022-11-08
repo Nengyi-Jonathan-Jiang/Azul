@@ -1,9 +1,12 @@
 package Game.Scenes;
 
 import Engine.Core.AbstractScene;
+import Game.Backend.AbstractTileSet;
+import Game.Backend.Factory;
 import Game.Backend.Game;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class RoundScene extends AbstractScene {
@@ -27,8 +30,11 @@ public class RoundScene extends AbstractScene {
                         return new PlayerTurnScene(game, game.getPlayers().get(player++ % game.getPlayers().size()));
                     }
                 },
-                // TODO: check if center is empty too
-                () -> !game.getMiddle().getFactories().isEmpty()
+
+                () -> !(
+                        game.getMiddle().getFactories().stream().map(AbstractTileSet::getAllTiles).allMatch(List::isEmpty)
+                        && game.getMiddle().getCenter().getAllTiles().isEmpty()
+                )
             ),
             // Scoring
             AbstractScene.makeLoopIterator(game.getPlayers(), p -> new ScoringScene(game))

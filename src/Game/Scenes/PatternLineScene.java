@@ -30,9 +30,25 @@ public class PatternLineScene extends AbstractGameScene {
             hand.getTiles().stream().filter(Tile::isColorTile).findFirst().get().getColor()
         );
 
-        System.out.println(availableLines.size());
-
         availableLines.forEach(PatternLine::highlight);
+
+        if(availableLines.isEmpty()){
+            for(Tile tile : player.getHand().getTiles()){
+
+                Vec2 originalPos = tile.getGameObject()
+                        .getAbsolutePosition()
+                        .minus(player.getFloorLine().getGameObject().getAbsolutePosition());
+
+                player.getFloorLine().push(tile);
+
+                Vec2 targetPos = tile.getGameObject().getPosition();
+
+                tile.getGameObject().setPosition(originalPos);
+                tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
+            }
+
+            finished = true;
+        }
     }
 
     @Override

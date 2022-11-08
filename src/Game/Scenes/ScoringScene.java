@@ -11,8 +11,8 @@ import java.util.*;
 
 // TODO
 public class ScoringScene extends AbstractScene {
-    private Game game;
-    private Player player;
+    private final Game game;
+    private final Player player;
 
     public ScoringScene(Game g, Player p) {
         game = g;
@@ -32,7 +32,8 @@ public class ScoringScene extends AbstractScene {
 
                     @Override
                     public void onExecutionStart() {
-                        super.onExecutionStart();
+                        PatternLine line = patternLines.get(row);
+
                     }
 
                     @Override

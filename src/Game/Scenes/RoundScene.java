@@ -38,7 +38,7 @@ public class RoundScene extends AbstractScene {
             ),
             // Scoring
                 //
-            AbstractScene.makeLoopIterator(game.getPlayers(), p -> new ScoringScene(game, null))
+            AbstractScene.makeLoopIterator(game.getPlayers(), p -> new ScoringScene(game, p))
         );
     }
 }

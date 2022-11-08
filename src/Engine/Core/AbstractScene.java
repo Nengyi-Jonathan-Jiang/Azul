@@ -126,4 +126,13 @@ public abstract class AbstractScene {
             }
         };
     }
+
+    public static AbstractScene groupScenes(AbstractScene... scenes){
+        return new AbstractScene() {
+            @Override
+            public Iterator<? extends AbstractScene> getScenesBefore() {
+                return makeIterator(scenes);
+            }
+        };
+    }
 }

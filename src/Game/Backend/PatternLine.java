@@ -31,7 +31,11 @@ public class PatternLine {
     }
 
     public boolean canPlaceTile(Tile.TileColor t){
-        return currentTileColor == Tile.TileColor.NONE || t == Tile.TileColor.FIRST_PLAYER || t == currentTileColor;
+        return  !isFilled() && (
+                currentTileColor == Tile.TileColor.NONE ||
+                t == Tile.TileColor.FIRST_PLAYER ||
+                t == currentTileColor
+        );
     }
 
     public Tile popFirstTile(){

@@ -40,4 +40,8 @@ public class PatternLines {
     public List<PatternLine> getAvailableLines(Tile.TileColor color){
         return Arrays.stream(lines).filter(l -> l.canPlaceTile(color)).collect(Collectors.toList());
     }
+
+    public List<PatternLine> getLines() {
+        return List.of(lines);
+    }
 }

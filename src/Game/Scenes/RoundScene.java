@@ -1,6 +1,9 @@
 package Game.Scenes;
 
+import Engine.Components.PositionAnimationComponent;
 import Engine.Core.AbstractScene;
+import Engine.Core.GameCanvas;
+import Engine.Core.Vec2;
 import Game.Backend.AbstractTileSet;
 import Game.Backend.Factory;
 import Game.Backend.Game;
@@ -37,7 +40,7 @@ public class RoundScene extends AbstractScene {
                 )
             ),
             // Scoring
-                //
+
             AbstractScene.makeLoopIterator(game.getPlayers(), p -> new ScoringScene(game, p))
         );
     }

@@ -3,6 +3,7 @@ package Game.Frontend;
 // Weird class name :D
 
 import Engine.Components.ImageRendererComponent;
+import Engine.Components.PositionAnimationComponent;
 import Engine.Core.GameObject;
 import Engine.Core.Vec2;
 import Game.App;
@@ -12,7 +13,7 @@ import Game.Backend.Player;
 public class GameGameObject extends GameObject {
     private Game game;
     public GameGameObject(Game game){
-        super(new ImageRendererComponent("table.jpg"));
+        super(new ImageRendererComponent("table.jpg"), new PositionAnimationComponent());
 
         this.game = game;
 

@@ -1,7 +1,15 @@
 package Game.Backend;
 
+import Engine.Components.RectRendererComponent;
+import Engine.Core.GameObject;
+import Engine.Core.Vec2;
+
+import Game.Style;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static Game.Backend.Tile.TileColor;
@@ -19,10 +27,14 @@ public class Wall {
     private int score;
     private int finalScore = 0;
 
+    private GameObject gameObject;
+
     public Wall() {
         grid = new Tile[5][5];
         score = 0;
         finalScore = 0;
+
+        gameObject = new GameObject(new Vec2(220));
     }
 
 
@@ -66,15 +78,22 @@ public class Wall {
         return score;
     }
 
-    public PlaceTileResult placeTile(int row, Tile square) {
+    public int getCol(int row, TileColor color){
         int col;
         for (col = 0; col < 5; col++) {
-            if (referencePattern[row][col] == square.getColor()) {
-                grid[row][col] = square;
+            if (referencePattern[row][col] == color) {
                 break;
             }
         }
         if(col == 5) throw new Error("ERROR: could not find tile color in pattern");
+        return col;
+    }
+
+    public PlaceTileResult placeTile(int row, Tile square) {
+        int col = getCol(row, square.getColor());
+        grid[row][col] = square;
+        gameObject.addChild(square.getGameObject());
+        square.getGameObject().setTopLeft(new Vec2(col, row).scaledBy(44.2, 45).plus(gameObject.getTopLeftOffset()));
 
         if (!hasCompletedRow()) {
             for (int i = 0; i < grid.length; i++) {
@@ -99,10 +118,14 @@ public class Wall {
                 }
             }
         }
-        return null;
+        return new PlaceTileResult(Collections.emptyList(), 0, row, col);
     }
 
     public boolean rowHasTileColor(int i, TileColor color) {
         return Stream.of(grid[i]).filter(Objects::nonNull).map(Tile::getColor).anyMatch(c -> c == color);
+    }
+
+    public GameObject getGameObject() {
+        return gameObject;
     }
 }

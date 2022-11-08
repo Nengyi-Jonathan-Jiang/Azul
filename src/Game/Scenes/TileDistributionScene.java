@@ -1,6 +1,8 @@
 package Game.Scenes;
 
 import Engine.Components.PositionAnimationComponent;
+import Engine.Core.AbstractScene;
+import Engine.Core.GameCanvas;
 import Engine.Core.Vec2;
 import Game.Backend.Factory;
 import Game.Backend.Game;
@@ -11,11 +13,13 @@ import Game.App;
 import java.util.Collections;
 import java.util.List;
 
-public class TileDistributionScene extends AbstractGameScene {
+public class TileDistributionScene extends AbstractScene {
     // We do a victor style tile distribution animation lol
 
+    private final Game game;
+
     public TileDistributionScene(Game game) {
-        super(game);
+        this.game = game;
     }
 
     public int factory = 0;
@@ -23,10 +27,12 @@ public class TileDistributionScene extends AbstractGameScene {
     public int animation = 0;
 
     @Override
-    public void update() {
-        // Must call to allow dragging of table
-        super.update();
+    public void onExecutionStart() {
+        game.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5),10);
+    }
 
+    @Override
+    public void update() {
         List<Factory> factories = game.getMiddle().getFactories();
 
         animation++;
@@ -59,7 +65,12 @@ public class TileDistributionScene extends AbstractGameScene {
     }
 
     @Override
+    public void draw(GameCanvas canvas) {
+        game.getGameObject().draw(canvas);
+    }
+
+    @Override
     public boolean isFinished() {
-        return animation > game.getMiddle().getFactories().size() * 4 * 6 + 50;
+        return animation > game.getMiddle().getFactories().size() * 4 * 6 + 10;
     }
 }

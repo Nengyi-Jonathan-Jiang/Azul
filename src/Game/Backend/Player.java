@@ -33,6 +33,9 @@ public class Player implements Comparable<Player> {
         playerObject.addChild(patternLines.getGameObject());
         patternLines.getGameObject().setTopRight(new Vec2(-264, 178).plus(playerObject.getTopRightOffset()));
 
+        playerObject.addChild(wall.getGameObject());
+        wall.getGameObject().setPosition(new Vec2(372, 290).plus(playerObject.getTopLeftOffset()));
+
         scoreMarker = new ScoreMarker(this);
         playerObject.addChild(scoreMarker.getGameObject());
 

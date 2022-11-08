@@ -5,7 +5,10 @@ import Engine.Core.GameObject;
 import Game.Frontend.PatternLineGameObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class PatternLine {
     public static final double TILE_SPACING = 44.3;
@@ -48,14 +51,10 @@ public class PatternLine {
         return res;
     }
 
-    public List<Tile> clearTiles(){
-        List<Tile> res = new ArrayList<>();
-        for(Tile t : tiles) if(t != null) res.add(t);
-
+    public List<Tile> popAllTiles(){
+        List<Tile> res = Arrays.stream(tiles).filter(Objects::nonNull).collect(Collectors.toList());
         tiles = new Tile[tiles.length];
-
         currentTileColor = Tile.TileColor.NONE;
-
         return res;
     }
 

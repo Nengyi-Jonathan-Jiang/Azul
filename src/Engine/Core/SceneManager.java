@@ -79,6 +79,7 @@ public class SceneManager {
                 if(sceneStack.isEmpty()) break;
 
                 AbstractScene currentScene = sceneStack.peekFirst();
+                checkExecutionStart(currentScene);
 
                 if(currentScene.isFinished()){
                     // Finish this action
@@ -141,23 +142,25 @@ public class SceneManager {
         }
     }
 
-    protected void executeAction(AbstractScene action){
-        if(action != lastExecutedScene){
-            action.onExecutionStart();
-            lastExecutedScene = action;
+    protected void checkExecutionStart(AbstractScene scene){
+        if(scene != lastExecutedScene){
+            scene.onExecutionStart();
+            lastExecutedScene = scene;
         }
+    }
 
+    protected void executeAction(AbstractScene scene){
         Point mousePosition = canvas.getMousePosition(true);
         if(mousePosition != null)
             Input.mousePosition = new Vec2(mousePosition.x, mousePosition.y);
 
-        canvas.repaint(action);
+        canvas.repaint(scene);
         while(!mouseEvents.isEmpty()){
-            action.onMouseClick(mouseEvents.remove());
+            scene.onMouseClick(mouseEvents.remove());
         }
         while(!keyEvents.isEmpty()){
-            action.onKeyPress(keyEvents.remove());
+            scene.onKeyPress(keyEvents.remove());
         }
-        action.update();
+        scene.update();
     }
 }

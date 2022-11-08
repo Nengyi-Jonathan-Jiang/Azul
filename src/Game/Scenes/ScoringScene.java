@@ -1,13 +1,14 @@
 package Game.Scenes;
 
+import Engine.Components.PositionAnimationComponent;
 import Engine.Core.AbstractScene;
 import Engine.Core.GameCanvas;
-import Game.Backend.Game;
-import Game.Backend.PatternLine;
-import Game.Backend.Player;
-import Game.Backend.Wall;
+import Engine.Core.GameObject;
+import Engine.Core.Vec2;
+import Game.Backend.*;
 
 import java.util.*;
+import Game.App;
 
 // TODO
 public class ScoringScene extends AbstractScene {
@@ -20,32 +21,66 @@ public class ScoringScene extends AbstractScene {
     }
 
     @Override
+    public void onExecutionStart() {
+        game.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(
+            player.getGameObject().getPosition().scaledBy(-1).plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5)),
+            10
+        );
+    }
+
+    private int animation = 0;
+
+    @Override
+    public void update() {
+        animation++;
+    }
+
+    @Override
+    public void draw(GameCanvas canvas) {
+        game.getGameObject().draw(canvas);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return animation > 10;
+    }
+
+    @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
         List<PatternLine> patternLines = player.getPatternLines().getLines();
         Wall wall = player.getWall();
-
         List<Integer> filledRows = new ArrayList<>();
 
+        for(int i = 0; i < 5; i++){
+            if(patternLines.get(i).isFilled()){
+                filledRows.add(i);
+            }
+        }
+
         return AbstractScene.makeLoopIterator(filledRows, row -> AbstractScene.groupScenes(
-                new AbstractGameScene(game){
-                    private int animationTime = 0;
+                new ActionScene(() -> {
+                    PatternLine line = patternLines.get(row);
+                    Tile tile = line.popFirstTile();
+                    List<Tile> rest = line.popAllTiles();
+                    rest.stream().map(Tile::getGameObject).forEach(GameObject::removeFromParent);
 
-                    @Override
-                    public void onExecutionStart() {
-                        PatternLine line = patternLines.get(row);
 
-                    }
+                    Vec2 originalPos = tile.getGameObject()
+                            .getAbsolutePosition()
+                            .minus(wall.getGameObject().getAbsolutePosition());
 
-                    @Override
-                    public void update() {
-                        animationTime++;
-                    }
+                    // Move t to wall
+                    PlaceTileResult placeTileResult = wall.placeTile(row, tile);
 
-                    @Override
-                    public boolean isFinished() {
-                        return animationTime > 10;
-                    }
-                }, new AbstractGameScene(game){
+                    Vec2 targetPos = tile.getGameObject().getPosition();
+
+                    tile.getGameObject().setPosition(originalPos);
+                    tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
+
+                    System.out.println("animate");
+                }),
+                new WaitScene(game, 10),
+                new AbstractScene(){
 
                 }
         ));

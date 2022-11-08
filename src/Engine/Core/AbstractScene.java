@@ -56,7 +56,7 @@ public abstract class AbstractScene {
     public void onSchedule(){}
 
     /**
-     * Called when all of the pre-actions are finished executing
+     * Called when all of the pre-actions are finished executing.
      */
     public void onExecutionStart(){}
 

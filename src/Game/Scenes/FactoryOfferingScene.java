@@ -153,6 +153,8 @@ public class FactoryOfferingScene extends AbstractGameScene {
             finished = true;
         } else {
             selectedTiles = s.getTilesOfColor(t.getColor());
+            System.out.println(s.getClass().getName());
+            System.out.println(selectedTiles);
         }
     }
 

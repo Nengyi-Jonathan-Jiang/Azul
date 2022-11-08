@@ -73,5 +73,8 @@ public class Tile implements Comparable<Tile>{
         return gameObj.getComponent(RectRendererComponent.class).isEnabled();
     }
 
-
+    @Override
+    public String toString() {
+        return "Tile{" + getTileColorName(color) + '}';
+    }
 }

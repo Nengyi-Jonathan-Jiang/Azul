@@ -16,7 +16,7 @@ public class SceneManager {
     public static void run(AbstractScene a, GameCanvas component, int delay){new SceneManager(a, delay, component);}
 
     protected final Deque<Iterator<? extends AbstractScene>> scheduleStack;
-    protected final Deque<AbstractScene> actionStack;
+    protected final Deque<AbstractScene> sceneStack;
 
     protected final Queue<MouseEvent> mouseEvents = new ArrayDeque<>();
     protected final Queue<KeyEvent> keyEvents = new ArrayDeque<>();
@@ -25,8 +25,10 @@ public class SceneManager {
 
     protected final int delay;
 
+    protected AbstractScene lastExecutedScene;
+
     protected SceneManager(AbstractScene a, int delay, GameCanvas canvas){
-        actionStack = new ArrayDeque<>();
+        sceneStack = new ArrayDeque<>();
         scheduleStack = new ArrayDeque<>();
 
         this.delay = delay;
@@ -74,22 +76,22 @@ public class SceneManager {
     protected void run(){
         new Thread(() -> {
             while(true){
-                if(actionStack.isEmpty()) break;
+                if(sceneStack.isEmpty()) break;
 
-                AbstractScene currentScene = actionStack.peekFirst();
+                AbstractScene currentScene = sceneStack.peekFirst();
 
                 if(currentScene.isFinished()){
                     // Finish this action
                     currentScene.onExecutionEnd();
                     // Remove action from stack
-                    actionStack.pop();
+                    sceneStack.pop();
 
-                    Iterator<? extends AbstractScene> postActions = currentScene.getScenesAfter();
-                    if(postActions != null && postActions.hasNext()){
+                    Iterator<? extends AbstractScene> scenesAfter = currentScene.getScenesAfter();
+                    if(scenesAfter != null && scenesAfter.hasNext()){
                         scheduleAction(new AbstractScene() {
                             @Override
                             public Iterator<? extends AbstractScene> getScenesBefore() {
-                                return postActions;
+                                return scenesAfter;
                             }
                         });
                     }
@@ -110,37 +112,41 @@ public class SceneManager {
         }).start();
     }
 
-    protected void scheduleAction(AbstractScene a){
+    protected void scheduleAction(AbstractScene s){
 
-        System.out.println("Scheduled scene " + a.getClass().getName());
+        System.out.println("Scheduled scene " + s.getClass().getName());
 
-        actionStack.push(a);
+        sceneStack.push(s);
 
-        a.onSchedule();
+        s.onSchedule();
 
-        Iterator<? extends AbstractScene> preActions = a.getScenesBefore();
-        if(preActions != null && preActions.hasNext()) {
-            scheduleStack.push(preActions);
-            scheduleAction(preActions.next());
+        Iterator<? extends AbstractScene> scenesBefore = s.getScenesBefore();
+        if(scenesBefore != null && scenesBefore.hasNext()) {
+            scheduleStack.push(scenesBefore);
+            scheduleAction(scenesBefore.next());
         }
     }
 
     protected void scheduleNextAction(){
-        if(scheduleStack.isEmpty() || actionStack.isEmpty()) throw new Error("Pop off schedule stack when empty");   //hopefully never happens
+        if(scheduleStack.isEmpty() || sceneStack.isEmpty()) throw new Error("Pop off schedule stack when empty");   //hopefully never happens
 
         Iterator<? extends AbstractScene> schedule = scheduleStack.peekFirst();
 
         if(schedule != null && schedule.hasNext()){
-            AbstractScene nextAction = schedule.next();
-            scheduleAction(nextAction);
+            AbstractScene nextScene = schedule.next();
+            scheduleAction(nextScene);
         }
         else{
             scheduleStack.pop();
-            actionStack.peekFirst().onExecutionStart();
         }
     }
 
     protected void executeAction(AbstractScene action){
+        if(action != lastExecutedScene){
+            action.onExecutionStart();
+            lastExecutedScene = action;
+        }
+
         Point mousePosition = canvas.getMousePosition(true);
         if(mousePosition != null)
             Input.mousePosition = new Vec2(mousePosition.x, mousePosition.y);

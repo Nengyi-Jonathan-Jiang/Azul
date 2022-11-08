@@ -1,5 +1,6 @@
 package Game.Backend;
 
+import Engine.Components.RectRendererComponent;
 import Engine.Core.GameObject;
 import Game.Frontend.PatternLineGameObject;
 
@@ -21,7 +22,7 @@ public class PatternLine {
     }
 
     public void addTile(Tile t){
-        if(currentTileColor == Tile.TileColor.NONE && t.getColor() != Tile.TileColor.FIRST_PLAYER){
+        if(currentTileColor == Tile.TileColor.NONE && t.isColorTile()){
             currentTileColor = t.getColor();
         }
 
@@ -62,4 +63,11 @@ public class PatternLine {
         return gameObject;
     }
 
+    public void highlight(){
+        gameObject.getComponent(RectRendererComponent.class).enable();
+    }
+
+    public void unhighlight(){
+        gameObject.getComponent(RectRendererComponent.class).disable();
+    }
 }

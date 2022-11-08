@@ -26,6 +26,14 @@ public class Center extends AbstractTileSet {
     }
 
     @Override
+    public void addTile(Tile t) {
+        if(t.getColor() == Tile.TileColor.FIRST_PLAYER)
+            addFirstPlayerTile(t);
+        else
+            super.addTile(t);
+    }
+
+    @Override
     public List<Tile> getTilesOfColor(Tile.TileColor color) {
         List<Tile> res = new ArrayList<>(super.getTilesOfColor(color));
         if(firstPlayerTile != null) res.add(firstPlayerTile);
@@ -60,9 +68,10 @@ public class Center extends AbstractTileSet {
     }
 
     public void addFirstPlayerTile(Tile t){
-        if(t.getColor() != Tile.TileColor.FIRST_PLAYER){
+        if(t == null || t.getColor() != Tile.TileColor.FIRST_PLAYER){
             throw new Error("ERROR: passed non first player tile to addFirstPlayerTile");
         }
+
         firstPlayerTile = t;
         gameObject.addChild(t.getGameObject());
     }

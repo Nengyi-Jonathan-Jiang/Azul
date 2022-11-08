@@ -8,25 +8,34 @@ import Engine.Core.Vec2;
 
 import Game.Style;
 
-public class Tile{
+public class Tile implements Comparable<Tile>{
     public static final double SIZE = 40;
 
+    @Override
+    public int compareTo(Tile o) {
+        return color.compareTo(o.color);
+    }
+
     public enum TileColor{
+        FIRST_PLAYER,
         RED,
         YELLOW,
         WHITE,
         BLUE,
         BLACK,
-        NONE,
-        FIRST_PLAYER
+        NONE
     }
     private final TileColor color;
     private final GameObject gameObj;
 
     public Tile(TileColor color){
+        if(color == TileColor.NONE){
+            throw new Error("Cannot instantiate Tile with no color");
+        }
+
         this.color = color;
         gameObj = new GameObject(
-                new ImageRendererComponent("Tile " + getTileColorName(color) + ".png"),
+                new ImageRendererComponent("Tiles/Tile " + getTileColorName(color) + ".png"),
                 new ButtonComponent(),
                 new RectRendererComponent(Style.HL_COLOR),
                 new PositionAnimationComponent()
@@ -66,5 +75,18 @@ public class Tile{
 
     public boolean isHighlighted(){
         return gameObj.getComponent(RectRendererComponent.class).isEnabled();
+    }
+
+    @Override
+    public String toString() {
+        return "Tile{" + getTileColorName(color) + '}';
+    }
+
+    public boolean isFirstPlayerMarker(){
+        return color == TileColor.FIRST_PLAYER;
+    }
+
+    public boolean isColorTile(){
+        return !isFirstPlayerMarker();
     }
 }

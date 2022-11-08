@@ -20,7 +20,7 @@ public abstract class AbstractTileSet {
 
     abstract protected GameObject createGameObject();
 
-    public final void addTile(Tile t){
+    public void addTile(Tile t){
         if(!tiles.containsKey(t.getColor())){
             tiles.put(t.getColor(), new ArrayList<>());
         }
@@ -33,7 +33,7 @@ public abstract class AbstractTileSet {
     }
 
     public List<Tile> getTilesOfColor(Tile.TileColor color){
-        return tiles.get(color);
+        return tiles.getOrDefault(color, new ArrayList<>());
     }
 
     public List<Tile> removeTilesOfColor(Tile.TileColor color){

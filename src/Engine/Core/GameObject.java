@@ -214,6 +214,9 @@ public class GameObject {
         return (Type) componentMap.get(type.getName());
     }
 
+    public void removeFromParent(){
+        setParent(null);
+    }
 
     private void setParent(GameObject object){
         if(parent != null) parent.children.remove(this);
@@ -221,8 +224,8 @@ public class GameObject {
     }
 
     public GameObject addChild(GameObject object){
-        children.add(object);
         object.setParent(this);
+        children.add(object);
         return this;
     }
     public GameObject addChildren(GameObject... children){

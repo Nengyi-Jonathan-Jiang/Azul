@@ -55,6 +55,7 @@ public class PatternLine {
         List<Tile> res = Arrays.stream(tiles).filter(Objects::nonNull).collect(Collectors.toList());
         tiles = new Tile[tiles.length];
         currentTileColor = Tile.TileColor.NONE;
+        numTiles = 0;
         return res;
     }
 

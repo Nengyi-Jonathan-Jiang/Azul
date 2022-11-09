@@ -1,5 +1,6 @@
 package Game.Scenes;
 
+import Engine.Components.ButtonComponent;
 import Engine.Components.PositionAnimationComponent;
 import Engine.Core.AbstractScene;
 import Engine.Core.GameCanvas;
@@ -7,8 +8,10 @@ import Engine.Core.GameObject;
 import Engine.Core.Vec2;
 import Game.Backend.*;
 
+import java.awt.event.MouseEvent;
 import java.util.*;
 import Game.App;
+import Game.Frontend.TextObject;
 
 // TODO
 public class ScoringScene extends AbstractScene {
@@ -84,11 +87,31 @@ public class ScoringScene extends AbstractScene {
 
                 }
         )),makeIterator(new AbstractScene(){
-            private GameObject continueButton;
+            private TextObject continueButton;
+            private boolean finished = false;
 
             @Override
             public void onExecutionStart() {
+                continueButton = new TextObject("Continue");
+                continueButton.setBottomRight(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5));
+            }
 
+            @Override
+            public void onMouseClick(MouseEvent me) {
+                if(continueButton.getComponent(ButtonComponent.class).contains(me)){
+                    finished = true;
+                }
+            }
+
+            @Override
+            public void draw(GameCanvas canvas) {
+                game.getGameObject().draw(canvas);
+                continueButton.draw(canvas);
+            }
+
+            @Override
+            public boolean isFinished() {
+                return finished;
             }
         }));
     }

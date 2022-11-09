@@ -1,5 +1,6 @@
 package Game.Frontend;
 
+import Engine.Components.ButtonComponent;
 import Engine.Components.RectRendererComponent;
 import Engine.Components.TextRendererComponent;
 import Engine.Components.TextStyle;
@@ -16,7 +17,8 @@ public class TextObject extends GameObject {
     public TextObject(String text){
         super(
                 new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
-                new TextRendererComponent(text, new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_CENTER))
+                new TextRendererComponent(text, new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_CENTER)),
+                new ButtonComponent()
         );
     }
 

@@ -6,6 +6,7 @@ import Engine.Core.Vec2;
 
 import Game.Style;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -94,31 +95,39 @@ public class Wall {
         grid[row][col] = square;
         gameObject.addChild(square.getGameObject());
         square.getGameObject().setTopLeft(new Vec2(col, row).scaledBy(44.2, 45).plus(gameObject.getTopLeftOffset()));
-
+        List<Tile> tList = new ArrayList<Tile>();
+        int scoreAdd = 0;
         if (!hasCompletedRow()) {
             for (int i = 0; i < grid.length; i++) {
                 for (int k = 0; k < grid[i].length; k++) {
                     if (grid[i][k] != null) {
-                        score++;
+                        tList.add(grid[i][k]);
+                        scoreAdd++;
+
                         if (grid[i + 1][k] != null) {
-                            score++;
+                            tList.add(grid[i+1][k]);
+                            scoreAdd++;
                         }
                         if (grid[i - 1][k] != null) {
-                            score++;
+                            tList.add(grid[i-1][k]);
+                            scoreAdd++;
                         }
 
-                        score++;
+                        scoreAdd++;
                         if (grid[i][k + 1] != null) {
-                            score++;
+                            tList.add(grid[i][k+1]);
+                            scoreAdd++;
                         }
                         if (grid[i][k - 1] != null) {
-                            score++;
+                            tList.add(grid[i][k-1]);
+                            scoreAdd++;
                         }
                     }
                 }
             }
         }
-        return new PlaceTileResult(Collections.emptyList(), 0, row, col);
+        score+=scoreAdd;
+        return new PlaceTileResult(tList, scoreAdd, row, col);
     }
 
     public boolean rowHasTileColor(int i, TileColor color) {

@@ -12,9 +12,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class TitleScene extends AbstractScene {
-    private GameObject bkgd, logo, playerSelectText, playerSelectBtns[], startButton;
+    private final GameObject bkgd;
+    private final GameObject logo;
+    private final GameObject playerSelectText;
+    private final GameObject[] playerSelectBtns;
+    private final GameObject startButton;
     private int numPlayers;
-    private GameObject gObject;
+    private final GameObject gObject;
     private boolean finished = false;
 
     public TitleScene(){

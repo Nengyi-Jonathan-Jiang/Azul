@@ -10,9 +10,9 @@ import java.util.List;
 
 // TODO
 public class RankingScene extends PanningGameScene {
-    private List<GameObject> playerNames;
+    private final List<GameObject> playerNames;
     private GameObject winText;
-    private boolean finished = false;
+    private final boolean finished = false;
     public RankingScene(Game game){
         super(game);
         List<Player> players = game.getPlayers();

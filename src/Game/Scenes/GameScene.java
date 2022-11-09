@@ -5,7 +5,7 @@ import Game.Backend.Game;
 import java.util.Iterator;
 
 public class GameScene extends AbstractScene {
-    private Game game;
+    private final Game game;
 
     public GameScene(Game game){
         this.game = game;

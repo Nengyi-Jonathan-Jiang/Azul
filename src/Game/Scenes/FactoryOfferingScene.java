@@ -5,6 +5,7 @@ import Engine.Core.GameCanvas;
 import Engine.Core.GameObject;
 import Engine.Core.Vec2;
 import Game.Backend.*;
+import Game.Frontend.TextObject;
 import Game.Style;
 import Game.App;
 
@@ -16,8 +17,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FactoryOfferingScene extends AbstractGameScene {
-    private final GameObject playerTurnIndicator;
-    private GameObject instructions;
+    private final TextObject playerTurnIndicator;
+    private TextObject instructions;
     private boolean finished = false;
 
     private Player player;
@@ -26,30 +27,15 @@ public class FactoryOfferingScene extends AbstractGameScene {
         super(game);
         this.player = player;
 
-        playerTurnIndicator = new GameObject(
-                new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
-                new TextRendererComponent(player.getName() + "'s Turn", new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_CENTER))
-        );
-        Vec2 TEXT_SIZE = playerTurnIndicator.getComponent(TextRendererComponent.class).getRenderedSize()
-                .plus(new Vec2(Style.TEXT_PADDING * 2.5));
-        playerTurnIndicator.setSize(TEXT_SIZE);
-
+        playerTurnIndicator = new TextObject(player.getName() + "'s Turn");
         playerTurnIndicator.setTopLeft(Vec2.zero);
 
-        instructions = new GameObject(
-                new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
-                new TextRendererComponent("", new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_CENTER))
-        );
-
-        setInstructions("Click on a tile in the factories or the center to select it");
+        instructions = new TextObject("Click on a tile in the factories or the center to select it");
+        instructions.setTopRight(new Vec2(App.WIDTH, 0));
     }
 
     public void setInstructions(String text) {
-        instructions.getComponent(TextRendererComponent.class).setText(text);
-        Vec2 TEXT_SIZE = instructions.getComponent(TextRendererComponent.class)
-                .getRenderedSize()
-                .plus(new Vec2(Style.TEXT_PADDING * 2.5));
-        instructions.setSize(TEXT_SIZE);
+        instructions.setText(text);
         instructions.setTopRight(new Vec2(App.WIDTH, 0));
     }
 

@@ -57,7 +57,7 @@ public class ScoringScene extends AbstractScene {
             }
         }
 
-        return AbstractScene.makeLoopIterator(filledRows, row -> AbstractScene.groupScenes(
+        return concatIterators(makeLoopIterator(filledRows, row -> groupScenes(
                 new ActionScene(() -> {
                     PatternLine line = patternLines.get(row);
                     Tile tile = line.popFirstTile();
@@ -79,10 +79,17 @@ public class ScoringScene extends AbstractScene {
 
                     System.out.println("animate");
                 }),
-                new WaitScene(game, 10),
+                new WaitScene(game, 50),
                 new AbstractScene(){
 
                 }
-        ));
+        )),makeIterator(new AbstractScene(){
+            private GameObject continueButton;
+
+            @Override
+            public void onExecutionStart() {
+
+            }
+        }));
     }
 }

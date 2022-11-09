@@ -21,16 +21,19 @@ public class RoundScene extends AbstractScene {
 
     @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
-        return AbstractScene.concatIterators(
+        return concatIterators(
             // Distribute tiles
-            AbstractScene.makeIterator(new TileDistributionScene(game)),
+            makeIterator(new TileDistributionScene(game)),
             // Player turns
-            AbstractScene.makeLoopIterator(
+            makeLoopIterator(
                 new Supplier<>() {
                     int player = 0;
                     @Override
                     public AbstractScene get() {
-                        return new PlayerTurnScene(game, game.getPlayers().get(player++ % game.getPlayers().size()));
+                        return groupScenes(
+                            new PlayerTurnScene(game, game.getPlayers().get(player++ % game.getPlayers().size())),
+                            new WaitScene(game, 50)
+                        );
                     }
                 },
 
@@ -41,7 +44,7 @@ public class RoundScene extends AbstractScene {
             ),
             // Scoring
 
-            AbstractScene.makeLoopIterator(game.getPlayers(), p -> new ScoringScene(game, p))
+            makeLoopIterator(game.getPlayers(), p -> new ScoringScene(game, p))
         );
     }
 }

@@ -9,17 +9,13 @@ import Engine.Core.Vec2;
 import Game.Style;
 
 public class TextObject extends GameObject {
-
-    public TextObject(){
-        this("");
-    }
-
     public TextObject(String text){
         super(
                 new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
                 new TextRendererComponent(text, new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_CENTER)),
                 new ButtonComponent()
         );
+        setText(text);
     }
 
     public void setText(String text){
@@ -28,5 +24,7 @@ public class TextObject extends GameObject {
                 .getRenderedSize()
                 .plus(new Vec2(Style.TEXT_PADDING * 2.5));
         setSize(TEXT_SIZE);
+
+        System.out.println("Text: " + text + ", Size: " + TEXT_SIZE);
     }
 }

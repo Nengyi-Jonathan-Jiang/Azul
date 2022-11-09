@@ -93,7 +93,7 @@ public class ScoringScene extends AbstractScene {
             @Override
             public void onExecutionStart() {
                 continueButton = new TextObject("Continue");
-                continueButton.setBottomRight(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5));
+                continueButton.setBottomRight(new Vec2(App.WIDTH, App.HEIGHT).minus(continueButton.getSize()));
             }
 
             @Override

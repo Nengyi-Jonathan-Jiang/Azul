@@ -18,10 +18,9 @@ import java.util.stream.Stream;
 
 public class FactoryOfferingScene extends AbstractGameScene {
     private final TextObject playerTurnIndicator;
-    private TextObject instructions;
+    private final TextObject instructions;
+    private final Player player;
     private boolean finished = false;
-
-    private Player player;
 
     public FactoryOfferingScene(Game game, Player player) {
         super(game);

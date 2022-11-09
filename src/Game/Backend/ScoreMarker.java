@@ -25,12 +25,13 @@ public class ScoreMarker {
         if(s < 0) s = 0;
         score = s;
         if(s == 0){
-            gameObject.setTopLeft(new Vec2(22, 1).plus(p.getGameObject().getTopLeftOffset()));
+            gameObject.setTopLeft(new Vec2(22, 1).plus(p.getBoardObject().getTopLeftOffset()));
         }
         else{
-            gameObject.setTopLeft(new Vec2(22, 28).plus(p.getGameObject().getTopLeftOffset()).plus(new Vec2(
-                H_SPACING * (int)((score - 1) % 20),
-                V_SPACING * (int)((score - 1) / 20)
+            //noinspection IntegerDivisionInFloatingPointContext
+            gameObject.setTopLeft(new Vec2(22, 28).plus(p.getBoardObject().getTopLeftOffset()).plus(new Vec2(
+                H_SPACING * ((score - 1) % 20),
+                V_SPACING * ((score - 1) / 20)
             )));
         }
     }

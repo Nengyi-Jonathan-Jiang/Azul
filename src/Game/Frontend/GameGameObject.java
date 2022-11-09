@@ -6,9 +6,7 @@ import Engine.Components.ImageRendererComponent;
 import Engine.Components.PositionAnimationComponent;
 import Engine.Core.GameObject;
 import Engine.Core.Vec2;
-import Game.App;
 import Game.Backend.Game;
-import Game.Backend.Player;
 
 public class GameGameObject extends GameObject {
     private Game game;

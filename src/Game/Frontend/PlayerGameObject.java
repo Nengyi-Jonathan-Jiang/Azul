@@ -6,7 +6,6 @@ import Engine.Components.TextRendererComponent;
 import Engine.Components.TextStyle;
 import Engine.Core.GameObject;
 import Engine.Core.Vec2;
-import Game.App;
 import Game.Style;
 
 import java.awt.*;
@@ -14,30 +13,33 @@ import java.awt.*;
 // For testing purposes
 public class PlayerGameObject extends GameObject {
     private GameObject textObject;
-    private GameObject imageObject;
-
-    private GameObject scoreMarkerObject;
+    private GameObject boardObject;
 
     private final float LABEL_HEIGHT = 30f;
     private final float LABEL_TEXT_SIZE = 20f;
 
-    public PlayerGameObject(String playerName){
-        imageObject = new GameObject(new ImageRendererComponent("Azul Board.jpg"));
-        imageObject.setSize(imageObject.getComponent(ImageRendererComponent.class).getImageSize());
+    public PlayerGameObject(String playerName, int playerNum){
+        boardObject = new GameObject(new ImageRendererComponent("Azul Board.jpg"));
+        boardObject.setSize(boardObject.getComponent(ImageRendererComponent.class).getImageSize());
 
-        textObject = new GameObject(
-            new RectRendererComponent(Color.BLACK, Color.WHITE),
-            new TextRendererComponent(playerName,
-                new TextStyle(Style.font_medium.deriveFont(LABEL_TEXT_SIZE), TextStyle.ALIGN_CENTER)
-            )
-        );
+        textObject = new TextObject(playerName);
+        textObject.setSize(new Vec2(boardObject.getSize().x, textObject.getSize().y));
 
-        textObject.setSize(new Vec2(imageObject.getSize().x, LABEL_HEIGHT));
+        setSize(boardObject.getSize().plus(new Vec2(0, textObject.getSize().y)));
 
-        setSize(imageObject.getSize().plus(new Vec2(0, textObject.getSize().y)));
-        imageObject.setTopLeft(getTopLeftOffset());
-        textObject.setBottomLeft(getBottomLeftOffset());
+        if(playerNum < 2) {
+            boardObject.setTopLeft(getTopLeftOffset());
+            textObject.setBottomLeft(getBottomLeftOffset());
+        }
+        else{
+            boardObject.setBottomLeft(getBottomLeftOffset());
+            textObject.setTopLeft(getTopLeftOffset());
+        }
 
-        addChildren(imageObject, textObject);
+        addChildren(boardObject, textObject);
+    }
+
+    public GameObject getBoardObject() {
+        return boardObject;
     }
 }

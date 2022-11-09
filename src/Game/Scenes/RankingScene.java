@@ -19,7 +19,7 @@ public class RankingScene extends PanningGameScene {
         Collections.sort(players);
         playerNames = new ArrayList<>();
         for(Player p: players){
-            playerNames.add(p.getGameObject());   
+            playerNames.add(p.getBoardObject());
         }
     }
     public GameObject getWinner(){

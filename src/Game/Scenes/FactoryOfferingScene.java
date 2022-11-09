@@ -27,8 +27,8 @@ public class FactoryOfferingScene extends PanningGameScene {
         playerTurnIndicator = new TextObject(player.getName() + "'s Turn");
         playerTurnIndicator.setTopLeft(Vec2.zero);
 
-        instructions = new TextObject("Click on a tile in the factories or the center to select it");
-        instructions.setTopRight(new Vec2(App.WIDTH, 0));
+        instructions = new TextObject("");
+        setInstructions("Click on a tile in the factories or the center to select it");
     }
 
     public void setInstructions(String text) {
@@ -77,6 +77,11 @@ public class FactoryOfferingScene extends PanningGameScene {
         factories.forEach(f -> f.getAllTiles().forEach(Tile::unHighlight));
         game.getMiddle().getCenter().getAllTiles().forEach(Tile::unHighlight);
         selectedTiles.forEach(Tile::highlight);
+
+        setInstructions(selectedTiles.isEmpty()
+            ? "Click on a tile in the factories or the center to select it"
+            : "Click on one of the highlighted tiles to confirm your selection"
+        );
     }
 
     @Override

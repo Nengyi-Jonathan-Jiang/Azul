@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class Style {
     public final static Color FG_COLOR = new Color(0, 0, 0);
-    public final static Color BG_COLOR = new Color(255, 255, 255, 95);
+    public final static Color BG_COLOR = new Color(252, 245, 229);
     public final static Color HL_COLOR = new Color(255, 215, 0);
 
     public final static double TEXT_PADDING = 10.;

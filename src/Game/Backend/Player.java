@@ -6,11 +6,13 @@ import Game.Frontend.PlayerGameObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class Player implements Comparable<Player> {
     private String name;
 
-    private GameObject playerObject;
+    private PlayerGameObject playerObject;
+    private GameObject boardObject;
 
     private ScoreMarker scoreMarker;
     private PatternLines patternLines;
@@ -25,29 +27,40 @@ public class Player implements Comparable<Player> {
         patternLines = new PatternLines();
         wall = new Wall();
 
-        playerObject = new PlayerGameObject(playerName);
+        PlayerGameObject p = new PlayerGameObject(playerName, playerNum);
+        playerObject = p;
+        boardObject = p.getBoardObject();
 
-        playerObject.addChild(floorLine.getGameObject());
-        floorLine.getGameObject().setTopLeft(new Vec2(17, 437).plus(playerObject.getTopLeftOffset()));
+        boardObject.addChild(floorLine.getGameObject());
+        floorLine.getGameObject().setTopLeft(new Vec2(17, 437).plus(boardObject.getTopLeftOffset()));
 
-        playerObject.addChild(patternLines.getGameObject());
-        patternLines.getGameObject().setTopRight(new Vec2(-264, 178).plus(playerObject.getTopRightOffset()));
+        boardObject.addChild(patternLines.getGameObject());
+        patternLines.getGameObject().setTopRight(new Vec2(-264, 178).plus(boardObject.getTopRightOffset()));
 
-        playerObject.addChild(wall.getGameObject());
-        wall.getGameObject().setPosition(new Vec2(372, 290).plus(playerObject.getTopLeftOffset()));
+        boardObject.addChild(wall.getGameObject());
+        wall.getGameObject().setPosition(new Vec2(372, 290).plus(boardObject.getTopLeftOffset()));
 
         scoreMarker = new ScoreMarker(this);
-        playerObject.addChild(scoreMarker.getGameObject());
+        boardObject.addChild(scoreMarker.getGameObject());
 
         hand = new Hand();
-        playerObject.addChild(hand.getGameObject());
-        hand.getGameObject().setPosition(playerObject.getBottomLeft().scaledBy(0, 1.25));
+        boardObject.addChild(hand.getGameObject());
+
+        switch (playerNum) {
+            case 0 -> hand.getGameObject().setTopLeft(boardObject.getTopRightOffset().scaledBy(1.3, 0.4));
+            case 1 -> hand.getGameObject().setTopRight(boardObject.getTopLeftOffset().scaledBy(1.3, 0.4));
+            case 2 -> hand.getGameObject().setBottomRight(boardObject.getBottomLeftOffset().scaledBy(1.3, 0.4));
+            default -> hand.getGameObject().setBottomLeft(boardObject.getBottomRightOffset().scaledBy(1.3, 0.4));
+        }
     }
     
     public ScoreMarker getScoreMarker(){
         return scoreMarker;   
     }
-    public GameObject getGameObject(){
+    public GameObject getBoardObject(){
+        return boardObject;
+    }
+    public PlayerGameObject getGameObject() {
         return playerObject;
     }
 

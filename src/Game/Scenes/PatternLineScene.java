@@ -8,7 +8,7 @@ import Game.Backend.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class PatternLineScene extends PannableGameScene {
+public class PatternLineScene extends PanningGameScene {
     private final Player player;
     private boolean finished = false;
 

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FactoryOfferingScene extends PannableGameScene {
+public class FactoryOfferingScene extends PanningGameScene {
     private final TextObject playerTurnIndicator;
     private final TextObject instructions;
     private final Player player;

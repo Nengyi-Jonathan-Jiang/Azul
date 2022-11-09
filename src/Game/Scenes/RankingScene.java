@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 // TODO
-public class RankingScene extends PannableGameScene {
+public class RankingScene extends PanningGameScene {
     private List<GameObject> playerNames;
     private GameObject winText;
     private boolean finished = false;

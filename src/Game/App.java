@@ -17,11 +17,11 @@ public class App extends JFrame {
         super();
         setTitle("Azul");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(new Dimension(1600, 1000));
 
         GameCanvas canvas = new GameCanvas();
-
+        canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         add(canvas);
+        pack();
 
         SceneManager.run(new AbstractScene() {
             @Override

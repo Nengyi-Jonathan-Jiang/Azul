@@ -17,7 +17,7 @@ public class TextRendererComponent extends Component {
 
     public Vec2 getRenderedSize(){
         Rectangle2D size = style.font.getStringBounds(text, new FontRenderContext(new AffineTransform(),true,true));
-        return new Vec2(size.getWidth(), size.getHeight());
+        return new Vec2(size.getWidth(), style.font.getSize());
     }
 
     public TextRendererComponent(String text){

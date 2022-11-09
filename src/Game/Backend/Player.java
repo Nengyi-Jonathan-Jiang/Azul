@@ -19,7 +19,7 @@ public class Player implements Comparable<Player> {
 
     private Hand hand;
     
-    public Player(String playerName){
+    public Player(String playerName, int playerNum){
         name = playerName;
         floorLine = new FloorLine();
         patternLines = new PatternLines();

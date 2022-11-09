@@ -6,17 +6,15 @@ import Engine.Core.GameObject;
 import Engine.Core.Vec2;
 import Game.Backend.*;
 import Game.Frontend.TextObject;
-import Game.Style;
 import Game.App;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FactoryOfferingScene extends AbstractGameScene {
+public class FactoryOfferingScene extends PannableGameScene {
     private final TextObject playerTurnIndicator;
     private final TextObject instructions;
     private final Player player;

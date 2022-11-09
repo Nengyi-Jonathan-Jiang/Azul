@@ -4,19 +4,19 @@ import Engine.Core.*;
 import Game.Backend.Game;
 import Game.App;
 
-public abstract class AbstractGameScene extends AbstractScene {
+public class PannableGameScene extends AbstractScene {
     protected final Game game;
 
-    public AbstractGameScene(Game game){
+    public PannableGameScene(Game game){
         this.game = game;
     }
 
     private static Vec2 lastMousePos = Vec2.zero;
     @Override
     public void update() {
-        if(Input.isMouseLeftDown()){
+        if(Input.isMouseRightDown()){
             GameObject gObject = game.getGameObject();
-            gObject.move(Input.getMousePosition().minus(lastMousePos).scaledBy(3));
+            gObject.move(Input.getMousePosition().minus(lastMousePos).scaledBy(1));
 
             if(gObject.getTopLeft().x >= 0){
                 gObject.move(new Vec2(-gObject.getTopLeft().x, 0));

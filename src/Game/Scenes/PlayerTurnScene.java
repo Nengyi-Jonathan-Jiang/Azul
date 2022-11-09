@@ -24,7 +24,7 @@ public class PlayerTurnScene extends AbstractScene {
     @Override
     public void onExecutionStart() {
         game.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(
-                player.getGameObject().getPosition().scaledBy(-.5).plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5)),
+                player.getGameObject().getPosition().scaledBy(-.2, -.5).plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5)),
                 10
         );
     }
@@ -48,6 +48,6 @@ public class PlayerTurnScene extends AbstractScene {
 
     @Override
     public Iterator<AbstractScene> getScenesAfter() {
-        return AbstractGameScene.makeIterator(new FactoryOfferingScene(game, player), new PatternLineScene(game, player));
+        return PannableGameScene.makeIterator(new FactoryOfferingScene(game, player), new PatternLineScene(game, player));
     }
 }

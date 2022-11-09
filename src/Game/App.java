@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.Iterator;
 
 public class App extends JFrame {
-    public static final int WIDTH = 1600;
+    public static final int WIDTH = 1800;
     public static final int HEIGHT = 1000;
 
     public App(){

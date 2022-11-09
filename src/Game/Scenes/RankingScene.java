@@ -1,6 +1,5 @@
 package Game.Scenes;
 
-import Engine.Core.AbstractScene;
 import Engine.Core.GameObject;
 import Game.Backend.Game;
 import Game.Backend.Player;
@@ -10,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 // TODO
-public class RankingScene extends AbstractGameScene {
+public class RankingScene extends PannableGameScene {
     private List<GameObject> playerNames;
     private GameObject winText;
     private boolean finished = false;

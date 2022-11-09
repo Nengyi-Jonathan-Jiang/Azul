@@ -2,14 +2,13 @@ package Game.Scenes;
 
 import Engine.Components.ButtonComponent;
 import Engine.Components.PositionAnimationComponent;
-import Engine.Core.GameCanvas;
 import Engine.Core.Vec2;
 import Game.Backend.*;
 
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class PatternLineScene extends AbstractGameScene {
+public class PatternLineScene extends PannableGameScene {
     private final Player player;
     private boolean finished = false;
 

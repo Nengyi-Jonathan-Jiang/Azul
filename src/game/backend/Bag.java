@@ -25,12 +25,15 @@ public class Bag{
             if(returnedTiles.isEmpty()){
                 // No more Tiles! OH NO!!!!!! WHAT SHALL WE DO????
                 // We throw an obnoxious error, obviously
-                // At least its not a null pointer exception
+                // At least it isn't a null pointer exception
                 // Too lazy to actually implement graceful handling of this situation haha
                 throw new Error("Out of Tiles");
             }
             refillBack();
         }
+
+        System.out.println("BAG SIZE: " + (tiles.size() - 1));
+
         return tiles.remove(tiles.size() - 1);
     }
 
@@ -40,6 +43,7 @@ public class Bag{
   
     public void refillBack(){
         tiles.addAll(returnedTiles);
+        returnedTiles.clear();
         Collections.shuffle(tiles);
     }
 }

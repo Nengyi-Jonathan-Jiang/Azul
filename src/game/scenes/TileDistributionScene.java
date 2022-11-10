@@ -48,6 +48,7 @@ public class TileDistributionScene extends AbstractScene {
 
         Tile tile = game.getBag().popTile();
 
+
         factories.get((factory++) % factories.size()).addTiles(Collections.singletonList(tile));
 
         Vec2 targetPosition = tile.getGameObject().getPosition();

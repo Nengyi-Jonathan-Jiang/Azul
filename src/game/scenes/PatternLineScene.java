@@ -34,17 +34,22 @@ public class PatternLineScene extends PanningGameScene {
 
         if(availableLines.isEmpty()){
             for(Tile tile : player.getHand().getTiles()){
+                if(player.getFloorLine().isFull()){
+                    game.getBag().returnTile(tile);
+                    tile.getGameObject().removeFromParent();
+                }
+                else {
+                    Vec2 originalPos = tile.getGameObject()
+                            .getAbsolutePosition()
+                            .minus(player.getFloorLine().getGameObject().getAbsolutePosition());
 
-                Vec2 originalPos = tile.getGameObject()
-                        .getAbsolutePosition()
-                        .minus(player.getFloorLine().getGameObject().getAbsolutePosition());
+                    player.getFloorLine().push(tile);
 
-                player.getFloorLine().push(tile);
+                    Vec2 targetPos = tile.getGameObject().getPosition();
 
-                Vec2 targetPos = tile.getGameObject().getPosition();
-
-                tile.getGameObject().setPosition(originalPos);
-                tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
+                    tile.getGameObject().setPosition(originalPos);
+                    tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
+                }
             }
 
             finished = true;
@@ -57,11 +62,15 @@ public class PatternLineScene extends PanningGameScene {
             if(line.getGameObject().getComponent(ButtonComponent.class).contains(me)){
 
                 for(Tile tile : player.getHand().getTiles()){
-
                     Vec2 originalPos = tile.getGameObject()
                             .getAbsolutePosition();
 
                     if(line.isFilled() || tile.isFirstPlayerMarker()){
+                        if(player.getFloorLine().isFull()){
+                            game.getBag().returnTile(tile);
+                            tile.getGameObject().removeFromParent();
+                            continue;
+                        }
                         player.getFloorLine().push(tile);
                         originalPos = originalPos.minus(player.getFloorLine().getGameObject().getAbsolutePosition());
                     }

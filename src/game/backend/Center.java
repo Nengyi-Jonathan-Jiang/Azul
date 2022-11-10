@@ -30,7 +30,7 @@ public class Center extends AbstractTileSet {
     @Override
     public List<Tile> getTilesOfColor(Tile.TileColor color) {
         List<Tile> res = new ArrayList<>(super.getTilesOfColor(color));
-        if(firstPlayerTile != null) res.add(firstPlayerTile);
+        if(firstPlayerTile != null) res.add(0, firstPlayerTile);
         return res;
     }
 

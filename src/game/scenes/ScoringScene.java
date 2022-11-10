@@ -68,42 +68,63 @@ public class ScoringScene extends AbstractScene {
                         int score = player.getScoreMarker().getScore();
                         int newScore = score + placeTileResult.getScoreAdded();
 
-                        System.out.println(placeTileResult.getScoreAdded());
-
                         player.getScoreMarker().setScore(newScore);
                     }),
                     new WaitScene(game, 50),
-                    new AbstractScene(){
+                    new ActionScene(() -> {
 
+                    })
+            )), makeIterator(
+                new ActionScene(() -> {
+                    int scoreDeduction = player.getFloorLine().getDeduction();
+
+                    int score = player.getScoreMarker().getScore();
+                    int newScore = score - scoreDeduction;
+
+                    player.getScoreMarker().setScore(newScore);
+
+                    List<Tile> removedTiles = player.getFloorLine().removeAll();
+
+                    Optional<Tile> optionalFirstPlayerMarker = removedTiles.stream().filter(Tile::isFirstPlayerMarker).findAny();
+                    if(optionalFirstPlayerMarker.isPresent()){
+                        Tile firstPlayerMarker = optionalFirstPlayerMarker.get();
+                        removedTiles.remove(firstPlayerMarker);
+                        game.getMiddle().getCenter().addFirstPlayerTile(firstPlayerMarker);
                     }
-            )), makeIterator(new AbstractScene(){
-                private TextObject continueButton;
-                private boolean finished = false;
 
-                @Override
-                public void onExecutionStart() {
-                    continueButton = new TextObject("Continue");
-                    continueButton.setBottomRight(new Vec2(App.WIDTH, App.HEIGHT));
-                }
+                    removedTiles.stream().map(Tile::getGameObject).forEach(GameObject::removeFromParent);
+                    removedTiles.forEach(game.getBag()::returnTile);
+                }),
+                new WaitScene(game, 10),
+                new AbstractScene(){
+                    private TextObject continueButton;
+                    private boolean finished = false;
 
-                @Override
-                public void onMouseClick(MouseEvent me) {
-                    if(continueButton.getComponent(ButtonComponent.class).contains(me)){
-                        finished = true;
+                    @Override
+                    public void onExecutionStart() {
+                        continueButton = new TextObject("Continue");
+                        continueButton.setBottomRight(new Vec2(App.WIDTH, App.HEIGHT));
+                    }
+
+                    @Override
+                    public void onMouseClick(MouseEvent me) {
+                        if(continueButton.getComponent(ButtonComponent.class).contains(me)){
+                            finished = true;
+                        }
+                    }
+
+                    @Override
+                    public void draw(GameCanvas canvas) {
+                        game.getGameObject().draw(canvas);
+                        continueButton.draw(canvas);
+                    }
+
+                    @Override
+                    public boolean isFinished() {
+                        return finished;
                     }
                 }
-
-                @Override
-                public void draw(GameCanvas canvas) {
-                    game.getGameObject().draw(canvas);
-                    continueButton.draw(canvas);
-                }
-
-                @Override
-                public boolean isFinished() {
-                    return finished;
-                }
-            })
+            )
         );
     }
 }

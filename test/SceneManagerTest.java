@@ -1,6 +1,6 @@
-import Engine.Core.AbstractScene;
-import Engine.Core.GameCanvas;
-import Engine.Core.SceneManager;
+import engine.core.AbstractScene;
+import engine.core.GameCanvas;
+import engine.core.SceneManager;
 
 import javax.swing.*;
 import java.util.Iterator;

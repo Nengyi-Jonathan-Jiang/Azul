@@ -1,12 +1,11 @@
-import Engine.Core.AbstractScene;
-import Engine.Core.GameCanvas;
-import Engine.Core.SceneManager;
-import Engine.Core.Vec2;
-import Game.Frontend.TextObject;
+import engine.core.AbstractScene;
+import engine.core.GameCanvas;
+import engine.core.SceneManager;
+import engine.core.Vec2;
+import game.frontend.TextObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Iterator;
 
 public class TextObjectTest extends JFrame {
     public TextObjectTest(){

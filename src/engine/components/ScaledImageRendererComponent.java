@@ -10,15 +10,19 @@ import java.awt.image.BufferedImage;
  * A Button that displays an image
  * @noinspection unused
  */
-public class ImageRendererComponent extends Component {
+public class ScaledImageRendererComponent extends Component {
     protected final BufferedImage image;
-    public ImageRendererComponent(String fileName){
+    public ScaledImageRendererComponent(String fileName){
         image = ImageLoader.get(fileName);
     }
     
     @Override
     public void drawAndUpdate(GameCanvas canvas) {
-        canvas.graphics.drawImage(image, (int)gameObject.getAbsoluteTopLeft().x, (int)gameObject.getAbsoluteTopLeft().y, null);
+        canvas.drawImage(
+            image,
+            gameObject.getAbsoluteTopLeft(),
+            gameObject.getSize()
+        );
     }
 
     public Vec2 getImageSize(){

@@ -10,8 +10,11 @@ import game.backend.*;
 
 import java.awt.event.MouseEvent;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+
 import game.App;
 import game.frontend.TextObject;
+import game.util.PositionAnimation;
 
 // TODO
 public class ScoringScene extends AbstractScene {
@@ -53,20 +56,15 @@ public class ScoringScene extends AbstractScene {
                         rest.stream().map(Tile::getGameObject).forEach(GameObject::removeFromParent);
                         rest.forEach(game.getBag()::returnTile);
 
-                        Vec2 originalPos = tile.getGameObject()
-                                .getAbsolutePosition()
-                                .minus(wall.getGameObject().getAbsolutePosition());
-
-                        // Move t to wall
-                        PlaceTileResult placeTileResult = wall.placeTile(row, tile);
-
-                        Vec2 targetPos = tile.getGameObject().getPosition();
-
-                        tile.getGameObject().setPosition(originalPos);
-                        tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
+                        AtomicReference<PlaceTileResult> placeTileResult = new AtomicReference<>();
+                        PositionAnimation.animate(
+                                tile.getGameObject(),
+                                () -> placeTileResult.set(wall.placeTile(row, tile)),
+                                10
+                        );
 
                         int score = player.getScoreMarker().getScore();
-                        int newScore = score + placeTileResult.getScoreAdded();
+                        int newScore = score + placeTileResult.get().getScoreAdded();
 
                         player.getScoreMarker().setScore(newScore);
                     }),
@@ -89,7 +87,10 @@ public class ScoringScene extends AbstractScene {
                     if(optionalFirstPlayerMarker.isPresent()){
                         Tile firstPlayerMarker = optionalFirstPlayerMarker.get();
                         removedTiles.remove(firstPlayerMarker);
-                        game.getMiddle().getCenter().addFirstPlayerTile(firstPlayerMarker);
+
+                        PositionAnimation.animate(firstPlayerMarker.getGameObject(), () -> {
+                            player.setFirstPlayerTile(firstPlayerMarker);
+                        }, 10);
                     }
 
                     removedTiles.stream().map(Tile::getGameObject).forEach(GameObject::removeFromParent);

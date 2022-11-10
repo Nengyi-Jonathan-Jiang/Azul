@@ -145,6 +145,13 @@ public class GameObject {
     }
 
     /**
+     * Sets the absolute position of the GameObject
+     */
+    public final GameObject setAbsolutePosition(Vec2 position){
+        return setPosition(position.minus(parent == null ? Vec2.zero : parent.getAbsolutePosition()));
+    }
+
+    /**
      * Set the top left corner relative to the parent gameObject
      */
     public final GameObject setTopLeft(Vec2 position) {
@@ -249,14 +256,14 @@ public class GameObject {
         return this;
     }
 
-    public GameObject addChildren(GameObject... children) {
+    public final GameObject addChildren(GameObject... children) {
         for (GameObject child : children) {
             addChild(child);
         }
         return this;
     }
 
-    public List<GameObject> getChildren() {
+    public final List<GameObject> getChildren() {
         return children;
     }
 
@@ -273,5 +280,9 @@ public class GameObject {
                         ).collect(Collectors.joining("")) + "\n  "
         )
                 + "]\n}";
+    }
+
+    public final GameObject getParent() {
+        return parent;
     }
 }

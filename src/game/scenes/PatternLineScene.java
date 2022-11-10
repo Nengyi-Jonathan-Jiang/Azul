@@ -4,6 +4,7 @@ import engine.components.ButtonComponent;
 import engine.components.PositionAnimationComponent;
 import engine.core.Vec2;
 import game.backend.*;
+import game.util.PositionAnimation;
 
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -39,16 +40,9 @@ public class PatternLineScene extends PanningGameScene {
                     tile.getGameObject().removeFromParent();
                 }
                 else {
-                    Vec2 originalPos = tile.getGameObject()
-                            .getAbsolutePosition()
-                            .minus(player.getFloorLine().getGameObject().getAbsolutePosition());
-
-                    player.getFloorLine().push(tile);
-
-                    Vec2 targetPos = tile.getGameObject().getPosition();
-
-                    tile.getGameObject().setPosition(originalPos);
-                    tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
+                    PositionAnimation.animate(tile.getGameObject(), ()->{
+                        player.getFloorLine().push(tile);
+                    }, 10);
                 }
             }
 
@@ -69,20 +63,18 @@ public class PatternLineScene extends PanningGameScene {
                         if(player.getFloorLine().isFull()){
                             game.getBag().returnTile(tile);
                             tile.getGameObject().removeFromParent();
-                            continue;
                         }
-                        player.getFloorLine().push(tile);
-                        originalPos = originalPos.minus(player.getFloorLine().getGameObject().getAbsolutePosition());
+                        else {
+                            PositionAnimation.animate(tile.getGameObject(), () -> {
+                                player.getFloorLine().push(tile);
+                            }, 10);
+                        }
                     }
                     else{
-                        line.addTile(tile);
-                        originalPos = originalPos.minus(line.getGameObject().getAbsolutePosition());
+                        PositionAnimation.animate(tile.getGameObject(), () -> {
+                            line.addTile(tile);
+                        }, 10);
                     }
-
-                    Vec2 targetPos = tile.getGameObject().getPosition();
-
-                    tile.getGameObject().setPosition(originalPos);
-                    tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
                 }
 
                 finished = true;

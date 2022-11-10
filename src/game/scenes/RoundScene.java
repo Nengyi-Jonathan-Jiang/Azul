@@ -3,9 +3,11 @@ package game.scenes;
 import engine.core.AbstractScene;
 import game.backend.AbstractTileSet;
 import game.backend.Game;
+import game.backend.Player;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 public class RoundScene extends AbstractScene {
@@ -17,13 +19,27 @@ public class RoundScene extends AbstractScene {
 
     @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
+        AtomicInteger startingPlayer = new AtomicInteger(0);
+
         return concatIterators(
-            // Distribute tiles
-            makeIterator(new TileDistributionScene(game)),
+            makeIterator(
+                // Figure out first player
+                new ActionScene(() -> {
+                    List<Player> players = game.getPlayers();
+                    for(int i = 0; i < players.size(); i++){
+                        if(players.get(i).hasFirstPlayerTile()){
+                            startingPlayer.set(i);
+                            return;
+                        }
+                    }
+                }),
+                // Distribute tiles
+                new TileDistributionScene(game)
+            ),
             // Player turns
             makeLoopIterator(
                 new Supplier<>() {
-                    int player = 0;
+                    int player = startingPlayer.get();
                     @Override
                     public AbstractScene get() {
                         return groupScenes(

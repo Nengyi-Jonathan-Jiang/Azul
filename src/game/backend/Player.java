@@ -9,18 +9,17 @@ import java.util.List;
 
 public class Player implements Comparable<Player> {
     private final String name;
-
     private final PlayerGameObject playerObject;
     private final GameObject boardObject;
-
     private final ScoreMarker scoreMarker;
     private final PatternLines patternLines;
     private final FloorLine floorLine;
     private final Wall wall;
-
     private final Hand hand;
-    
-    public Player(String playerName, int playerNum){
+
+    private Tile firstPlayerTile = null;
+
+    public Player(String playerName, int playerNum) {
         name = playerName;
         floorLine = new FloorLine();
         patternLines = new PatternLines();
@@ -52,30 +51,32 @@ public class Player implements Comparable<Player> {
             default -> hand.getGameObject().setBottomLeft(boardObject.getBottomRightOffset().scaledBy(1.3, 0.4));
         }
     }
-    
-    public ScoreMarker getScoreMarker(){
-        return scoreMarker;   
+
+    public ScoreMarker getScoreMarker() {
+        return scoreMarker;
     }
-    public GameObject getBoardObject(){
+
+    public GameObject getBoardObject() {
         return boardObject;
     }
+
     public PlayerGameObject getGameObject() {
         return playerObject;
     }
 
-    public Wall getWall(){
+    public Wall getWall() {
         return wall;
     }
 
-    public PatternLines getPatternLines(){
+    public PatternLines getPatternLines() {
         return patternLines;
     }
 
-    public List<PatternLine> getAvailablePatternLinesForColor(Tile.TileColor color){
+    public List<PatternLine> getAvailablePatternLinesForColor(Tile.TileColor color) {
         List<PatternLine> res = new ArrayList<>();
-        for(int row = 0; row < 5; row++){
+        for (int row = 0; row < 5; row++) {
             PatternLine line = patternLines.getRow(row);
-            if(line.canPlaceTile(color) && !wall.rowHasTileColor(row, color)){
+            if (line.canPlaceTile(color) && !wall.rowHasTileColor(row, color)) {
                 res.add(line);
             }
         }
@@ -83,11 +84,11 @@ public class Player implements Comparable<Player> {
         return res;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
-    
-    public int compareTo(Player o){
+
+    public int compareTo(Player o) {
         return this.scoreMarker.getScore() - o.getScoreMarker().getScore();
     }
 
@@ -97,5 +98,21 @@ public class Player implements Comparable<Player> {
 
     public FloorLine getFloorLine() {
         return floorLine;
+    }
+
+    public void setFirstPlayerTile(Tile tile) {
+        this.firstPlayerTile = tile;
+        boardObject.addChild(tile.getGameObject());
+        tile.getGameObject().setPosition(new Vec2(52, 278).plus(boardObject.getTopLeftOffset()));
+    }
+
+    public boolean hasFirstPlayerTile(){
+        return firstPlayerTile != null;
+    }
+
+    public Tile removeFirstPlayerTile(){
+        Tile res = firstPlayerTile;
+        firstPlayerTile = null;
+        return res;
     }
 }

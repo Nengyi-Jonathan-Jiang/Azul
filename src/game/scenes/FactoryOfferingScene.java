@@ -7,6 +7,7 @@ import engine.core.Vec2;
 import game.backend.*;
 import game.frontend.TextObject;
 import game.App;
+import game.util.PositionAnimation;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -100,31 +101,26 @@ public class FactoryOfferingScene extends PanningGameScene {
 
             player.getHand().clear();
             for (Tile tile : selectedTiles) {
-                Vec2 originalPos = tile.getGameObject()
-                        .getAbsolutePosition()
-                        .minus(player.getHand().getGameObject().getAbsolutePosition());
-
-                player.getHand().addTile(tile);
-
-                Vec2 targetPos = tile.getGameObject().getPosition();
-
-                tile.getGameObject().setPosition(originalPos);
-                tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
+                PositionAnimation.animate(tile.getGameObject(), () -> {
+                    player.getHand().addTile(tile);
+                }, 10);
             }
 
             selectedTiles.clear();
 
-            List<Tile> removed = Stream.concat(
+            List<Tile> removed =
+                Stream.concat(
                     s.removeAllTiles().stream(),
                     game.getMiddle().getCenter().removeAllTiles().stream()
-            )
-                    .sorted(Tile::compareTo)
-                    .collect(Collectors.toList());
+                )
+                .sorted(Tile::compareTo)
+                .collect(Collectors.toList());
             List<Vec2> originalPositions = removed.stream().map(Tile::getGameObject).map(GameObject::getAbsolutePosition).collect(Collectors.toList());
             removed.stream().map(Tile::getGameObject).forEach(GameObject::removeFromParent);
 
             for (int i = 0; i < removed.size(); i++) {
                 Tile tile = removed.get(i);
+
                 Vec2 originalPos = originalPositions.get(i);
 
                 game.getMiddle().getCenter().addTile(tile);

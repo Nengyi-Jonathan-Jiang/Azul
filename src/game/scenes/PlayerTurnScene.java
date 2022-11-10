@@ -7,6 +7,7 @@ import engine.core.Vec2;
 import game.backend.Game;
 import game.backend.Player;
 import game.App;
+import game.util.PositionAnimation;
 
 import java.util.Iterator;
 
@@ -23,10 +24,13 @@ public class PlayerTurnScene extends AbstractScene {
 
     @Override
     public void onExecutionStart() {
-        game.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(
-                player.getGameObject().getPosition().scaledBy(-.5, -.5).plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5)),
-                10
-        );
+        PositionAnimation.animate(game.getGameObject(), () -> {
+            game.getGameObject().setPosition(
+                player.getGameObject().getPosition()
+                    .scaledBy(-.5, -.5)
+                    .plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5))
+            );
+        }, 10);
     }
 
     private int animation = 0;

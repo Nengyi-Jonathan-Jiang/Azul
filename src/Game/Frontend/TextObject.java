@@ -24,7 +24,5 @@ public class TextObject extends GameObject {
                 .getRenderedSize()
                 .plus(new Vec2(Style.TEXT_PADDING * 2.5));
         setSize(TEXT_SIZE);
-
-        System.out.println("Text: " + text + ", Size: " + TEXT_SIZE);
     }
 }

@@ -65,7 +65,12 @@ public class ScoringScene extends AbstractScene {
                         tile.getGameObject().setPosition(originalPos);
                         tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
 
-                        System.out.println("animate");
+                        int score = player.getScoreMarker().getScore();
+                        int newScore = score + placeTileResult.getScoreAdded();
+
+                        System.out.println(placeTileResult.getScoreAdded());
+
+                        player.getScoreMarker().setScore(newScore);
                     }),
                     new WaitScene(game, 50),
                     new AbstractScene(){

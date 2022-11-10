@@ -26,14 +26,12 @@ public class Wall {
 
     private final Tile[][] grid;
     private int score;
-    private int finalScore = 0;
 
     private GameObject gameObject;
 
     public Wall() {
         grid = new Tile[5][5];
         score = 0;
-        finalScore = 0;
 
         gameObject = new GameObject(new Vec2(220));
     }
@@ -95,39 +93,42 @@ public class Wall {
         grid[row][col] = square;
         gameObject.addChild(square.getGameObject());
         square.getGameObject().setTopLeft(new Vec2(col, row).scaledBy(44.2, 45).plus(gameObject.getTopLeftOffset()));
-        List<Tile> tList = new ArrayList<Tile>();
-        int scoreAdd = 0;
-        if (!hasCompletedRow()) {
-            for (int i = 0; i < grid.length; i++) {
-                for (int k = 0; k < grid[i].length; k++) {
-                    if (grid[i][k] != null) {
-                        tList.add(grid[i][k]);
-                        scoreAdd++;
 
-                        if (grid[i + 1][k] != null) {
-                            tList.add(grid[i+1][k]);
-                            scoreAdd++;
-                        }
-                        if (grid[i - 1][k] != null) {
-                            tList.add(grid[i-1][k]);
-                            scoreAdd++;
-                        }
+        List<Tile> tList = new ArrayList<>();
 
-                        scoreAdd++;
-                        if (grid[i][k + 1] != null) {
-                            tList.add(grid[i][k+1]);
-                            scoreAdd++;
-                        }
-                        if (grid[i][k - 1] != null) {
-                            tList.add(grid[i][k-1]);
-                            scoreAdd++;
-                        }
-                    }
-                }
+        int rowScore = 0;
+        for(int c = col - 1; c >= 0; c--){
+            if (grid[row][c] != null) {
+                tList.add(grid[row][c]);
+                rowScore++;
             }
+            else break;
         }
-        score+=scoreAdd;
-        return new PlaceTileResult(tList, scoreAdd, row, col);
+        for(int c = col + 1; c < 5; c++){
+            if (grid[row][c] != null) {
+                tList.add(grid[row][c]);
+                rowScore++;
+            }
+            else break;
+        }
+
+        int colScore = 0;
+        for (int r = row - 1; r >= 0; r--) {
+            if (grid[r][col] != null) {
+                tList.add(grid[r][col]);
+                colScore++;
+            } else break;
+        }
+        for (int r = row + 1; r < 5; r++) {
+            if (grid[r][col] != null) {
+                tList.add(grid[r][col]);
+                colScore++;
+            } else break;
+        }
+
+        int scoreAdded = colScore + rowScore + (colScore > 0 && rowScore > 0 ? 2 : 1);
+
+        return new PlaceTileResult(tList, scoreAdded, row, col);
     }
 
     public boolean rowHasTileColor(int i, TileColor color) {

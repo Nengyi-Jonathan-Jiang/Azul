@@ -1,0 +1,18 @@
+import game.backend.Game;
+import game.backend.Player;
+import game.backend.Tile;
+
+import java.util.List;
+
+public class WallCompleteRowTest {
+    public static void main(String[] args){
+        Player p = new Player("Player1", 1);
+        p.getWall().placeTile(0, new Tile(Tile.TileColor.BLUE));
+        p.getWall().placeTile(0, new Tile(Tile.TileColor.BLACK));
+        p.getWall().placeTile(0, new Tile(Tile.TileColor.WHITE));
+        p.getWall().placeTile(0, new Tile(Tile.TileColor.RED));
+        p.getWall().placeTile(0, new Tile(Tile.TileColor.YELLOW));
+
+        System.out.println(p.getWall().hasCompletedRow());
+    }
+}

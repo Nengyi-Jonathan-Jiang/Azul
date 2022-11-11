@@ -33,9 +33,7 @@ public class RoundScene extends AbstractScene {
                             System.out.println(players.get(i).getName() + " has first player tile");
                             startingPlayer.set(i);
                             Tile t = players.get(i).removeFirstPlayerTile();
-                            PositionAnimation.animate(t.getGameObject(), () -> {
-                                game.getMiddle().getCenter().addFirstPlayerTile(t);
-                            }, 10);
+                            PositionAnimation.animate(t.getGameObject(), () -> game.getMiddle().getCenter().addFirstPlayerTile(t), 10);
                             return;
                         }
                     }
@@ -48,11 +46,11 @@ public class RoundScene extends AbstractScene {
             // Player turns
             makeLoopIterator(
                 new Supplier<>() {
-                    int player = startingPlayer.get();
+                    int player = 0;
                     @Override
                     public AbstractScene get() {
                         return groupScenes(
-                            new PlayerTurnScene(game, game.getPlayers().get(player++ % game.getPlayers().size())),
+                            new PlayerTurnScene(game, game.getPlayers().get((player++ + startingPlayer.get()) % game.getPlayers().size())),
                             new WaitScene(game, 50)
                         );
                     }

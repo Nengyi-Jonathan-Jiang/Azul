@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class TitleScene extends AbstractScene {
-    private final GameObject[] playerSelectBtns;
+    private final GameObject[] playerSelectButtons;
     private final GameObject startButton;
     private int numPlayers;
     private final GameObject gObject;
@@ -41,9 +41,9 @@ public class TitleScene extends AbstractScene {
         playerSelectText.setSize(TEXT_SIZE);
 
         // Player select buttons - the player will click on these
-        playerSelectBtns = new GameObject[3];
+        playerSelectButtons = new GameObject[3];
         for(int i = 0; i < 3; i++){
-            playerSelectBtns[i] = new GameObject(
+            playerSelectButtons[i] = new GameObject(
                 TEXT_SIZE.scaledBy(.35 * (i - 1), 1.5),
                 TEXT_SIZE.scaledBy(.3, 1.),
                 new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
@@ -61,7 +61,7 @@ public class TitleScene extends AbstractScene {
         );
 
         gObject.addChildren(background, logo, playerSelectText);
-        gObject.addChildren(playerSelectBtns);
+        gObject.addChildren(playerSelectButtons);
         gObject.addChild(startButton);
 
         selectNumPlayers(2);
@@ -69,8 +69,8 @@ public class TitleScene extends AbstractScene {
 
     private void selectNumPlayers(int idx){
         for(int i = 0; i < 3; i++){
-            RectRendererComponent r = playerSelectBtns[i].getComponent(RectRendererComponent.class);
-            TextRendererComponent t = playerSelectBtns[i].getComponent(TextRendererComponent.class);
+            RectRendererComponent r = playerSelectButtons[i].getComponent(RectRendererComponent.class);
+            TextRendererComponent t = playerSelectButtons[i].getComponent(TextRendererComponent.class);
             Color c = i == idx ? Style.HL_COLOR : Style.FG_COLOR;
             r.setBorderColor(c);
         }
@@ -84,7 +84,7 @@ public class TitleScene extends AbstractScene {
             return;
         }
         for(int i = 0; i < 3; i++){
-            if(playerSelectBtns[i].getComponent(ButtonComponent.class).contains(me)){
+            if(playerSelectButtons[i].getComponent(ButtonComponent.class).contains(me)){
                 selectNumPlayers(i);
                 return;
             }

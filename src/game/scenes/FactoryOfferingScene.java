@@ -101,9 +101,7 @@ public class FactoryOfferingScene extends PanningGameScene {
 
             player.getHand().clear();
             for (Tile tile : selectedTiles) {
-                PositionAnimation.animate(tile.getGameObject(), () -> {
-                    player.getHand().addTile(tile);
-                }, 10);
+                PositionAnimation.animate(tile.getGameObject(), () -> player.getHand().addTile(tile), 10);
             }
 
             selectedTiles.clear();

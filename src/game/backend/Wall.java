@@ -53,6 +53,7 @@ public class Wall {
         return col;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public PlaceTileResult placeTile(int row, Tile square) {
         int col = getCol(row, square.getColor());
         grid[row][col] = square;
@@ -98,6 +99,18 @@ public class Wall {
 
     public boolean rowHasTileColor(int i, TileColor color) {
         return Stream.of(grid[i]).filter(Objects::nonNull).map(Tile::getColor).anyMatch(c -> c == color);
+    }
+
+    @Override
+    public String toString() {
+        String res = "";
+//        for(int i = 0; i < 5; i++){
+//            for(int j = 0; j < 5; j++){
+//                res += swi
+//            }
+//            res += "\n";
+//        }
+        return res;
     }
 
     public GameObject getGameObject() {

@@ -1,6 +1,5 @@
 package game.scenes;
 
-import engine.components.PositionAnimationComponent;
 import engine.core.AbstractScene;
 import engine.core.GameCanvas;
 import engine.core.Vec2;
@@ -24,13 +23,11 @@ public class PlayerTurnScene extends AbstractScene {
 
     @Override
     public void onExecutionStart() {
-        PositionAnimation.animate(game.getGameObject(), () -> {
-            game.getGameObject().setPosition(
-                player.getGameObject().getPosition()
-                    .scaledBy(-.5, -.5)
-                    .plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5))
-            );
-        }, 10);
+        PositionAnimation.animate(game.getGameObject(), () -> game.getGameObject().setPosition(
+            player.getGameObject().getPosition()
+                .scaledBy(-.5, -.5)
+                .plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5))
+        ), 10);
     }
 
     private int animation = 0;

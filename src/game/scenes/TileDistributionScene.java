@@ -1,6 +1,5 @@
 package game.scenes;
 
-import engine.components.PositionAnimationComponent;
 import engine.core.AbstractScene;
 import engine.core.GameCanvas;
 import engine.core.Vec2;
@@ -29,9 +28,7 @@ public class TileDistributionScene extends AbstractScene {
 
     @Override
     public void onExecutionStart() {
-        PositionAnimation.animate(game.getGameObject(), () -> {
-            game.getGameObject().setPosition(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5));
-        }, 10);
+        PositionAnimation.animate(game.getGameObject(), () -> game.getGameObject().setPosition(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5)), 10);
     }
 
     @Override
@@ -52,9 +49,7 @@ public class TileDistributionScene extends AbstractScene {
         Tile tile = game.getBag().popTile();
         tile.getGameObject().setAbsolutePosition(game.getGameObject().getAbsolutePosition());
 
-        PositionAnimation.animate(tile.getGameObject(), () -> {
-            factories.get((factory++) % factories.size()).addTiles(Collections.singletonList(tile));
-        }, 10);
+        PositionAnimation.animate(tile.getGameObject(), () -> factories.get((factory++) % factories.size()).addTiles(Collections.singletonList(tile)), 10);
 
         cooldown = 5;
     }

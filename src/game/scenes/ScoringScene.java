@@ -50,20 +50,21 @@ public class ScoringScene extends AbstractScene {
             makeIterator(new WaitScene(game, 10)),
             makeLoopIterator(filledRows, row -> new AbstractScene(){
                 AtomicReference<PlaceTileResult> placeTileResult;
+                AtomicReference<Tile> placedTile;
                 @Override
                 public Iterator<? extends AbstractScene> getScenesAfter() {
                     return makeIterator(
                         new ActionScene(() -> {
                             PatternLine line = patternLines.get(row);
-                            Tile tile = line.popFirstTile();
+                            placedTile = new AtomicReference<>(line.popFirstTile());
                             List<Tile> rest = line.popAllTiles();
                             rest.stream().map(Tile::getGameObject).forEach(GameObject::removeFromParent);
                             rest.forEach(game.getBag()::returnTile);
 
                             placeTileResult = new AtomicReference<>();
                             PositionAnimation.animate(
-                                    tile.getGameObject(),
-                                    () -> placeTileResult.set(wall.placeTile(row, tile)),
+                                    placedTile.get().getGameObject(),
+                                    () -> placeTileResult.set(wall.placeTile(row, placedTile.get())),
                                     10
                             );
 
@@ -76,10 +77,12 @@ public class ScoringScene extends AbstractScene {
                             player.getScoreMarker().setScore(newScore);
 
                             placeTileResult.get().getTiles().forEach(Tile::highlight);
+                            placedTile.get().highlight();
                         }),
                         new WaitScene(game, 40),
                         new ActionScene(() -> {
                             placeTileResult.get().getTiles().forEach(Tile::unHighlight);
+                            placedTile.get().unHighlight();
                         })
                     );
                 }
@@ -100,9 +103,7 @@ public class ScoringScene extends AbstractScene {
                         Tile firstPlayerMarker = optionalFirstPlayerMarker.get();
                         removedTiles.remove(firstPlayerMarker);
 
-                        PositionAnimation.animate(firstPlayerMarker.getGameObject(), () -> {
-                            player.setFirstPlayerTile(firstPlayerMarker);
-                        }, 10);
+                        PositionAnimation.animate(firstPlayerMarker.getGameObject(), () -> player.setFirstPlayerTile(firstPlayerMarker), 10);
                     }
 
                     removedTiles.stream().map(Tile::getGameObject).forEach(GameObject::removeFromParent);

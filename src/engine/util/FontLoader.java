@@ -4,6 +4,7 @@ import game.Style;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Utility class to load fonts
@@ -18,7 +19,7 @@ public final class FontLoader {
     public static Font load(String filename){
         Font f;
         try {
-            f = Font.createFont(Font.TRUETYPE_FONT, Style.class.getResourceAsStream("/" + filename));
+            f = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Style.class.getResourceAsStream("/" + filename)));
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
             f = DefaultFont;

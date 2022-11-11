@@ -1,7 +1,6 @@
 package game.scenes;
 
 import engine.components.ButtonComponent;
-import engine.components.PositionAnimationComponent;
 import engine.core.Vec2;
 import game.backend.*;
 import game.util.PositionAnimation;
@@ -40,9 +39,7 @@ public class PatternLineScene extends PanningGameScene {
                     tile.getGameObject().removeFromParent();
                 }
                 else {
-                    PositionAnimation.animate(tile.getGameObject(), ()->{
-                        player.getFloorLine().push(tile);
-                    }, 10);
+                    PositionAnimation.animate(tile.getGameObject(), ()-> player.getFloorLine().push(tile), 10);
                 }
             }
 
@@ -65,15 +62,11 @@ public class PatternLineScene extends PanningGameScene {
                             tile.getGameObject().removeFromParent();
                         }
                         else {
-                            PositionAnimation.animate(tile.getGameObject(), () -> {
-                                player.getFloorLine().push(tile);
-                            }, 10);
+                            PositionAnimation.animate(tile.getGameObject(), () -> player.getFloorLine().push(tile), 10);
                         }
                     }
                     else{
-                        PositionAnimation.animate(tile.getGameObject(), () -> {
-                            line.addTile(tile);
-                        }, 10);
+                        PositionAnimation.animate(tile.getGameObject(), () -> line.addTile(tile), 10);
                     }
                 }
 

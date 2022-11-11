@@ -22,6 +22,7 @@ public class ScoreMarker {
         gameObject.setTopLeft(new Vec2(22, 1).plus(p.getBoardObject().getTopLeftOffset()));
     }
 
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     public void setScore(int s){
         if(s < 0) s = 0;
         score = s;

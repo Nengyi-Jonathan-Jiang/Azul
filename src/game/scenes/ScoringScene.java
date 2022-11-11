@@ -47,32 +47,44 @@ public class ScoringScene extends AbstractScene {
         }
 
         return concatIterators(
-                makeIterator(new WaitScene(game, 10)),
-                makeLoopIterator(filledRows, row -> groupScenes(
-                    new ActionScene(() -> {
-                        PatternLine line = patternLines.get(row);
-                        Tile tile = line.popFirstTile();
-                        List<Tile> rest = line.popAllTiles();
-                        rest.stream().map(Tile::getGameObject).forEach(GameObject::removeFromParent);
-                        rest.forEach(game.getBag()::returnTile);
+            makeIterator(new WaitScene(game, 10)),
+            makeLoopIterator(filledRows, row -> new AbstractScene(){
+                AtomicReference<PlaceTileResult> placeTileResult;
+                @Override
+                public Iterator<? extends AbstractScene> getScenesAfter() {
+                    return makeIterator(
+                        new ActionScene(() -> {
+                            PatternLine line = patternLines.get(row);
+                            Tile tile = line.popFirstTile();
+                            List<Tile> rest = line.popAllTiles();
+                            rest.stream().map(Tile::getGameObject).forEach(GameObject::removeFromParent);
+                            rest.forEach(game.getBag()::returnTile);
 
-                        AtomicReference<PlaceTileResult> placeTileResult = new AtomicReference<>();
-                        PositionAnimation.animate(
-                                tile.getGameObject(),
-                                () -> placeTileResult.set(wall.placeTile(row, tile)),
-                                10
-                        );
+                            placeTileResult = new AtomicReference<>();
+                            PositionAnimation.animate(
+                                    tile.getGameObject(),
+                                    () -> placeTileResult.set(wall.placeTile(row, tile)),
+                                    10
+                            );
 
-                        int score = player.getScoreMarker().getScore();
-                        int newScore = score + placeTileResult.get().getScoreAdded();
+                        }),
+                        new WaitScene(game, 10),
+                        new ActionScene(() -> {
+                            int score = player.getScoreMarker().getScore();
+                            int newScore = score + placeTileResult.get().getScoreAdded();
 
-                        player.getScoreMarker().setScore(newScore);
-                    }),
-                    new WaitScene(game, 50),
-                    new ActionScene(() -> {
+                            player.getScoreMarker().setScore(newScore);
 
-                    })
-            )), makeIterator(
+                            placeTileResult.get().getTiles().forEach(Tile::highlight);
+                        }),
+                        new WaitScene(game, 40),
+                        new ActionScene(() -> {
+                            placeTileResult.get().getTiles().forEach(Tile::unHighlight);
+                        })
+                    );
+                }
+            }),
+            makeIterator(
                 new ActionScene(() -> {
                     int scoreDeduction = player.getFloorLine().getDeduction();
 

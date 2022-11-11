@@ -50,6 +50,10 @@ public class Player implements Comparable<Player> {
             case 2 -> hand.getGameObject().setBottomRight(boardObject.getBottomLeftOffset().scaledBy(1.3, 0.4));
             default -> hand.getGameObject().setBottomLeft(boardObject.getBottomRightOffset().scaledBy(1.3, 0.4));
         }
+
+        if(playerNum == 0){
+            setFirstPlayerTile(new Tile(Tile.TileColor.FIRST_PLAYER));
+        }
     }
 
     public ScoreMarker getScoreMarker() {
@@ -101,7 +105,7 @@ public class Player implements Comparable<Player> {
     }
 
     public void setFirstPlayerTile(Tile tile) {
-        this.firstPlayerTile = tile;
+        firstPlayerTile = tile;
         boardObject.addChild(tile.getGameObject());
         tile.getGameObject().setPosition(new Vec2(52, 278).plus(boardObject.getTopLeftOffset()));
     }

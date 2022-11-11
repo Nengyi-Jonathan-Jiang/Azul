@@ -4,6 +4,8 @@ import engine.core.AbstractScene;
 import game.backend.AbstractTileSet;
 import game.backend.Game;
 import game.backend.Player;
+import game.backend.Tile;
+import game.util.PositionAnimation;
 
 import java.util.Iterator;
 import java.util.List;
@@ -28,11 +30,18 @@ public class RoundScene extends AbstractScene {
                     List<Player> players = game.getPlayers();
                     for(int i = 0; i < players.size(); i++){
                         if(players.get(i).hasFirstPlayerTile()){
+                            System.out.println(players.get(i).getName() + " has first player tile");
                             startingPlayer.set(i);
+                            Tile t = players.get(i).removeFirstPlayerTile();
+                            PositionAnimation.animate(t.getGameObject(), () -> {
+                                game.getMiddle().getCenter().addFirstPlayerTile(t);
+                            }, 10);
                             return;
                         }
                     }
+                    throw new Error("Could not find first player tile");
                 }),
+                new WaitScene(game, 10),
                 // Distribute tiles
                 new TileDistributionScene(game)
             ),

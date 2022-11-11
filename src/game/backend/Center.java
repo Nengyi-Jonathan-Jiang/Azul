@@ -10,8 +10,6 @@ public class Center extends AbstractTileSet {
 
     public Center(){
         super();
-
-        addFirstPlayerTile(new Tile(Tile.TileColor.FIRST_PLAYER));
     }
 
     @Override

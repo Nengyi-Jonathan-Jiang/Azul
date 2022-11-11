@@ -71,7 +71,7 @@ public class PatternLineScene extends PanningGameScene {
                 }
 
                 finished = true;
-                availableLines.forEach(PatternLine::unhighlight);
+                availableLines.forEach(PatternLine::unHighlight);
                 break;
             }
         }

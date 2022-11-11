@@ -10,7 +10,6 @@ import game.App;
 import game.util.PositionAnimation;
 
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -19,7 +18,7 @@ public class FactoryOfferingScene extends PanningGameScene {
     private final TextObject playerTurnIndicator;
     private final TextObject instructions;
     private final Player player;
-    private TextObject continueButton;
+    private final TextObject confirmButton;
     private boolean finished = false;
 
     public FactoryOfferingScene(Game game, Player player) {
@@ -32,8 +31,8 @@ public class FactoryOfferingScene extends PanningGameScene {
         instructions = new TextObject("");
         setInstructions("Click on a tile in the factories or the center to select it");
 
-        continueButton = new TextObject("Continue");
-        continueButton.setBottomRight(new Vec2(App.WIDTH, App.HEIGHT));
+        confirmButton = new TextObject("Confirm tile selection");
+        confirmButton.setBottomRight(new Vec2(App.WIDTH, App.HEIGHT));
     }
 
     public void setInstructions(String text) {
@@ -42,25 +41,28 @@ public class FactoryOfferingScene extends PanningGameScene {
     }
 
 
-    private List<Tile> selectedTiles = new ArrayList<>();
+    private List<Tile> selectedTiles = null;
     private AbstractTileSet selectedTileSet = null;
     private Tile selectedTile = null;
 
     @Override
     public void onMouseClick(MouseEvent me) {
 
-        if (continueButton.getComponent(ButtonComponent.class).contains(me)) {
+        // Handle continue button
+        if (confirmButton.getComponent(ButtonComponent.class).contains(me)) {
             confirmSelect();
             return;
         }
 
-        // Handle click on tile in factory
+        // Handle click on tile
 
-        List<Factory> factories = game.getMiddle().getFactories();
+        List<AbstractTileSet> tileSets = Stream.concat(
+            game.getMiddle().getFactories().stream(),
+            Stream.of(game.getMiddle().getCenter())
+        ).collect(Collectors.toList());
 
-        for (Factory factory : factories) {
-            List<Tile> allTiles = factory.getAllTiles();
-            for (Tile t : allTiles) {
+        for (AbstractTileSet factory : tileSets) {
+            for (Tile t : factory.getAllTiles()) {
                 if (t.getGameObject().getComponent(ButtonComponent.class).contains(me)) {
                     selectTile(factory, t);
                     return;
@@ -70,11 +72,7 @@ public class FactoryOfferingScene extends PanningGameScene {
 
 
         // Handle click in center
-        List<Tile> allTiles = game.getMiddle().getCenter().getAllTiles()
-                .stream().filter(Tile::isColorTile)
-                .collect(Collectors.toList());
-
-        for (Tile t : allTiles) {
+        for (Tile t : game.getMiddle().getCenter().getAllTiles()) {
             if (t.getGameObject().getComponent(ButtonComponent.class).contains(me)) {
                 selectTile(game.getMiddle().getCenter(), t);
                 return;
@@ -85,11 +83,13 @@ public class FactoryOfferingScene extends PanningGameScene {
     }
 
     private void unselectTiles() {
-        selectedTiles.forEach(Tile::unHighlight);
+        if(selectedTiles != null) selectedTiles.forEach(Tile::unHighlight);
 
-        selectedTiles.clear();
+        selectedTiles = null;
         selectedTileSet = null;
         selectedTile = null;
+
+        player.getPatternLines().getLines().forEach(PatternLine::unHighlight);
 
         setInstructions("Click on a tile in the factories or the center to select it");
     }
@@ -101,18 +101,25 @@ public class FactoryOfferingScene extends PanningGameScene {
     }
 
     private void selectTile(AbstractTileSet s, Tile t) {
+        if(t.isFirstPlayerMarker()) return;
+
+        if(selectedTiles != null) selectedTiles.forEach(Tile::unHighlight);
+
         selectedTiles = s.getTilesOfColor(t.getColor());
         selectedTileSet = s;
         selectedTile = t;
 
-        game.getMiddle().getFactories().forEach(f -> f.getAllTiles().forEach(Tile::unHighlight));
-        game.getMiddle().getCenter().getAllTiles().forEach(Tile::unHighlight);
         selectedTiles.forEach(Tile::highlight);
+
+        player.getPatternLines().getLines().forEach(PatternLine::unHighlight);
+        player.getAvailablePatternLinesForColor(t.getColor()).forEach(PatternLine::highlight);
 
         setInstructions("Click the confirm button to continue");
     }
 
     private void confirmSelect() {
+        if(selectedTiles == null) return;
+
         // Unhighlight all tiles
         game.getMiddle().getFactories().stream().map(Factory::getAllTiles).forEach(l -> l.forEach(Tile::unHighlight));
         game.getMiddle().getCenter().getAllTiles().forEach(Tile::unHighlight);
@@ -164,7 +171,9 @@ public class FactoryOfferingScene extends PanningGameScene {
         super.draw(canvas);
         playerTurnIndicator.draw(canvas);
         instructions.draw(canvas);
-        continueButton.draw(canvas);
+
+        if(selectedTile != null)
+            confirmButton.draw(canvas);
     }
 
     @Override

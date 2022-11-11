@@ -66,7 +66,7 @@ public class PatternLine {
         gameObject.getComponent(RectRendererComponent.class).enable();
     }
 
-    public void unhighlight(){
+    public void unHighlight(){
         gameObject.getComponent(RectRendererComponent.class).disable();
     }
 }

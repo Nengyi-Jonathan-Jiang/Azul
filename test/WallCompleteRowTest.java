@@ -9,9 +9,16 @@ public class WallCompleteRowTest {
         Player p = new Player("Player1", 1);
         p.getWall().placeTile(0, new Tile(Tile.TileColor.BLUE));
         p.getWall().placeTile(0, new Tile(Tile.TileColor.BLACK));
+
+        System.out.println(p.getWall());
+
+        System.out.println(p.getWall().hasCompletedRow());
+
         p.getWall().placeTile(0, new Tile(Tile.TileColor.WHITE));
         p.getWall().placeTile(0, new Tile(Tile.TileColor.RED));
         p.getWall().placeTile(0, new Tile(Tile.TileColor.YELLOW));
+
+        System.out.println(p.getWall());
 
         System.out.println(p.getWall().hasCompletedRow());
     }

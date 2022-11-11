@@ -31,10 +31,10 @@ public class Wall {
 
 
     public boolean hasCompletedRow() {
-        for (int i = 0; i < 5; i++) {
+        for (Tile[] row : grid) {
             int n = 0;
-            for (int j = 0; j < 5; j++)
-                if (grid[n] != null)
+            for (int i = 0; i < 5; i++)
+                if (row[i] != null)
                     n++;
 
             if (n == 5) return true;
@@ -103,14 +103,21 @@ public class Wall {
 
     @Override
     public String toString() {
-        String res = "";
-//        for(int i = 0; i < 5; i++){
-//            for(int j = 0; j < 5; j++){
-//                res += swi
-//            }
-//            res += "\n";
-//        }
-        return res;
+        StringBuilder res = new StringBuilder();
+        for(int i = 0; i < 5; i++){
+            for(int j = 0; j < 5; j++){
+                res.append(grid[i][j] == null ? "_" : switch (grid[i][j].getColor()) {
+                    case RED -> "R";
+                    case YELLOW -> "Y";
+                    case WHITE -> "W";
+                    case BLUE -> "B";
+                    case BLACK -> "K";
+                    default -> "?";
+                });
+            }
+            res.append("\n");
+        }
+        return res.toString();
     }
 
     public GameObject getGameObject() {

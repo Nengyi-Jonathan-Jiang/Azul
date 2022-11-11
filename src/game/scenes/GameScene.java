@@ -16,10 +16,7 @@ public class GameScene extends AbstractScene {
         return AbstractScene.concatIterators(
             AbstractScene.makeLoopIterator(
                 () -> new RoundScene(game),
-                () -> {
-
-                    return game.getPlayers().stream().anyMatch(p -> p.getWall().hasCompletedRow());
-                }
+                () -> game.getPlayers().stream().noneMatch(p -> p.getWall().hasCompletedRow())
             ),
             AbstractScene.makeLoopIterator(game.getPlayers(), player -> new BonusCalculationScene(player, game)),
             AbstractScene.makeIterator(new RankingScene(game))

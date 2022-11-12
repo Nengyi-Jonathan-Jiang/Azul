@@ -14,7 +14,7 @@ public class PanningGameScene extends AbstractScene {
     private static Vec2 lastMousePos = Vec2.zero;
     @Override
     public void update() {
-        if(Input.isMouseLeftDown()){
+        if(Input.isMouseRightDown()){
             GameObject gObject = game.getGameObject();
             gObject.move(Input.getMousePosition().minus(lastMousePos).scaledBy(1.5));
 

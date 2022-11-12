@@ -49,6 +49,8 @@ public class PlayerTurnScene extends AbstractScene {
 
     @Override
     public Iterator<AbstractScene> getScenesAfter() {
-        return PanningGameScene.makeIterator(new FactoryOfferingScene(game, player), new PatternLineScene(game, player));
+        return PanningGameScene.makeIterator(new FactoryOfferingScene(game, player)
+//                , new PatternLineScene(game, player)
+        );
     }
 }

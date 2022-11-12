@@ -9,6 +9,7 @@ import game.frontend.TextObject;
 import game.App;
 import game.util.PositionAnimation;
 
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,14 @@ public class FactoryOfferingScene extends PanningGameScene {
     private final TextObject confirmButton;
     private boolean finished = false;
 
+
+    private List<Tile> selectedTiles = null;
+    private AbstractTileSet selectedTileSet = null;
+    private Tile selectedTile = null;
+
+    private PatternLine selectedLine = null;
+
+
     public FactoryOfferingScene(Game game, Player player) {
         super(game);
         this.player = player;
@@ -31,7 +40,7 @@ public class FactoryOfferingScene extends PanningGameScene {
         instructions = new TextObject("");
         setInstructions("Click on a tile in the factories or the center to select it");
 
-        confirmButton = new TextObject("Confirm tile selection");
+        confirmButton = new TextObject("Confirm Move");
         confirmButton.setBottomRight(new Vec2(App.WIDTH, App.HEIGHT));
     }
 
@@ -40,64 +49,65 @@ public class FactoryOfferingScene extends PanningGameScene {
         instructions.setTopRight(new Vec2(App.WIDTH, 0));
     }
 
-
-    private List<Tile> selectedTiles = null;
-    private AbstractTileSet selectedTileSet = null;
-    private Tile selectedTile = null;
-
     @Override
     public void onMouseClick(MouseEvent me) {
-
-        // Handle continue button
-        if (confirmButton.getComponent(ButtonComponent.class).contains(me)) {
-            confirmSelect();
-            return;
-        }
+        // Ignore middle and right click
+        if(!SwingUtilities.isLeftMouseButton(me)) return;
 
         // Handle click on tile
-
-        List<AbstractTileSet> tileSets = Stream.concat(
+        for (AbstractTileSet factory : Stream.concat(
             game.getMiddle().getFactories().stream(),
             Stream.of(game.getMiddle().getCenter())
-        ).collect(Collectors.toList());
-
-        for (AbstractTileSet factory : tileSets) {
+        ).collect(Collectors.toList())) {
             for (Tile t : factory.getAllTiles()) {
                 if (t.getGameObject().getComponent(ButtonComponent.class).contains(me)) {
+                    unselectPatternLine();
+                    unselectTiles();
                     selectTile(factory, t);
                     return;
                 }
             }
         }
 
+        // Handle click on rows
+        if(selectedTiles != null){
+            for(PatternLine line : player.getAvailablePatternLinesForColor(selectedTile.getColor())){
+                if(line.getGameObject().getComponent(ButtonComponent.class).contains(me)){
+                    unselectPatternLine();
+                    selectPatternLine(line);
+                    return;
+                }
+            }
+        }
 
-        // Handle click in center
-        for (Tile t : game.getMiddle().getCenter().getAllTiles()) {
-            if (t.getGameObject().getComponent(ButtonComponent.class).contains(me)) {
-                selectTile(game.getMiddle().getCenter(), t);
+        // Handle continue button
+        if(selectedTiles != null && selectedLine != null) {
+            if (confirmButton.getComponent(ButtonComponent.class).contains(me)) {
+                confirmSelect();
                 return;
             }
         }
 
+        // If nothing was clicked, unselect everything
+        unselectPatternLine();
         unselectTiles();
     }
 
-    private void unselectTiles() {
-        if(selectedTiles != null) selectedTiles.forEach(Tile::unHighlight);
-
-        selectedTiles = null;
-        selectedTileSet = null;
-        selectedTile = null;
+    private void selectPatternLine(PatternLine line) {
+        selectedLine = line;
 
         player.getPatternLines().getLines().forEach(PatternLine::unHighlight);
-
-        setInstructions("Click on a tile in the factories or the center to select it");
+        line.highlight();
     }
 
-    @Override
-    public void onExecutionEnd() {
-        game.getMiddle().getFactories().forEach(f -> f.getAllTiles().forEach(Tile::unHighlight));
-        game.getMiddle().getCenter().getAllTiles().forEach(Tile::unHighlight);
+    private void unselectPatternLine() {
+        if(selectedLine == null) return;
+
+        selectedLine.unHighlight();
+        selectedLine = null;
+
+        if(selectedTileSet != null && selectedTile != null)
+            selectTile(selectedTileSet, selectedTile);
     }
 
     private void selectTile(AbstractTileSet s, Tile t) {
@@ -114,25 +124,63 @@ public class FactoryOfferingScene extends PanningGameScene {
         player.getPatternLines().getLines().forEach(PatternLine::unHighlight);
         player.getAvailablePatternLinesForColor(t.getColor()).forEach(PatternLine::highlight);
 
-        setInstructions("Click the confirm button to continue");
+        setInstructions("Click on the pattern line you will place the tile in");
+    }
+
+    private void unselectTiles() {
+        if(selectedTiles == null) return;
+
+        selectedTiles.forEach(Tile::unHighlight);
+
+        selectedTiles = null;
+        selectedTileSet = null;
+        selectedTile = null;
+
+        player.getPatternLines().getLines().forEach(PatternLine::unHighlight);
+
+        setInstructions("Click on a tile in the factories or the center to select it");
+    }
+
+    @Override
+    public void onExecutionEnd() {
+        game.getMiddle().getFactories().forEach(f -> f.getAllTiles().forEach(Tile::unHighlight));
+        game.getMiddle().getCenter().getAllTiles().forEach(Tile::unHighlight);
     }
 
     private void confirmSelect() {
-        if(selectedTiles == null) return;
+        if(selectedTiles == null || selectedLine == null) return;
 
-        // Unhighlight all tiles
-        game.getMiddle().getFactories().stream().map(Factory::getAllTiles).forEach(l -> l.forEach(Tile::unHighlight));
-        game.getMiddle().getCenter().getAllTiles().forEach(Tile::unHighlight);
+        // Unhighlight selected tiles and selected line
+        selectedTiles.forEach(Tile::unHighlight);
+        selectedLine.unHighlight();
 
+        // Update tileset
         selectedTileSet.removeTilesOfColor(selectedTile.getColor());
 
-        player.getHand().clear();
+        // Animate move to line
         for (Tile tile : selectedTiles) {
-            PositionAnimation.animate(tile.getGameObject(), () -> player.getHand().addTile(tile), 10);
-        }
+            if(selectedLine.isFilled() || tile.isFirstPlayerMarker()){
+                if(player.getFloorLine().isFull()){
+                    game.getBag().returnTile(tile);
+                    tile.getGameObject().removeFromParent();
 
+                    System.out.println("Floor line overflow on tile " + tile);
+                }
+                else {
+                    PositionAnimation.animate(tile.getGameObject(), () -> player.getFloorLine().push(tile), 10);
+
+                    System.out.println("Pattern line overflow on tile " + tile);
+                }
+            }
+            else{
+                PositionAnimation.animate(tile.getGameObject(), () -> selectedLine.addTile(tile), 10);
+
+                System.out.println("Moved " + tile + " to pattern line");
+            }
+        }
         selectedTiles.clear();
 
+        // Move remaining tiles to center
         List<Tile> removed =
                 Stream.concat(
                                 selectedTileSet.removeAllTiles().stream(),
@@ -159,10 +207,6 @@ public class FactoryOfferingScene extends PanningGameScene {
             tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
         }
 
-        game.getMiddle().getFactories().forEach(f -> f.getAllTiles().forEach(Tile::unHighlight));
-        game.getMiddle().getCenter().getAllTiles().forEach(Tile::unHighlight);
-        selectedTiles.forEach(Tile::highlight);
-
         finished = true;
     }
 
@@ -172,7 +216,7 @@ public class FactoryOfferingScene extends PanningGameScene {
         playerTurnIndicator.draw(canvas);
         instructions.draw(canvas);
 
-        if(selectedTile != null)
+        if(selectedTile != null && selectedLine != null)
             confirmButton.draw(canvas);
     }
 

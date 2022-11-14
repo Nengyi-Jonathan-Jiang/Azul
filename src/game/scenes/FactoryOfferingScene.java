@@ -61,7 +61,6 @@ public class FactoryOfferingScene extends PanningGameScene {
         ).collect(Collectors.toList())) {
             for (Tile t : factory.getAllTiles()) {
                 if (t.getGameObject().getComponent(ButtonComponent.class).contains(me)) {
-                    unselectPatternLine();
                     unselectTiles();
                     selectTile(factory, t);
                     return;
@@ -89,15 +88,13 @@ public class FactoryOfferingScene extends PanningGameScene {
         }
 
         // If nothing was clicked, unselect everything
-        unselectPatternLine();
         unselectTiles();
     }
 
     private void selectPatternLine(PatternLine line) {
         selectedLine = line;
 
-        player.getPatternLines().getLines().forEach(PatternLine::unHighlight);
-        line.highlight();
+        line.highlight2();
     }
 
     private void unselectPatternLine() {
@@ -128,6 +125,7 @@ public class FactoryOfferingScene extends PanningGameScene {
     }
 
     private void unselectTiles() {
+        if(selectedLine != null) unselectPatternLine();
         if(selectedTiles == null) return;
 
         selectedTiles.forEach(Tile::unHighlight);
@@ -143,8 +141,7 @@ public class FactoryOfferingScene extends PanningGameScene {
 
     @Override
     public void onExecutionEnd() {
-        game.getMiddle().getFactories().forEach(f -> f.getAllTiles().forEach(Tile::unHighlight));
-        game.getMiddle().getCenter().getAllTiles().forEach(Tile::unHighlight);
+        unselectTiles();
     }
 
     private void confirmSelect() {

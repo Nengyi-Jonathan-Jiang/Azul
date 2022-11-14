@@ -93,7 +93,7 @@ public class Player implements Comparable<Player> {
     }
 
     public int compareTo(Player o) {
-        return this.scoreMarker.getScore() - o.getScoreMarker().getScore();
+        return o.getScoreMarker().getScore() - this.scoreMarker.getScore();
     }
 
     public Hand getHand() {

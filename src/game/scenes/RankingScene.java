@@ -2,8 +2,10 @@ package game.scenes;
 
 import engine.components.ButtonComponent;
 import engine.components.ImageRendererComponent;
+import engine.components.TextStyle;
 import engine.core.*;
 import game.App;
+import game.Style;
 import game.backend.Game;
 import game.backend.Player;
 import game.frontend.TextObject;
@@ -42,11 +44,19 @@ public class RankingScene extends AbstractScene {
         for(int i = 0; i < players.size(); i++){
             Player p = players.get(i);
 
-            GameObject nameObject = new TextObject(p.getName());
-            GameObject scoreObject = new TextObject(p.getScoreMarker().getScore() + "");
+            GameObject nameObject = new TextObject(p.getName(), new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_LEFT | TextStyle.ALIGN_VERTICAL));
+            GameObject scoreObject = new TextObject(
+                    p.getScoreMarker().getScore() + "",
+                    new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_RIGHT | TextStyle.ALIGN_VERTICAL)
+            );
+
+            nameObject.setSize(nameObject.getSize().scaledBy(0, 1).plus(new Vec2(400, 0)));
+            scoreObject.setSize(nameObject.getSize().scaledBy(0, 1).plus(new Vec2(400, 0)));
+
+            ((TextObject)scoreObject).getRectComponent().disable();
 
             nameObject.setPosition(new Vec2(0, i * 100).plus(SCREEN_CENTER));
-            scoreObject.setPosition(new Vec2(100, i * 100).plus(SCREEN_CENTER));
+            scoreObject.setPosition(new Vec2(0, i * 100).plus(SCREEN_CENTER));
 
             playerNames.add(nameObject);
             playerScores.add(scoreObject);
@@ -69,7 +79,6 @@ public class RankingScene extends AbstractScene {
     }
 
     public boolean isFinished(){
-
        return finished;
     }
 

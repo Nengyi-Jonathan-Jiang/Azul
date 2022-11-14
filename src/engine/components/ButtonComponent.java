@@ -18,6 +18,11 @@ public class ButtonComponent extends Component {
         return difference.map(Math::abs).scaledBy(2).compareCoordinates(gameObject.getSize());
     }
 
+    public final boolean contains(Vec2 v){
+        Vec2 difference = v.minus(gameObject.getAbsolutePosition());
+        return difference.map(Math::abs).scaledBy(2).compareCoordinates(gameObject.getSize());
+    }
+
     @Override
     public void drawAndUpdate(GameCanvas canvas) {}
 }

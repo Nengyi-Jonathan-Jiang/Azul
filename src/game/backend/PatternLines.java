@@ -27,7 +27,7 @@ public class PatternLines {
         }
     }
 
-    public PatternLine getRow(int row){
+    public PatternLine getLine(int row){
         return lines[row];
     }
 

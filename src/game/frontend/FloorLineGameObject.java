@@ -1,12 +1,14 @@
 package game.frontend;
 
+import engine.components.ButtonComponent;
+import engine.components.RectRendererComponent;
 import engine.core.GameObject;
 import engine.core.Vec2;
 import game.backend.FloorLine;
 
 public class FloorLineGameObject extends GameObject {
     public FloorLineGameObject(){
-        super(new Vec2(7 * FloorLine.TILE_SPACING, 40));
+        super(new Vec2(7 * FloorLine.TILE_SPACING, 40), new RectRendererComponent(), new ButtonComponent());
     }
 
     @Override

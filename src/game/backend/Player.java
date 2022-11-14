@@ -5,6 +5,7 @@ import engine.core.Vec2;
 import game.frontend.PlayerGameObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Player implements Comparable<Player> {
@@ -76,14 +77,16 @@ public class Player implements Comparable<Player> {
         return patternLines;
     }
 
-    public List<PatternLine> getAvailablePatternLinesForColor(Tile.TileColor color) {
-        List<PatternLine> res = new ArrayList<>();
+    public List<ILine> getAvailableLinesForColor(Tile.TileColor color) {
+        List<ILine> res = new ArrayList<>();
         for (int row = 0; row < 5; row++) {
-            PatternLine line = patternLines.getRow(row);
-            if (line.canPlaceTile(color) && !wall.rowHasTileColor(row, color)) {
+            PatternLine line = patternLines.getLine(row);
+            if (line.canAddTileOfColor(color) && !wall.rowHasTileColor(row, color)) {
                 res.add(line);
             }
         }
+
+        if(res.isEmpty()) return Collections.singletonList(floorLine);
 
         return res;
     }

@@ -5,9 +5,11 @@ import engine.core.GameObject;
 import game.backend.Game;
 import game.backend.Player;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 
 // TODO
 public class RankingScene extends AbstractScene {
@@ -21,10 +23,21 @@ public class RankingScene extends AbstractScene {
         for(Player p: players){
             playerNames.add(p.getBoardObject());
         }
-        System.out.println(playerNames);
+
+        playAgainButton = new TextObject("Play Again?");
+        playAgainButton.setPosition(new Vec2(App.WIDTH / 2., App.HEIGHT - 100));
     }
 
     public boolean isFinished(){
-        return false;
+
+       return finished;
+    }
+
+    @Override
+    public void onMouseClick(MouseEvent me) {
+        super.onMouseClick(me);
+        if(playAgainButton.getComponent(ButtonComponent.class).contains(me)){
+            finished = true;
+        }
     }
 }

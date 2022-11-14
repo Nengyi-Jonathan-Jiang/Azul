@@ -2,6 +2,7 @@ package game.backend;
 
 import engine.components.RectRendererComponent;
 import engine.core.GameObject;
+import game.Style;
 import game.frontend.PatternLineGameObject;
 
 import java.util.Arrays;
@@ -63,6 +64,12 @@ public class PatternLine {
     }
 
     public void highlight(){
+        gameObject.getComponent(RectRendererComponent.class).setBorderColor(Style.HL_COLOR);
+        gameObject.getComponent(RectRendererComponent.class).enable();
+    }
+
+    public void highlight2(){
+        gameObject.getComponent(RectRendererComponent.class).setBorderColor(Style.HL2_COLOR);
         gameObject.getComponent(RectRendererComponent.class).enable();
     }
 

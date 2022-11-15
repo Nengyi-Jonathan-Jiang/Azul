@@ -1,9 +1,11 @@
 package engine.core;
 
 import java.awt.*;
+import java.awt.geom.NoninvertibleTransformException;
 import java.util.*;
 import javax.swing.*;
 import java.awt.event.*;
+import engine.input.MouseEvent;
 
 /**
  * A class that runs an {@link AbstractScene} in an event loop. An action may schedule <i>pre-actions</i> to be run
@@ -37,14 +39,26 @@ public class SceneManager {
 
         canvas.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) Input.mouseDownL = true;
-                if(SwingUtilities.isRightMouseButton(e)) Input.mouseDownR = true;
-                mouseEvents.add(e);
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                MouseEvent.MouseButton button = MouseEvent.MouseButton.NONE;
+
+                if(SwingUtilities.isLeftMouseButton(e)){
+                    button = MouseEvent.MouseButton.LEFT;
+                    Input.mouseDownL = true;
+                }
+                if(SwingUtilities.isRightMouseButton(e)){
+                    button = MouseEvent.MouseButton.RIGHT;
+                    Input.mouseDownR = true;
+                }
+                Vec2 rawPosition = new Vec2(e.getPoint().x, e.getPoint().y);
+                try {
+                    Vec2 pos = rawPosition.transform(canvas.getTransform().createInverse());
+                    mouseEvents.add(new MouseEvent(pos, button));
+                } catch (Exception err) {err.printStackTrace();}
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
+            public void mouseReleased(java.awt.event.MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) Input.mouseDownL = false;
                 if(SwingUtilities.isRightMouseButton(e)) Input.mouseDownR = false;
             }
@@ -154,8 +168,12 @@ public class SceneManager {
 
     protected void executeAction(AbstractScene scene){
         Point mousePosition = canvas.getMousePosition(true);
-        if(mousePosition != null)
-            Input.mousePosition = new Vec2(mousePosition.x, mousePosition.y);
+        if(mousePosition != null) {
+            Vec2 rawPosition = new Vec2(mousePosition.x, mousePosition.y);
+            try {
+                Input.mousePosition = rawPosition.transform(canvas.getTransform().createInverse());
+            } catch (Exception e) { e.printStackTrace(); }
+        }
 
         while(!mouseEvents.isEmpty()){
             scene.onMouseClick(mouseEvents.remove());

@@ -6,7 +6,7 @@ import game.*;
 import game.backend.*;
 
 import java.awt.Color;
-import java.awt.event.MouseEvent;
+import engine.input.MouseEvent;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -79,12 +79,12 @@ public class TitleScene extends AbstractScene {
 
     @Override
     public void onMouseClick(MouseEvent me) {
-        if(startButton.getComponent(ButtonComponent.class).contains(me)){
+        if(startButton.getComponent(ButtonComponent.class).contains(me.position)){
             finished = true;
             return;
         }
         for(int i = 0; i < 3; i++){
-            if(playerSelectButtons[i].getComponent(ButtonComponent.class).contains(me)){
+            if(playerSelectButtons[i].getComponent(ButtonComponent.class).contains(me.position)){
                 selectNumPlayers(i);
                 return;
             }

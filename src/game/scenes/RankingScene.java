@@ -9,8 +9,7 @@ import game.Style;
 import game.backend.Game;
 import game.backend.Player;
 import game.frontend.TextObject;
-
-import java.awt.event.MouseEvent;
+import engine.input.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -85,7 +84,7 @@ public class RankingScene extends AbstractScene {
     @Override
     public void onMouseClick(MouseEvent me) {
         super.onMouseClick(me);
-        if(playAgainButton.getComponent(ButtonComponent.class).contains(me)){
+        if(playAgainButton.getComponent(ButtonComponent.class).contains(me.position)){
             finished = true;
         }
     }

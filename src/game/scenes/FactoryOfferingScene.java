@@ -5,13 +5,12 @@ import engine.core.GameCanvas;
 import engine.core.GameObject;
 import engine.core.Input;
 import engine.core.Vec2;
+import engine.input.MouseEvent;
 import game.backend.*;
 import game.frontend.TextObject;
 import game.App;
 import game.util.PositionAnimation;
 
-import javax.swing.*;
-import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -53,7 +52,7 @@ public class FactoryOfferingScene extends PanningGameScene {
     @Override
     public void onMouseClick(MouseEvent me) {
         // Ignore middle and right click
-        if(!SwingUtilities.isLeftMouseButton(me)) return;
+        if(me.button != MouseEvent.MouseButton.LEFT) return;
 
         // Handle click on tile
         for (AbstractTileSet factory : Stream.concat(
@@ -62,7 +61,7 @@ public class FactoryOfferingScene extends PanningGameScene {
         ).collect(Collectors.toList())) {
             for (Tile t : factory.getAllTiles()) {
                 if(t.isFirstPlayerMarker()) continue;
-                if (t.getGameObject().getComponent(ButtonComponent.class).contains(me)) {
+                if (t.getGameObject().getComponent(ButtonComponent.class).contains(me.position)) {
                     unselectTiles();
                     selectTile(factory, t);
                     return;
@@ -73,7 +72,7 @@ public class FactoryOfferingScene extends PanningGameScene {
         // Handle click on rows
         if(selectedTiles != null){
             for(ILine line : player.getAvailableLinesForColor(selectedTile.getColor())){
-                if(line.getGameObject().getComponent(ButtonComponent.class).contains(me)){
+                if(line.getGameObject().getComponent(ButtonComponent.class).contains(me.position)){
                     unselectPatternLine();
                     selectPatternLine(line);
                     return;
@@ -83,7 +82,7 @@ public class FactoryOfferingScene extends PanningGameScene {
 
         // Handle continue button
         if(selectedTiles != null && selectedLine != null) {
-            if (confirmButton.getComponent(ButtonComponent.class).contains(me)) {
+            if (confirmButton.getComponent(ButtonComponent.class).contains(me.position)) {
                 confirmSelect();
                 return;
             }

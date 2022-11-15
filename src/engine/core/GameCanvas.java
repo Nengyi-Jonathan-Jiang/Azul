@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 public class GameCanvas extends JPanel {
     private AbstractScene currScene = null;
     public Graphics2D graphics = null;
-    private final int preferredWidth, preferredHeight;
+    private final double preferredWidth, preferredHeight;
 
     public GameCanvas(int width, int height){
         preferredWidth = width;
@@ -29,6 +29,22 @@ public class GameCanvas extends JPanel {
         super.repaint();
     }
 
+    public AffineTransform getTransform(){
+        double screenWidth = getWidth(), screenHeight = getHeight();
+
+        double scale = screenWidth / screenHeight >= preferredWidth / preferredHeight
+                ? screenHeight / preferredHeight :
+                screenWidth / preferredWidth;
+        double scaledWidth = preferredWidth * scale, scaledHeight = preferredHeight * scale;
+        double ox = (screenWidth - scaledWidth) / 2, oy = (screenHeight - scaledHeight) / 2;
+
+        return new AffineTransform(
+                scale, 0,
+                0, scale,
+                ox, oy
+        );
+    }
+
     /**
      * Paints the canvas with the given graphics context, should never be called directly
      */
@@ -36,17 +52,7 @@ public class GameCanvas extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         graphics = (Graphics2D) g;
-        double screenWidth = getWidth(), screenHeight = getHeight();
-
-        double scale = screenWidth / screenHeight >= preferredWidth / preferredHeight ? screenHeight / preferredHeight : screenWidth / preferredWidth;
-        double scaledWidth = preferredWidth * scale, scaledHeight = preferredHeight * scale;
-        double ox = (screenWidth - scaledWidth) / 2, oy = (screenHeight - scaledHeight) / 2;
-
-        graphics.transform(new AffineTransform(
-            scale, 0,
-            0, scale,
-            ox, oy
-        ));
+        graphics.transform(getTransform());
 
         if(currScene != null) {
             graphics.setRenderingHint(

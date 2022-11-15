@@ -1,6 +1,8 @@
 package engine.core;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -126,4 +128,14 @@ public final class Vec2 {
     }
 
     public static final Vec2 zero = new Vec2(0, 0);
+
+    public static Vec2 transform(Vec2 v, AffineTransform transform){
+        Point2D.Double dst = new Point2D.Double();
+        transform.transform(new Point2D.Double(v.x, v.y), dst);
+        return new Vec2(dst.x, dst.y);
+    }
+
+    public Vec2 transform(AffineTransform transform){
+        return transform(this, transform);
+    }
 }

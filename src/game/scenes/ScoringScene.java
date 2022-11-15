@@ -7,8 +7,7 @@ import engine.core.GameCanvas;
 import engine.core.GameObject;
 import engine.core.Vec2;
 import game.backend.*;
-
-import java.awt.event.MouseEvent;
+import engine.input.MouseEvent;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -122,7 +121,7 @@ public class ScoringScene extends AbstractScene {
 
                     @Override
                     public void onMouseClick(MouseEvent me) {
-                        if(continueButton.getComponent(ButtonComponent.class).contains(me)){
+                        if(continueButton.getComponent(ButtonComponent.class).contains(me.position)){
                             finished = true;
                         }
                     }

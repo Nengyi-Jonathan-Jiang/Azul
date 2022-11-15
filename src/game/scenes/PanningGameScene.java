@@ -1,6 +1,7 @@
 package game.scenes;
 
 import engine.core.*;
+import engine.core.Input;
 import game.backend.Game;
 import game.App;
 

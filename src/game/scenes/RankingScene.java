@@ -17,18 +17,15 @@ import java.util.List;
 
 // TODO
 public class RankingScene extends AbstractScene {
-    private final Game game;
-
     private final GameObject background;
-    private final GameObject winText;
+    private final TextObject winText;
+    private final GameObject playAgainButton;
     private final List<Player> players = new ArrayList<>();
     private final List<GameObject> playerNames = new ArrayList<>();
     private final List<GameObject> playerScores = new ArrayList<>();
     private boolean finished;
-    private GameObject playAgainButton;
 
     public RankingScene(Game game){
-        this.game = game;
 
         Vec2 SCREEN_CENTER = new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5);
 
@@ -36,10 +33,9 @@ public class RankingScene extends AbstractScene {
         background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
         background.setPosition(SCREEN_CENTER);
 
-        List<Player> players = new ArrayList<>(game.getPlayers());
-        Collections.sort(players);
+        players.addAll(game.getPlayers());
 
-        winText = new TextObject(players.get(0).getName() + " wins!");
+        winText = new TextObject("");
         winText.setPosition(new Vec2(0, -100).plus(SCREEN_CENTER));
 
         playAgainButton = new TextObject("Play Again?");
@@ -48,6 +44,7 @@ public class RankingScene extends AbstractScene {
 
     @Override
     public void onExecutionStart() {
+        Collections.sort(players);
 
         Vec2 SCREEN_CENTER = new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5);
 
@@ -55,7 +52,7 @@ public class RankingScene extends AbstractScene {
             Player p = players.get(i);
 
             GameObject nameObject = new TextObject(p.getName(), new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_LEFT | TextStyle.ALIGN_VERTICAL));
-            GameObject scoreObject = new TextObject(
+            TextObject scoreObject = new TextObject(
                     p.getScoreMarker().getScore() + "",
                     new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_RIGHT | TextStyle.ALIGN_VERTICAL)
             );
@@ -63,7 +60,7 @@ public class RankingScene extends AbstractScene {
             nameObject.setSize(nameObject.getSize().scaledBy(0, 1).plus(new Vec2(400, 0)));
             scoreObject.setSize(nameObject.getSize().scaledBy(0, 1).plus(new Vec2(400, 0)));
 
-            ((TextObject)scoreObject).getRectComponent().disable();
+            scoreObject.getRectComponent().disable();
 
             nameObject.setPosition(new Vec2(0, i * 100).plus(SCREEN_CENTER));
             scoreObject.setPosition(new Vec2(0, i * 100).plus(SCREEN_CENTER));
@@ -75,6 +72,7 @@ public class RankingScene extends AbstractScene {
             System.out.println(scoreObject);
         }
 
+        winText.setText(players.get(0).getName() + " wins!");
     }
 
     @Override

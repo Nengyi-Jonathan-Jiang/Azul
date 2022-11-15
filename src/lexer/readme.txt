@@ -1,0 +1,1 @@
+This is just a helping class I stole from myself to help parse animation files

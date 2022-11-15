@@ -21,24 +21,35 @@ public class RankingScene extends AbstractScene {
 
     private final GameObject background;
     private final GameObject winText;
+    private final List<Player> players = new ArrayList<>();
     private final List<GameObject> playerNames = new ArrayList<>();
     private final List<GameObject> playerScores = new ArrayList<>();
     private boolean finished;
     private GameObject playAgainButton;
 
     public RankingScene(Game game){
+        this.game = game;
+
         Vec2 SCREEN_CENTER = new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5);
 
         background = new GameObject(new ImageRendererComponent("table.jpg"));
         background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
         background.setPosition(SCREEN_CENTER);
 
-        this.game = game;
         List<Player> players = new ArrayList<>(game.getPlayers());
         Collections.sort(players);
 
         winText = new TextObject(players.get(0).getName() + " wins!");
         winText.setPosition(new Vec2(0, -100).plus(SCREEN_CENTER));
+
+        playAgainButton = new TextObject("Play Again?");
+        playAgainButton.setPosition(new Vec2(App.WIDTH / 2., App.HEIGHT - 100));
+    }
+
+    @Override
+    public void onExecutionStart() {
+
+        Vec2 SCREEN_CENTER = new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5);
 
         for(int i = 0; i < players.size(); i++){
             Player p = players.get(i);
@@ -64,8 +75,6 @@ public class RankingScene extends AbstractScene {
             System.out.println(scoreObject);
         }
 
-        playAgainButton = new TextObject("Play Again?");
-        playAgainButton.setPosition(new Vec2(App.WIDTH / 2., App.HEIGHT - 100));
     }
 
     @Override

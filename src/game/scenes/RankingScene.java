@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
-// TODO
 public class RankingScene extends AbstractScene {
     private final GameObject background;
     private final TextObject winText;

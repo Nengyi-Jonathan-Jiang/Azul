@@ -1,6 +1,7 @@
 import engine.animation.Animation;
 import engine.components.AnimationRendererComponent;
 import engine.core.*;
+import game.App;
 import game.frontend.TextObject;
 
 import javax.swing.*;
@@ -9,7 +10,7 @@ import java.awt.*;
 public class AnimationTest extends JFrame {
     public AnimationTest(){
 
-        GameCanvas canvas = new GameCanvas();
+        GameCanvas canvas = new GameCanvas(200, 200);
         canvas.setPreferredSize(new Dimension(200, 200));
         add(canvas);
         pack();

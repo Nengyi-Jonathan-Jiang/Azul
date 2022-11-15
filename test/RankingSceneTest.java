@@ -2,6 +2,7 @@ import engine.core.AbstractScene;
 import engine.core.GameCanvas;
 import engine.core.SceneManager;
 import engine.core.Vec2;
+import game.App;
 import game.backend.Game;
 import game.backend.Player;
 import game.frontend.TextObject;
@@ -16,7 +17,7 @@ import java.util.stream.IntStream;
 public class RankingSceneTest extends JFrame {
     public RankingSceneTest(){
 
-        GameCanvas canvas = new GameCanvas();
+        GameCanvas canvas = new GameCanvas(200, 200);
         canvas.setPreferredSize(new Dimension(200, 200));
         add(canvas);
         pack();

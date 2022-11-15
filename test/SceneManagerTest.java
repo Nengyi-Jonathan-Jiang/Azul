@@ -8,7 +8,7 @@ import java.util.Iterator;
 public class SceneManagerTest extends JFrame {
     public SceneManagerTest(){
 
-        GameCanvas canvas = new GameCanvas();
+        GameCanvas canvas = new GameCanvas(1, 1);
         add(canvas);
 
         SceneManager.run(new AbstractScene() {

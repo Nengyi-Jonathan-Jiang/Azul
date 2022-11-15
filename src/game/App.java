@@ -18,8 +18,7 @@ public class App extends JFrame {
         setTitle("Azul");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        GameCanvas canvas = new GameCanvas();
-        canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        GameCanvas canvas = new GameCanvas(WIDTH, HEIGHT);
         add(canvas);
         pack();
 

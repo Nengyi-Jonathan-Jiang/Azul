@@ -10,7 +10,7 @@ import java.awt.*;
 public class TextObjectTest extends JFrame {
     public TextObjectTest(){
 
-        GameCanvas canvas = new GameCanvas();
+        GameCanvas canvas = new GameCanvas(200, 200);
         canvas.setPreferredSize(new Dimension(200, 200));
         add(canvas);
         pack();

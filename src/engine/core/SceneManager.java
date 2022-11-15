@@ -157,7 +157,6 @@ public class SceneManager {
         if(mousePosition != null)
             Input.mousePosition = new Vec2(mousePosition.x, mousePosition.y);
 
-        canvas.repaint(scene);
         while(!mouseEvents.isEmpty()){
             scene.onMouseClick(mouseEvents.remove());
         }
@@ -165,5 +164,6 @@ public class SceneManager {
             scene.onKeyPress(keyEvents.remove());
         }
         scene.update();
+        canvas.repaint(scene);
     }
 }

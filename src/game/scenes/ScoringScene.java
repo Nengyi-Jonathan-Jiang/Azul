@@ -41,7 +41,7 @@ public class ScoringScene extends AbstractScene {
         List<Integer> filledRows = new ArrayList<>();
 
         for(int i = 0; i < 5; i++){
-            if(patternLines.get(i).isFilled()){
+            if(!patternLines.get(i).canAddTile()){
                 filledRows.add(i);
             }
         }

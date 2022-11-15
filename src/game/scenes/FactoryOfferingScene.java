@@ -3,6 +3,7 @@ package game.scenes;
 import engine.components.*;
 import engine.core.GameCanvas;
 import engine.core.GameObject;
+import engine.core.Input;
 import engine.core.Vec2;
 import game.backend.*;
 import game.frontend.TextObject;
@@ -26,8 +27,8 @@ public class FactoryOfferingScene extends PanningGameScene {
     private List<Tile> selectedTiles = null;
     private AbstractTileSet selectedTileSet = null;
     private Tile selectedTile = null;
-
-    private PatternLine selectedLine = null;
+    private List<ILine> availableLines = null;
+    private ILine selectedLine = null;
 
 
     public FactoryOfferingScene(Game game, Player player) {
@@ -60,8 +61,8 @@ public class FactoryOfferingScene extends PanningGameScene {
             Stream.of(game.getMiddle().getCenter())
         ).collect(Collectors.toList())) {
             for (Tile t : factory.getAllTiles()) {
+                if(t.isFirstPlayerMarker()) continue;
                 if (t.getGameObject().getComponent(ButtonComponent.class).contains(me)) {
-                    unselectPatternLine();
                     unselectTiles();
                     selectTile(factory, t);
                     return;
@@ -71,7 +72,7 @@ public class FactoryOfferingScene extends PanningGameScene {
 
         // Handle click on rows
         if(selectedTiles != null){
-            for(PatternLine line : player.getAvailablePatternLinesForColor(selectedTile.getColor())){
+            for(ILine line : player.getAvailableLinesForColor(selectedTile.getColor())){
                 if(line.getGameObject().getComponent(ButtonComponent.class).contains(me)){
                     unselectPatternLine();
                     selectPatternLine(line);
@@ -89,77 +90,63 @@ public class FactoryOfferingScene extends PanningGameScene {
         }
 
         // If nothing was clicked, unselect everything
-        unselectPatternLine();
         unselectTiles();
     }
 
-    private void selectPatternLine(PatternLine line) {
+    private void selectPatternLine(ILine line) {
         selectedLine = line;
-
-        player.getPatternLines().getLines().forEach(PatternLine::unHighlight);
-        line.highlight();
+        setInstructions("Click on the confirm button to confirm your move");
     }
 
     private void unselectPatternLine() {
-        if(selectedLine == null) return;
-
-        selectedLine.unHighlight();
         selectedLine = null;
-
-        if(selectedTileSet != null && selectedTile != null)
-            selectTile(selectedTileSet, selectedTile);
+        setInstructions("Click on the pattern line you will place the tile in");
     }
 
     private void selectTile(AbstractTileSet s, Tile t) {
-        if(t.isFirstPlayerMarker()) return;
-
-        if(selectedTiles != null) selectedTiles.forEach(Tile::unHighlight);
-
         selectedTiles = s.getTilesOfColor(t.getColor());
         selectedTileSet = s;
         selectedTile = t;
-
-        selectedTiles.forEach(Tile::highlight);
-
-        player.getPatternLines().getLines().forEach(PatternLine::unHighlight);
-        player.getAvailablePatternLinesForColor(t.getColor()).forEach(PatternLine::highlight);
+        availableLines = player.getAvailableLinesForColor(selectedTile.getColor());
 
         setInstructions("Click on the pattern line you will place the tile in");
     }
 
     private void unselectTiles() {
-        if(selectedTiles == null) return;
-
-        selectedTiles.forEach(Tile::unHighlight);
-
         selectedTiles = null;
         selectedTileSet = null;
         selectedTile = null;
-
-        player.getPatternLines().getLines().forEach(PatternLine::unHighlight);
+        availableLines = null;
+        selectedLine = null;
 
         setInstructions("Click on a tile in the factories or the center to select it");
     }
 
-    @Override
-    public void onExecutionEnd() {
+    private void unHighlightAll(){
         game.getMiddle().getFactories().forEach(f -> f.getAllTiles().forEach(Tile::unHighlight));
         game.getMiddle().getCenter().getAllTiles().forEach(Tile::unHighlight);
+        player.getPatternLines().getLines().forEach(PatternLine::unHighlight);
+        player.getFloorLine().unHighlight();
+        if(selectedLine != null) selectedLine.unHighlight();
+        if(selectedTiles != null) selectedTiles.forEach(Tile::unHighlight);
+        if(selectedTile != null) selectedTile.unHighlight();
+        if(availableLines != null) availableLines.forEach(ILine::unHighlight);
     }
+
+    @Override
+    public void onExecutionEnd() {}
 
     private void confirmSelect() {
         if(selectedTiles == null || selectedLine == null) return;
 
-        // Unhighlight selected tiles and selected line
-        selectedTiles.forEach(Tile::unHighlight);
-        selectedLine.unHighlight();
+        unHighlightAll();
 
-        // Update tileset
+        // Remove selected tiles from tileset
         selectedTileSet.removeTilesOfColor(selectedTile.getColor());
 
-        // Animate move to line
+        // Animate tile movement to pattern line
         for (Tile tile : selectedTiles) {
-            if(selectedLine.isFilled() || tile.isFirstPlayerMarker()){
+            if(selectedLine instanceof FloorLine || !selectedLine.canAddTile() || tile.isFirstPlayerMarker()){
                 if(player.getFloorLine().isFull()){
                     game.getBag().returnTile(tile);
                     tile.getGameObject().removeFromParent();
@@ -167,7 +154,7 @@ public class FactoryOfferingScene extends PanningGameScene {
                     System.out.println("Floor line overflow on tile " + tile);
                 }
                 else {
-                    PositionAnimation.animate(tile.getGameObject(), () -> player.getFloorLine().push(tile), 10);
+                    PositionAnimation.animate(tile.getGameObject(), () -> player.getFloorLine().addTile(tile), 10);
 
                     System.out.println("Pattern line overflow on tile " + tile);
                 }
@@ -180,7 +167,7 @@ public class FactoryOfferingScene extends PanningGameScene {
         }
         selectedTiles.clear();
 
-        // Move remaining tiles to center
+        // Animate tile movement to center
         List<Tile> removed =
                 Stream.concat(
                                 selectedTileSet.removeAllTiles().stream(),
@@ -207,6 +194,9 @@ public class FactoryOfferingScene extends PanningGameScene {
             tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
         }
 
+        unselectPatternLine();
+        unselectTiles();
+
         finished = true;
     }
 
@@ -218,6 +208,47 @@ public class FactoryOfferingScene extends PanningGameScene {
 
         if(selectedTile != null && selectedLine != null)
             confirmButton.draw(canvas);
+    }
+
+    @Override
+    public void update() {
+        super.update();
+
+        Vec2 mp = Input.getMousePosition();
+
+        unHighlightAll();
+        if(selectedTile != null) selectedTile.highlight();
+        if(selectedTiles != null) selectedTiles.forEach(Tile::highlight);
+        if(availableLines != null) availableLines.forEach(ILine::highlight);
+        if(selectedLine != null) selectedLine.highlight2();
+
+        // Handle hover on tile
+        for (AbstractTileSet factory : Stream.concat(
+                game.getMiddle().getFactories().stream(),
+                Stream.of(game.getMiddle().getCenter())
+        ).collect(Collectors.toList())) {
+            for (Tile t : factory.getAllTiles()) {
+                if(t.isFirstPlayerMarker()) continue;
+                if (t.getGameObject().getComponent(ButtonComponent.class).contains(mp)) {
+                    if(selectedTiles != null) selectedTiles.forEach(Tile::unHighlight);
+                    factory.getTilesOfColor(t.getColor()).forEach(Tile::highlight);
+                    player.getPatternLines().getLines().forEach(ILine::unHighlight);
+                    player.getAvailableLinesForColor(t.getColor()).forEach(ILine::highlight);
+                    return;
+                }
+            }
+        }
+
+        // Handle hover on rows
+        if(availableLines != null){
+            for(ILine line : availableLines){
+                if(line.getGameObject().getComponent(ButtonComponent.class).contains(mp)){
+                    if(selectedLine != null) selectedLine.highlight();
+                    line.highlight2();
+                    return;
+                }
+            }
+        }
     }
 
     @Override

@@ -2,6 +2,7 @@ package game.backend;
 
 import engine.components.RectRendererComponent;
 import engine.core.GameObject;
+import game.Style;
 import game.frontend.PatternLineGameObject;
 
 import java.util.Arrays;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class PatternLine {
+public class PatternLine implements ILine{
     public static final double TILE_SPACING = 44.3;
 
     private Tile[] tiles;
@@ -32,8 +33,8 @@ public class PatternLine {
         gameObject.addChild(t.getGameObject());
     }
 
-    public boolean canPlaceTile(Tile.TileColor t){
-        return  !isFilled() && (
+    public boolean canAddTileOfColor(Tile.TileColor t){
+        return canAddTile() && (
                 currentTileColor == Tile.TileColor.NONE ||
                 t == Tile.TileColor.FIRST_PLAYER ||
                 t == currentTileColor
@@ -54,8 +55,8 @@ public class PatternLine {
         return res;
     }
 
-    public boolean isFilled(){
-        return numTiles == tiles.length;
+    public boolean canAddTile(){
+        return numTiles < tiles.length;
     }
 
     public GameObject getGameObject(){
@@ -63,6 +64,12 @@ public class PatternLine {
     }
 
     public void highlight(){
+        gameObject.getComponent(RectRendererComponent.class).setBorderColor(Style.HL_COLOR);
+        gameObject.getComponent(RectRendererComponent.class).enable();
+    }
+
+    public void highlight2(){
+        gameObject.getComponent(RectRendererComponent.class).setBorderColor(Style.HL2_COLOR);
         gameObject.getComponent(RectRendererComponent.class).enable();
     }
 

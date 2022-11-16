@@ -56,7 +56,7 @@ public class TileDistributionScene extends AbstractScene {
 
     @Override
     public void draw(GameCanvas canvas) {
-        game.getGameObject().draw(canvas);
+        game.draw(canvas);
     }
 
     @Override

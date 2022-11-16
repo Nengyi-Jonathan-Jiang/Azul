@@ -35,18 +35,21 @@ public class FactoryOfferingScene extends PanningGameScene {
         this.player = player;
 
         playerTurnIndicator = new TextObject(player.getName() + "'s Turn");
-        playerTurnIndicator.setTopLeft(Vec2.zero);
 
         instructions = new TextObject("");
         setInstructions("Click on a tile in the factories or the center to select it");
 
         confirmButton = new TextObject("Confirm Move");
-        confirmButton.setBottomRight(new Vec2(App.WIDTH, App.HEIGHT));
     }
 
     public void setInstructions(String text) {
         instructions.setText(text);
-        instructions.setTopRight(new Vec2(App.WIDTH, 0));
+    }
+
+    public void updateUIPositions(GameCanvas canvas){
+        instructions.setTopRight(new Vec2(canvas.getWidth(), 0));
+        confirmButton.setBottomRight(new Vec2(App.WIDTH, App.HEIGHT));
+        playerTurnIndicator.setTopLeft(Vec2.zero);
     }
 
     @Override
@@ -202,6 +205,9 @@ public class FactoryOfferingScene extends PanningGameScene {
     @Override
     public void draw(GameCanvas canvas) {
         super.draw(canvas);
+
+        updateUIPositions(canvas);
+
         playerTurnIndicator.draw(canvas);
         instructions.draw(canvas);
 

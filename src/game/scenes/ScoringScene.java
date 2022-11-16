@@ -128,7 +128,7 @@ public class ScoringScene extends AbstractScene {
 
                     @Override
                     public void draw(GameCanvas canvas) {
-                        game.getGameObject().draw(canvas);
+                        game.draw(canvas);
                         continueButton.draw(canvas);
                     }
 

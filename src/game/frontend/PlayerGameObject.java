@@ -9,7 +9,7 @@ public class PlayerGameObject extends GameObject {
     private final GameObject boardObject;
 
     public PlayerGameObject(String playerName, int playerNum){
-        boardObject = new GameObject(new ImageRendererComponent("Azul Board.jpg"));
+        boardObject = new GameObject(new ImageRendererComponent("Azul Board.jpg", ImageRendererComponent.RenderSpeed.FAST));
         boardObject.setSize(boardObject.getComponent(ImageRendererComponent.class).getImageSize());
 
         GameObject textObject = new TextObject(playerName);

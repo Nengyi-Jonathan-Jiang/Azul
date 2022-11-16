@@ -50,11 +50,8 @@ public class SceneManager {
                     button = MouseEvent.MouseButton.RIGHT;
                     Input.mouseDownR = true;
                 }
-                Vec2 rawPosition = new Vec2(e.getPoint().x, e.getPoint().y);
-                try {
-                    Vec2 pos = rawPosition.transform(canvas.getTransform().createInverse());
-                    mouseEvents.add(new MouseEvent(pos, button));
-                } catch (Exception err) {err.printStackTrace();}
+                Vec2 pos = new Vec2(e.getPoint().x, e.getPoint().y);
+                mouseEvents.add(new MouseEvent(pos, button));
             }
 
             @Override
@@ -169,10 +166,7 @@ public class SceneManager {
     protected void executeAction(AbstractScene scene){
         Point mousePosition = canvas.getMousePosition(true);
         if(mousePosition != null) {
-            Vec2 rawPosition = new Vec2(mousePosition.x, mousePosition.y);
-            try {
-                Input.mousePosition = rawPosition.transform(canvas.getTransform().createInverse());
-            } catch (Exception e) { e.printStackTrace(); }
+            Input.mousePosition = new Vec2(mousePosition.x, mousePosition.y);
         }
 
         while(!mouseEvents.isEmpty()){

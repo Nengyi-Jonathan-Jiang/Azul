@@ -29,22 +29,6 @@ public class GameCanvas extends JPanel {
         super.repaint();
     }
 
-    public AffineTransform getTransform(){
-        double screenWidth = getWidth(), screenHeight = getHeight();
-
-        double scale = screenWidth / screenHeight >= preferredWidth / preferredHeight
-                ? screenHeight / preferredHeight :
-                screenWidth / preferredWidth;
-        double scaledWidth = preferredWidth * scale, scaledHeight = preferredHeight * scale;
-        double ox = (screenWidth - scaledWidth) / 2, oy = (screenHeight - scaledHeight) / 2;
-
-        return new AffineTransform(
-                scale, 0,
-                0, scale,
-                ox, oy
-        );
-    }
-
     /**
      * Paints the canvas with the given graphics context, should never be called directly
      */
@@ -52,7 +36,6 @@ public class GameCanvas extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         graphics = (Graphics2D) g;
-        graphics.transform(getTransform());
 
         if(currScene != null) {
             graphics.setRenderingHint(
@@ -63,6 +46,12 @@ public class GameCanvas extends JPanel {
                     RenderingHints.KEY_INTERPOLATION,
                     RenderingHints.VALUE_INTERPOLATION_BILINEAR
             );
+
+            graphics.setRenderingHint(
+                    RenderingHints.KEY_RENDERING,
+                    RenderingHints.VALUE_RENDER_SPEED
+            );
+
             graphics.setStroke(new BasicStroke(2));
             currScene.draw(this);
         }

@@ -4,15 +4,16 @@ package game.frontend;
 
 import engine.components.ImageRendererComponent;
 import engine.components.PositionAnimationComponent;
+import engine.components.ScaledImageRendererComponent;
 import engine.core.GameObject;
 import engine.core.Vec2;
 import game.backend.Game;
 
 public class GameGameObject extends GameObject {
     public GameGameObject(Game game){
-        super(new ImageRendererComponent("table.jpg"), new PositionAnimationComponent());
+        super(new ImageRendererComponent("table.jpg", ImageRendererComponent.RenderSpeed.FAST), new PositionAnimationComponent());
 
-        setSize(getComponent(ImageRendererComponent.class).getImageSize());
+        setSize(new Vec2(3000, 1600));
 
         for(int i = 0; i < game.getPlayers().size(); i++){
             GameObject o = game.getPlayers().get(i).getGameObject();

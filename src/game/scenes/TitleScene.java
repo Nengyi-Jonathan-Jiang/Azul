@@ -79,10 +79,8 @@ public class TitleScene extends AbstractScene {
 
     @Override
     public void onMouseClick(MouseEvent me) {
-        if(startButton.getComponent(ButtonComponent.class).contains(me.position)){
-            finished = true;
-            return;
-        }
+        if(finished |= startButton.getComponent(ButtonComponent.class).contains(me.position)) return;
+
         for(int i = 0; i < 3; i++){
             if(playerSelectButtons[i].getComponent(ButtonComponent.class).contains(me.position)){
                 selectNumPlayers(i);

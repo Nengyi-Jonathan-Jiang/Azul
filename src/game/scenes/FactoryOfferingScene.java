@@ -48,7 +48,7 @@ public class FactoryOfferingScene extends PanningGameScene {
 
     public void updateUIPositions(GameCanvas canvas){
         instructions.setTopRight(new Vec2(canvas.getWidth(), 0));
-        confirmButton.setBottomRight(new Vec2(App.WIDTH, App.HEIGHT));
+        confirmButton.setBottomRight(new Vec2(canvas.getWidth(), canvas.getHeight()));
         playerTurnIndicator.setTopLeft(Vec2.zero);
     }
 

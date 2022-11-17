@@ -14,17 +14,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class TileDistributionScene extends AbstractScene {
-    // We do a victor style tile distribution animation lol
-
     private final Game game;
 
     public TileDistributionScene(Game game) {
         this.game = game;
     }
 
-    public int factory = 0;
-    public int cooldown = 0;
-    public int animation = 0;
+    public int currentFactory = 0;
+    public int tileDistributionCooldown = 0;
+    public int elapsedTime = 0;
 
     @Override
     public void onExecutionStart() {
@@ -35,23 +33,23 @@ public class TileDistributionScene extends AbstractScene {
     public void update() {
         List<Factory> factories = game.getMiddle().getFactories();
 
-        animation++;
+        elapsedTime++;
 
-        if(factory >= 4 * factories.size()) return;
+        if(currentFactory >= 4 * factories.size()) return;
 
-        game.getMiddle().positionFactories(animation / 20.);
+        game.getMiddle().positionFactories(elapsedTime * .006);
 
-        if(cooldown != 0){
-            cooldown--;
+        if(tileDistributionCooldown != 0){
+            tileDistributionCooldown--;
             return;
         }
 
         Tile tile = game.getBag().popTile();
         tile.getGameObject().setAbsolutePosition(game.getGameObject().getAbsolutePosition());
 
-        PositionAnimation.animate(tile.getGameObject(), () -> factories.get((factory++) % factories.size()).addTiles(Collections.singletonList(tile)), 10);
+        PositionAnimation.animate(tile.getGameObject(), () -> factories.get((currentFactory++) % factories.size()).addTiles(Collections.singletonList(tile)), 10);
 
-        cooldown = 5;
+        tileDistributionCooldown = 5;
     }
 
     @Override
@@ -61,6 +59,6 @@ public class TileDistributionScene extends AbstractScene {
 
     @Override
     public boolean isFinished() {
-        return animation > game.getMiddle().getFactories().size() * 4 * 6 + 10;
+        return elapsedTime > game.getMiddle().getFactories().size() * 4 * 6 + 10;
     }
 }

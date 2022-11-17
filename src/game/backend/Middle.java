@@ -41,9 +41,10 @@ public class Middle {
         for(int i = 0; i < numFactories; i++){
             Factory fact = factories.get(i);
 
+            double rotation = 2 * Math.PI * (1. * i / numFactories + rot);
             Vec2 offset = new Vec2(
-                    Math.sin(2 * Math.PI * (i + rot) / numFactories),
-                    Math.cos(2 * Math.PI * (i + rot) / numFactories)
+                    Math.sin(rotation),
+                    Math.cos(rotation)
             );
 
             fact.getGameObject().setPosition(offset.scaledBy(250));

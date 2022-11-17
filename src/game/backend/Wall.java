@@ -54,7 +54,7 @@ public class Wall {
     }
 
     @SuppressWarnings("DuplicatedCode")
-    public PlaceTileResult placeTile(int row, Tile square) {
+    public WallScoreResult placeTile(int row, Tile square) {
         int col = getCol(row, square.getColor());
         grid[row][col] = square;
         gameObject.addChild(square.getGameObject());
@@ -94,7 +94,7 @@ public class Wall {
 
         int scoreAdded = colScore + rowScore + (colScore > 0 && rowScore > 0 ? 2 : 1);
 
-        return new PlaceTileResult(tList, scoreAdded);
+        return new WallScoreResult(tList, scoreAdded);
     }
 
     public boolean rowHasTileColor(int i, TileColor color) {

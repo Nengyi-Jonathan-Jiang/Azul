@@ -8,13 +8,6 @@ public class AnimationFrame {
     public final BufferedImage image;
     public final int duration, width, height;
 
-    public AnimationFrame(String imagePath){
-        this(ImageLoader.get(imagePath));
-    }
-    public AnimationFrame(BufferedImage image){
-        this(image, 1);
-    }
-
     public AnimationFrame(String imagePath, int duration){
         this(ImageLoader.get(imagePath), duration);
     }

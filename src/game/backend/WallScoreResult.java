@@ -2,11 +2,11 @@ package game.backend;
 
 import java.util.List;
 
-public class PlaceTileResult {
+public class WallScoreResult {
     private final List<Tile> tileList;
     private final int scoreAdded;
 
-    public PlaceTileResult(List<Tile> t, int scoreAdded){
+    public WallScoreResult(List<Tile> t, int scoreAdded){
         tileList = t;
         this.scoreAdded = scoreAdded;
     }

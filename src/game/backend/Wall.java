@@ -123,4 +123,8 @@ public class Wall {
     public GameObject getGameObject() {
         return gameObject;
     }
+
+    public Tile[][] getGrid() {
+        return grid;
+    }
 }

@@ -3,13 +3,17 @@ package game.scenes;
 import engine.components.ButtonComponent;
 import engine.components.ImageRendererComponent;
 import engine.components.TextStyle;
-import engine.core.*;
+import engine.core.AbstractScene;
+import engine.core.GameCanvas;
+import engine.core.GameObject;
+import engine.core.Vec2;
+import engine.input.MouseEvent;
 import game.App;
 import game.Style;
 import game.backend.Game;
 import game.backend.Player;
 import game.frontend.TextObject;
-import engine.input.MouseEvent;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +27,7 @@ public class RankingScene extends AbstractScene {
     private final List<GameObject> playerScores = new ArrayList<>();
     private boolean finished;
 
-    public RankingScene(Game game){
+    public RankingScene(Game game) {
 
         Vec2 SCREEN_CENTER = new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5);
 
@@ -46,7 +50,7 @@ public class RankingScene extends AbstractScene {
 
         Vec2 SCREEN_CENTER = new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5);
 
-        for(int i = 0; i < players.size(); i++){
+        for (int i = 0; i < players.size(); i++) {
             Player p = players.get(i);
 
             GameObject nameObject = new TextObject(p.getName(), new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_LEFT | TextStyle.ALIGN_VERTICAL));
@@ -82,14 +86,14 @@ public class RankingScene extends AbstractScene {
         playAgainButton.draw(canvas);
     }
 
-    public boolean isFinished(){
-       return finished;
+    public boolean isFinished() {
+        return finished;
     }
 
     @Override
     public void onMouseClick(MouseEvent me) {
         super.onMouseClick(me);
-        if(playAgainButton.getComponent(ButtonComponent.class).contains(me.position)){
+        if (playAgainButton.getComponent(ButtonComponent.class).contains(me.position)) {
             finished = true;
         }
     }

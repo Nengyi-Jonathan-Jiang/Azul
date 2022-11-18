@@ -1,6 +1,6 @@
 package game.frontend;
 
-import engine.components.Component;
+import engine.core.Component;
 import engine.core.GameCanvas;
 import engine.core.GameObject;
 import engine.core.Vec2;
@@ -23,18 +23,18 @@ public class TilePileGameObject extends GameObject {
     }
 
     @Override
-    public GameObject draw(GameCanvas canvas){
-        for(Component component : componentList){
-            if(component.isEnabled()) {
+    public GameObject draw(GameCanvas canvas) {
+        for (Component component : componentList) {
+            if (component.isEnabled()) {
                 component.drawAndUpdate(canvas);
             }
         }
 
         // Weird magic to reverse list without actually modifying the list
-        for(GameObject child : children.stream().collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
+        for (GameObject child : children.stream().collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
             Collections.reverse(list);
             return list;
-        }))){
+        }))) {
             child.draw(canvas);
         }
 

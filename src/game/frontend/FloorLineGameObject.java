@@ -7,7 +7,7 @@ import engine.core.Vec2;
 import game.backend.FloorLine;
 
 public class FloorLineGameObject extends GameObject {
-    public FloorLineGameObject(){
+    public FloorLineGameObject() {
         super(new Vec2(7 * FloorLine.TILE_SPACING, 40), new RectRendererComponent(), new ButtonComponent());
     }
 

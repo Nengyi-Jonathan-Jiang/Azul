@@ -17,10 +17,10 @@ public class Game {
     private final Bag bag;
     private final Middle middle;
 
-    public Game(List<Player> players){
+    public Game(List<Player> players) {
         this.players = players;
         this.bag = new Bag();
-        this.middle = new Middle(switch(players.size()){
+        this.middle = new Middle(switch (players.size()) {
             case 2 -> 5;
             case 3 -> 7;
             case 4 -> 9;
@@ -37,15 +37,15 @@ public class Game {
         wObject.addChild(gObject);
     }
 
-    public List<Player> getPlayers(){
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public GameObject getGameObject(){
+    public GameObject getGameObject() {
         return gObject;
     }
 
-    public void draw(GameCanvas canvas){
+    public void draw(GameCanvas canvas) {
         wObject.draw(canvas);
     }
 

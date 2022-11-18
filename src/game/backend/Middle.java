@@ -12,17 +12,17 @@ public class Middle {
 
     private final GameObject gameObject;
 
-    public Middle(int numFactories){
+    public Middle(int numFactories) {
         gameObject = new GameObject();
         factories = new ArrayList<>();
         center = new Center();
-        for(int i = 0; i < numFactories; i++){
+        for (int i = 0; i < numFactories; i++) {
             Factory fact = new Factory();
             factories.add(fact);
             gameObject.addChild(fact.getGameObject());
         }
 
-        for(int i = 0; i < numFactories; i++){
+        for (int i = 0; i < numFactories; i++) {
             Factory fact = factories.get(i);
 
             Vec2 offset = new Vec2(
@@ -36,9 +36,9 @@ public class Middle {
         gameObject.addChild(center.getGameObject());
     }
 
-    public void positionFactories(double rot){
+    public void positionFactories(double rot) {
         int numFactories = factories.size();
-        for(int i = 0; i < numFactories; i++){
+        for (int i = 0; i < numFactories; i++) {
             Factory fact = factories.get(i);
 
             double rotation = 2 * Math.PI * (1. * i / numFactories + rot);
@@ -51,14 +51,15 @@ public class Middle {
         }
     }
 
-    public List<Factory> getFactories(){
+    public List<Factory> getFactories() {
         return factories;
     }
-    public Center getCenter(){
+
+    public Center getCenter() {
         return center;
     }
 
-    public GameObject getGameObject(){
+    public GameObject getGameObject() {
         return gameObject;
     }
 }

@@ -42,14 +42,14 @@ public class Wall {
         return false;
     }
 
-    public int getCol(int row, TileColor color){
+    public int getCol(int row, TileColor color) {
         int col;
         for (col = 0; col < 5; col++) {
             if (referencePattern[row][col] == color) {
                 break;
             }
         }
-        if(col == 5) throw new Error("ERROR: could not find tile color in pattern");
+        if (col == 5) throw new Error("ERROR: could not find tile color in pattern");
         return col;
     }
 
@@ -63,19 +63,17 @@ public class Wall {
         List<Tile> tList = new ArrayList<>();
 
         int rowScore = 0;
-        for(int c = col - 1; c >= 0; c--){
+        for (int c = col - 1; c >= 0; c--) {
             if (grid[row][c] != null) {
                 tList.add(grid[row][c]);
                 rowScore++;
-            }
-            else break;
+            } else break;
         }
-        for(int c = col + 1; c < 5; c++){
+        for (int c = col + 1; c < 5; c++) {
             if (grid[row][c] != null) {
                 tList.add(grid[row][c]);
                 rowScore++;
-            }
-            else break;
+            } else break;
         }
 
         int colScore = 0;
@@ -104,8 +102,8 @@ public class Wall {
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
-        for(int i = 0; i < 5; i++){
-            for(int j = 0; j < 5; j++){
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
                 res.append(grid[i][j] == null ? "_" : switch (grid[i][j].getColor()) {
                     case RED -> "R";
                     case YELLOW -> "Y";

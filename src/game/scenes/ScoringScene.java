@@ -3,11 +3,14 @@ package game.scenes;
 import engine.components.PositionAnimationComponent;
 import engine.core.AbstractScene;
 import engine.core.Vec2;
-import game.backend.*;
-
-import java.util.*;
-
 import game.App;
+import game.backend.Game;
+import game.backend.PatternLine;
+import game.backend.Player;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class ScoringScene extends AbstractScene {
     private final Game game;
@@ -21,8 +24,8 @@ public class ScoringScene extends AbstractScene {
     @Override
     public void onExecutionStart() {
         game.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(
-            player.getGameObject().getPosition().scaledBy(-1).plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5)),
-            10
+                player.getGameObject().getPosition().scaledBy(-1).plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5)),
+                10
         );
     }
 
@@ -31,20 +34,20 @@ public class ScoringScene extends AbstractScene {
         List<PatternLine> patternLines = player.getPatternLines().getLines();
         List<Integer> filledRows = new ArrayList<>();
 
-        for(int i = 0; i < 5; i++){
-            if(!patternLines.get(i).canAddTile()){
+        for (int i = 0; i < 5; i++) {
+            if (!patternLines.get(i).canAddTile()) {
                 filledRows.add(i);
             }
         }
 
         return concatIterators(
-            makeIterator(new WaitScene(game, 10)),
-            makeLoopIterator(filledRows, row -> new PatternLineScoringScene(game, player, row)),
-            makeIterator(
-                new FloorLineDeductionScene(game, player),
-                new WaitScene(game, 10),
-                new ScoringConfirmationScene(game)
-            )
+                makeIterator(new WaitScene(game, 10)),
+                makeLoopIterator(filledRows, row -> new PatternLineScoringScene(game, player, row)),
+                makeIterator(
+                        new FloorLineDeductionScene(game, player),
+                        new WaitScene(game, 10),
+                        new ScoringConfirmationScene(game)
+                )
         );
     }
 

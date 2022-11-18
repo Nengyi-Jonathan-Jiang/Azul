@@ -9,7 +9,7 @@ public class WaitScene extends AbstractScene {
     private final int duration;
     private int animation = 0;
 
-    public WaitScene(Game game, int duration){
+    public WaitScene(Game game, int duration) {
         this.game = game;
         this.duration = duration;
     }

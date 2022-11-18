@@ -12,26 +12,26 @@ public class PatternLines {
     private final PatternLine[] lines;
     private final GameObject gameObject;
 
-    public PatternLines(){
+    public PatternLines() {
         lines = new PatternLine[5];
 
-        for(int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             lines[i] = new PatternLine(i);
         }
 
         gameObject = new PatternLinesGameObject();
 
-        for(int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             gameObject.addChild(lines[i].getGameObject());
             lines[i].getGameObject().setTopRight(new Vec2(0, i * TILE_SPACING).plus(gameObject.getTopRightOffset()));
         }
     }
 
-    public PatternLine getLine(int row){
+    public PatternLine getLine(int row) {
         return lines[row];
     }
 
-    public GameObject getGameObject(){
+    public GameObject getGameObject() {
         return gameObject;
     }
 

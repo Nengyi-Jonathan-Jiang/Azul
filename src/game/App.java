@@ -1,8 +1,8 @@
 package game;
 
-import engine.core.SceneManager;
 import engine.core.AbstractScene;
 import engine.core.GameCanvas;
+import engine.core.SceneManager;
 import game.scenes.TitleScene;
 
 import javax.swing.*;
@@ -12,7 +12,7 @@ public class App extends JFrame {
     public static final int WIDTH = 1800;
     public static final int HEIGHT = 1000;
 
-    public App(){
+    public App() {
         super();
         setTitle("Azul");
         setDefaultCloseOperation(EXIT_ON_CLOSE);

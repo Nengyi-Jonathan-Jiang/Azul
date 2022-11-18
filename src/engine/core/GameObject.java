@@ -1,8 +1,9 @@
 package engine.core;
 
-import engine.components.Component;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
@@ -11,10 +12,9 @@ import java.util.stream.Collectors;
 public class GameObject {
     protected final Map<String, Component> componentMap;
     protected final List<Component> componentList;
-
+    protected final List<GameObject> children;
     protected Vec2 position, size;
     protected GameObject parent;
-    protected final List<GameObject> children;
 
     public GameObject(Component... components) {
         this(Vec2.zero, components);
@@ -43,6 +43,13 @@ public class GameObject {
         } else {
             return parent.getAbsolutePosition().plus(position);
         }
+    }
+
+    /**
+     * Sets the absolute position of the GameObject
+     */
+    public final GameObject setAbsolutePosition(Vec2 position) {
+        return setPosition(position.minus(parent == null ? Vec2.zero : parent.getAbsolutePosition()));
     }
 
     /**
@@ -81,10 +88,25 @@ public class GameObject {
     }
 
     /**
+     * Set the position relative to the parent gameObject
+     */
+    public final GameObject setPosition(Vec2 position) {
+        this.position = position;
+        return this;
+    }
+
+    /**
      * @return position of top left corner relative to the parent gameObject
      */
     public final Vec2 getTopLeft() {
         return position.plus(getTopLeftOffset());
+    }
+
+    /**
+     * Set the top left corner relative to the parent gameObject
+     */
+    public final GameObject setTopLeft(Vec2 position) {
+        return setPosition(position.minus(getTopLeftOffset()));
     }
 
     /**
@@ -95,6 +117,13 @@ public class GameObject {
     }
 
     /**
+     * Set the top right corner relative to the parent gameObject
+     */
+    public final GameObject setTopRight(Vec2 position) {
+        return setPosition(position.minus(getTopRightOffset()));
+    }
+
+    /**
      * @return position of bottom left corner relative to the parent gameObject
      */
     public final Vec2 getBottomLeft() {
@@ -102,10 +131,24 @@ public class GameObject {
     }
 
     /**
+     * Set the bottom left corner relative to the parent gameObject
+     */
+    public final GameObject setBottomLeft(Vec2 position) {
+        return setPosition(position.minus(getBottomLeftOffset()));
+    }
+
+    /**
      * @return position of bottom left corner relative to the parent gameObject
      */
     public final Vec2 getBottomRight() {
         return position.plus(getBottomRightOffset());
+    }
+
+    /**
+     * Set the bottom right corner relative to the parent gameObject
+     */
+    public final GameObject setBottomRight(Vec2 position) {
+        return setPosition(position.minus(getBottomRightOffset()));
     }
 
     /**
@@ -134,49 +177,6 @@ public class GameObject {
      */
     public final Vec2 getBottomRightOffset() {
         return size.scaledBy(.5, .5);
-    }
-
-    /**
-     * Set the position relative to the parent gameObject
-     */
-    public final GameObject setPosition(Vec2 position) {
-        this.position = position;
-        return this;
-    }
-
-    /**
-     * Sets the absolute position of the GameObject
-     */
-    public final GameObject setAbsolutePosition(Vec2 position){
-        return setPosition(position.minus(parent == null ? Vec2.zero : parent.getAbsolutePosition()));
-    }
-
-    /**
-     * Set the top left corner relative to the parent gameObject
-     */
-    public final GameObject setTopLeft(Vec2 position) {
-        return setPosition(position.minus(getTopLeftOffset()));
-    }
-
-    /**
-     * Set the top right corner relative to the parent gameObject
-     */
-    public final GameObject setTopRight(Vec2 position) {
-        return setPosition(position.minus(getTopRightOffset()));
-    }
-
-    /**
-     * Set the bottom left corner relative to the parent gameObject
-     */
-    public final GameObject setBottomLeft(Vec2 position) {
-        return setPosition(position.minus(getBottomLeftOffset()));
-    }
-
-    /**
-     * Set the bottom right corner relative to the parent gameObject
-     */
-    public final GameObject setBottomRight(Vec2 position) {
-        return setPosition(position.minus(getBottomRightOffset()));
     }
 
     /**
@@ -245,11 +245,6 @@ public class GameObject {
         setParent(null);
     }
 
-    private void setParent(GameObject object) {
-        if (parent != null) parent.children.remove(this);
-        parent = object;
-    }
-
     public GameObject addChild(GameObject object) {
         object.setParent(this);
         children.add(object);
@@ -284,5 +279,10 @@ public class GameObject {
 
     public final GameObject getParent() {
         return parent;
+    }
+
+    private void setParent(GameObject object) {
+        if (parent != null) parent.children.remove(this);
+        parent = object;
     }
 }

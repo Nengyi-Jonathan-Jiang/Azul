@@ -3,11 +3,10 @@ package game.scenes;
 import engine.core.AbstractScene;
 import engine.core.GameCanvas;
 import engine.core.Vec2;
+import game.App;
 import game.backend.Factory;
 import game.backend.Game;
 import game.backend.Tile;
-
-import game.App;
 import game.util.PositionAnimation;
 
 import java.util.Collections;
@@ -15,14 +14,13 @@ import java.util.List;
 
 public class TileDistributionScene extends AbstractScene {
     private final Game game;
+    public int currentFactory = 0;
+    public int tileDistributionCooldown = 0;
+    public int elapsedTime = 0;
 
     public TileDistributionScene(Game game) {
         this.game = game;
     }
-
-    public int currentFactory = 0;
-    public int tileDistributionCooldown = 0;
-    public int elapsedTime = 0;
 
     @Override
     public void onExecutionStart() {
@@ -35,11 +33,11 @@ public class TileDistributionScene extends AbstractScene {
 
         elapsedTime++;
 
-        if(currentFactory >= 4 * factories.size()) return;
+        if (currentFactory >= 4 * factories.size()) return;
 
         game.getMiddle().positionFactories(elapsedTime * .006);
 
-        if(tileDistributionCooldown != 0){
+        if (tileDistributionCooldown != 0) {
             tileDistributionCooldown--;
             return;
         }

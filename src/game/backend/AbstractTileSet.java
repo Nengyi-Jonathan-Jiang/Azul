@@ -13,44 +13,44 @@ public abstract class AbstractTileSet {
     protected final GameObject gameObject;
 
     // The child classes must create
-    public AbstractTileSet(){
+    public AbstractTileSet() {
         tiles = new TreeMap<>();
         gameObject = createGameObject();
     }
 
     abstract protected GameObject createGameObject();
 
-    public void addTile(Tile t){
-        if(!tiles.containsKey(t.getColor())){
+    public void addTile(Tile t) {
+        if (!tiles.containsKey(t.getColor())) {
             tiles.put(t.getColor(), new ArrayList<>());
         }
         tiles.get(t.getColor()).add(t);
         gameObject.addChild(t.getGameObject());
     }
 
-    public void addTiles(List<Tile> lst){
-        for(Tile t : lst) addTile(t);
+    public void addTiles(List<Tile> lst) {
+        for (Tile t : lst) addTile(t);
     }
 
-    public List<Tile> getTilesOfColor(Tile.TileColor color){
+    public List<Tile> getTilesOfColor(Tile.TileColor color) {
         return tiles.getOrDefault(color, new ArrayList<>());
     }
 
-    public List<Tile> removeTilesOfColor(Tile.TileColor color){
+    public List<Tile> removeTilesOfColor(Tile.TileColor color) {
         return tiles.remove(color);
     }
 
-    public List<Tile> getAllTiles(){
+    public List<Tile> getAllTiles() {
         return tiles.values().stream().flatMap(List::stream).collect(Collectors.toList());
     }
 
-    public List<Tile> removeAllTiles(){
+    public List<Tile> removeAllTiles() {
         List<Tile> res = getAllTiles();
         tiles.clear();
         return res;
     }
 
-    public GameObject getGameObject(){
+    public GameObject getGameObject() {
         return gameObject;
     }
 }

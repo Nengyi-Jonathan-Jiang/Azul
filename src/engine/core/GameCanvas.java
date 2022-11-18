@@ -6,18 +6,20 @@ import java.awt.image.BufferedImage;
 
 /**
  * A double-buffered canvas on which to draw stuff.
+ *
  * @noinspection UnusedReturnValue, unused
  */
 public class GameCanvas extends JPanel {
-    private AbstractScene currScene = null;
     public Graphics2D graphics = null;
+    private AbstractScene currScene = null;
 
-    public GameCanvas(int width, int height){
+    public GameCanvas(int width, int height) {
         setPreferredSize(new Dimension(width, height));
     }
 
     /**
      * Repaints the canvas, using the {@link AbstractScene#draw} method of the {@link AbstractScene} supplied
+     *
      * @param a The function to call to paint the canvas
      */
     public void repaint(AbstractScene a) {
@@ -33,7 +35,7 @@ public class GameCanvas extends JPanel {
         super.paint(g);
         graphics = (Graphics2D) g;
 
-        if(currScene != null) {
+        if (currScene != null) {
             graphics.setRenderingHint(
                     RenderingHints.KEY_TEXT_ANTIALIASING,
                     RenderingHints.VALUE_TEXT_ANTIALIAS_ON
@@ -55,76 +57,90 @@ public class GameCanvas extends JPanel {
 
     // Canvas functions
 
-    public GameCanvas setColor(int r, int g, int b){
+    public GameCanvas setColor(int r, int g, int b) {
         return setColor(r, g, b, 1.0);
     }
-    public GameCanvas setColor(int r, int g, int b, float a){
+
+    public GameCanvas setColor(int r, int g, int b, float a) {
         return setColor(new Color(r, g, b, a * 255));
     }
-    public GameCanvas setColor(float r, float g, float b){
+
+    public GameCanvas setColor(float r, float g, float b) {
         return setColor(r, g, b, 1.0);
     }
-    public GameCanvas setColor(double r, double g, double b, double a){
-        return setColor(new Color((float)r, (float)g, (float)b, (float)a));
+
+    public GameCanvas setColor(double r, double g, double b, double a) {
+        return setColor(new Color((float) r, (float) g, (float) b, (float) a));
     }
-    public GameCanvas setColor(Color color){
+
+    public GameCanvas setColor(Color color) {
         graphics.setColor(color);
         return this;
     }
 
-    public GameCanvas drawImage(BufferedImage img, Vec2 position, Vec2 size){
+    public GameCanvas drawImage(BufferedImage img, Vec2 position, Vec2 size) {
         return drawImage(img, position, size.x(), size.y());
     }
-    public GameCanvas drawImage(BufferedImage img, Vec2 position, double width, double height){
+
+    public GameCanvas drawImage(BufferedImage img, Vec2 position, double width, double height) {
         return drawImage(img, position.x(), position.y(), width, height);
     }
-    public GameCanvas drawImage(BufferedImage img, double x, double y, Vec2 size){
+
+    public GameCanvas drawImage(BufferedImage img, double x, double y, Vec2 size) {
         return drawImage(img, x, y, size.x(), size.y());
     }
-    public GameCanvas drawImage(BufferedImage img, double x, double y, double width, double height){
-        graphics.drawImage(img, (int)x, (int)y, (int)width, (int) height, null);
+
+    public GameCanvas drawImage(BufferedImage img, double x, double y, double width, double height) {
+        graphics.drawImage(img, (int) x, (int) y, (int) width, (int) height, null);
         return this;
     }
 
-    public GameCanvas drawRect(Vec2 position, Vec2 size){
+    public GameCanvas drawRect(Vec2 position, Vec2 size) {
         return drawRect(position, size.x(), size.y());
     }
-    public GameCanvas drawRect(Vec2 position, double width, double height){
+
+    public GameCanvas drawRect(Vec2 position, double width, double height) {
         return drawRect(position.x(), position.y(), width, height);
     }
-    public GameCanvas drawRect(double x, double y, Vec2 size){
+
+    public GameCanvas drawRect(double x, double y, Vec2 size) {
         return drawRect(x, y, size.x(), size.y());
     }
-    public GameCanvas drawRect(double x, double y, double width, double height){
-        graphics.drawRect((int)x, (int)y, (int)width, (int) height);
+
+    public GameCanvas drawRect(double x, double y, double width, double height) {
+        graphics.drawRect((int) x, (int) y, (int) width, (int) height);
         return this;
     }
 
-    public GameCanvas fillRect(Vec2 position, Vec2 size){
+    public GameCanvas fillRect(Vec2 position, Vec2 size) {
         return fillRect(position, size.x(), size.y());
     }
-    public GameCanvas fillRect(Vec2 position, double width, double height){
+
+    public GameCanvas fillRect(Vec2 position, double width, double height) {
         return fillRect(position.x(), position.y(), width, height);
     }
-    public GameCanvas fillRect(double x, double y, Vec2 size){
+
+    public GameCanvas fillRect(double x, double y, Vec2 size) {
         return fillRect(x, y, size.x(), size.y());
     }
-    public GameCanvas fillRect(double x, double y, double width, double height){
-        graphics.fillRect((int)x, (int)y, (int)width, (int) height);
+
+    public GameCanvas fillRect(double x, double y, double width, double height) {
+        graphics.fillRect((int) x, (int) y, (int) width, (int) height);
         return this;
     }
 
-    public GameCanvas setDrawFont(Font font){
+    public GameCanvas setDrawFont(Font font) {
         graphics.setFont(font);
         return this;
     }
 
 
-    public GameCanvas drawText(String text, Vec2 position){
+    public GameCanvas drawText(String text, Vec2 position) {
         return drawText(text, position.x(), position.y());
     }
-    public GameCanvas drawText(String text, double x, double y){
-        graphics.drawString(text, (int)x, (int)y);
+
+    public GameCanvas drawText(String text, double x, double y) {
+        graphics.drawString(text, (int) x, (int) y);
         return this;
     }
 }

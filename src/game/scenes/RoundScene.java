@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public class RoundScene extends AbstractScene {
     private final Game game;
 
-    public RoundScene(Game game){
+    public RoundScene(Game game) {
         this.game = game;
     }
 
@@ -24,46 +24,47 @@ public class RoundScene extends AbstractScene {
         AtomicInteger startingPlayer = new AtomicInteger(0);
 
         return concatIterators(
-            makeIterator(
-                // Figure out first player
-                new ActionScene(() -> {
-                    List<Player> players = game.getPlayers();
-                    for(int i = 0; i < players.size(); i++){
-                        if(players.get(i).hasFirstPlayerTile()){
-                            System.out.println(players.get(i).getName() + " has first player tile");
-                            startingPlayer.set(i);
-                            Tile t = players.get(i).removeFirstPlayerTile();
-                            PositionAnimation.animate(t.getGameObject(), () -> game.getMiddle().getCenter().addFirstPlayerTile(t), 10);
-                            return;
-                        }
-                    }
-                    throw new Error("Could not find first player tile");
-                }),
-                new WaitScene(game, 10),
-                // Distribute tiles
-                new TileDistributionScene(game)
-            ),
-            // Player turns
-            makeLoopIterator(
-                new Supplier<>() {
-                    int player = 0;
-                    @Override
-                    public AbstractScene get() {
-                        return groupScenes(
-                            new PlayerTurnScene(game, game.getPlayers().get((player++ + startingPlayer.get()) % game.getPlayers().size())),
-                            new WaitScene(game, 50)
-                        );
-                    }
-                },
+                makeIterator(
+                        // Figure out first player
+                        new ActionScene(() -> {
+                            List<Player> players = game.getPlayers();
+                            for (int i = 0; i < players.size(); i++) {
+                                if (players.get(i).hasFirstPlayerTile()) {
+                                    System.out.println(players.get(i).getName() + " has first player tile");
+                                    startingPlayer.set(i);
+                                    Tile t = players.get(i).removeFirstPlayerTile();
+                                    PositionAnimation.animate(t.getGameObject(), () -> game.getMiddle().getCenter().addFirstPlayerTile(t), 10);
+                                    return;
+                                }
+                            }
+                            throw new Error("Could not find first player tile");
+                        }),
+                        new WaitScene(game, 10),
+                        // Distribute tiles
+                        new TileDistributionScene(game)
+                ),
+                // Player turns
+                makeLoopIterator(
+                        new Supplier<>() {
+                            int player = 0;
 
-                () -> !(
-                        game.getMiddle().getFactories().stream().map(AbstractTileSet::getAllTiles).allMatch(List::isEmpty)
-                        && game.getMiddle().getCenter().getAllTiles().isEmpty()
-                )
-            ),
-            // Scoring
+                            @Override
+                            public AbstractScene get() {
+                                return groupScenes(
+                                        new PlayerTurnScene(game, game.getPlayers().get((player++ + startingPlayer.get()) % game.getPlayers().size())),
+                                        new WaitScene(game, 50)
+                                );
+                            }
+                        },
 
-            makeLoopIterator(game.getPlayers(), p -> new ScoringScene(game, p))
+                        () -> !(
+                                game.getMiddle().getFactories().stream().map(AbstractTileSet::getAllTiles).allMatch(List::isEmpty)
+                                        && game.getMiddle().getCenter().getAllTiles().isEmpty()
+                        )
+                ),
+                // Scoring
+
+                makeLoopIterator(game.getPlayers(), p -> new ScoringScene(game, p))
         );
     }
 }

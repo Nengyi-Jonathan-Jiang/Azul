@@ -17,38 +17,38 @@ public class FloorLine implements ILine {
 
     private final GameObject gameObject;
 
-    public FloorLine(){
+    public FloorLine() {
         tiles = new ArrayList<>();
         gameObject = new FloorLineGameObject();
         unHighlight();
     }
 
-    public void addTile(Tile t){
+    public void addTile(Tile t) {
         tiles.add(t);
         gameObject.addChild(t.getGameObject());
     }
 
-    public void highlight(){
+    public void highlight() {
         gameObject.getComponent(RectRendererComponent.class).setBorderColor(Style.HL_COLOR);
         gameObject.getComponent(RectRendererComponent.class).enable();
     }
 
-    public void highlight2(){
+    public void highlight2() {
         gameObject.getComponent(RectRendererComponent.class).setBorderColor(Style.HL2_COLOR);
         gameObject.getComponent(RectRendererComponent.class).enable();
     }
 
-    public void unHighlight(){
+    public void unHighlight() {
         gameObject.getComponent(RectRendererComponent.class).disable();
     }
 
-    public List<Tile> removeAll(){
+    public List<Tile> removeAll() {
         List<Tile> res = new ArrayList<>(tiles);
         tiles.clear();
         return res;
     }
 
-    public boolean isFull(){
+    public boolean isFull() {
         return tiles.size() == deductions.length;
     }
 
@@ -57,15 +57,15 @@ public class FloorLine implements ILine {
         return true;
     }
 
-    public int getDeduction(){
+    public int getDeduction() {
         int res = 0;
-        for(int i = 0; i < tiles.size(); i++){
+        for (int i = 0; i < tiles.size(); i++) {
             res += deductions[i];
         }
         return res;
     }
 
-    public GameObject getGameObject(){
+    public GameObject getGameObject() {
         return gameObject;
     }
 }

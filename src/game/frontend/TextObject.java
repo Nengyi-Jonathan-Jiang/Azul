@@ -9,11 +9,11 @@ import engine.core.Vec2;
 import game.Style;
 
 public class TextObject extends GameObject {
-    public TextObject(String text){
+    public TextObject(String text) {
         this(text, new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_CENTER));
     }
 
-    public TextObject(String text, TextStyle style){
+    public TextObject(String text, TextStyle style) {
         super(
                 new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
                 new TextRendererComponent(text, style),
@@ -22,11 +22,11 @@ public class TextObject extends GameObject {
         setText(text);
     }
 
-    public RectRendererComponent getRectComponent(){
+    public RectRendererComponent getRectComponent() {
         return getComponent(RectRendererComponent.class);
     }
 
-    public void setText(String text){
+    public void setText(String text) {
         getComponent(TextRendererComponent.class).setText(text);
         Vec2 TEXT_SIZE = getComponent(TextRendererComponent.class)
                 .getRenderedSize()

@@ -1,12 +1,17 @@
 package game.scenes;
 
 import engine.components.*;
-import engine.core.*;
-import game.*;
-import game.backend.*;
-
-import java.awt.Color;
+import engine.core.AbstractScene;
+import engine.core.GameCanvas;
+import engine.core.GameObject;
+import engine.core.Vec2;
 import engine.input.MouseEvent;
+import game.App;
+import game.Style;
+import game.backend.Game;
+import game.backend.Player;
+
+import java.awt.*;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -14,11 +19,11 @@ import java.util.stream.IntStream;
 public class TitleScene extends AbstractScene {
     private final GameObject[] playerSelectButtons;
     private final GameObject startButton;
-    private int numPlayers;
     private final GameObject gObject;
+    private int numPlayers;
     private boolean finished = false;
 
-    public TitleScene(){
+    public TitleScene() {
         // The base game object
         gObject = new GameObject(new Vec2(App.WIDTH, App.HEIGHT));
         gObject.setTopLeft(Vec2.zero);
@@ -42,22 +47,22 @@ public class TitleScene extends AbstractScene {
 
         // Player select buttons - the player will click on these
         playerSelectButtons = new GameObject[3];
-        for(int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             playerSelectButtons[i] = new GameObject(
-                TEXT_SIZE.scaledBy(.35 * (i - 1), 1.5),
-                TEXT_SIZE.scaledBy(.3, 1.),
-                new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
-                new TextRendererComponent(i + 2 + "", new TextStyle(Style.font_large, Style.FG_COLOR, TextStyle.ALIGN_CENTER)),
-                new ButtonComponent()
+                    TEXT_SIZE.scaledBy(.35 * (i - 1), 1.5),
+                    TEXT_SIZE.scaledBy(.3, 1.),
+                    new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
+                    new TextRendererComponent(i + 2 + "", new TextStyle(Style.font_large, Style.FG_COLOR, TextStyle.ALIGN_CENTER)),
+                    new ButtonComponent()
             );
         }
 
         startButton = new GameObject(
-            TEXT_SIZE.scaledBy(0, 3),
-            TEXT_SIZE,
-            new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
-            new TextRendererComponent("Start Game", new TextStyle(Style.font_large, Style.FG_COLOR, TextStyle.ALIGN_CENTER)),
-            new ButtonComponent()
+                TEXT_SIZE.scaledBy(0, 3),
+                TEXT_SIZE,
+                new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
+                new TextRendererComponent("Start Game", new TextStyle(Style.font_large, Style.FG_COLOR, TextStyle.ALIGN_CENTER)),
+                new ButtonComponent()
         );
 
         gObject.addChildren(background, logo, playerSelectText);
@@ -67,10 +72,9 @@ public class TitleScene extends AbstractScene {
         selectNumPlayers(2);
     }
 
-    private void selectNumPlayers(int idx){
-        for(int i = 0; i < 3; i++){
+    private void selectNumPlayers(int idx) {
+        for (int i = 0; i < 3; i++) {
             RectRendererComponent r = playerSelectButtons[i].getComponent(RectRendererComponent.class);
-            TextRendererComponent t = playerSelectButtons[i].getComponent(TextRendererComponent.class);
             Color c = i == idx ? Style.HL_COLOR : Style.FG_COLOR;
             r.setBorderColor(c);
         }
@@ -79,10 +83,10 @@ public class TitleScene extends AbstractScene {
 
     @Override
     public void onMouseClick(MouseEvent me) {
-        if(finished |= startButton.getComponent(ButtonComponent.class).contains(me.position)) return;
+        if (finished |= startButton.getComponent(ButtonComponent.class).contains(me.position)) return;
 
-        for(int i = 0; i < 3; i++){
-            if(playerSelectButtons[i].getComponent(ButtonComponent.class).contains(me.position)){
+        for (int i = 0; i < 3; i++) {
+            if (playerSelectButtons[i].getComponent(ButtonComponent.class).contains(me.position)) {
                 selectNumPlayers(i);
                 return;
             }
@@ -102,7 +106,7 @@ public class TitleScene extends AbstractScene {
     @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
         return AbstractScene.makeIterator(new GameScene(new Game(
-            (IntStream.range(0, numPlayers)).mapToObj(i -> new Player("Player " + (i + 1), i)).collect(Collectors.toList())
+                (IntStream.range(0, numPlayers)).mapToObj(i -> new Player("Player " + (i + 1), i)).collect(Collectors.toList())
         )));
     }
 }

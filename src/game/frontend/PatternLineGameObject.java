@@ -4,19 +4,19 @@ import engine.components.ButtonComponent;
 import engine.components.RectRendererComponent;
 import engine.core.GameObject;
 import engine.core.Vec2;
+import game.Style;
 import game.backend.PatternLine;
 import game.backend.Tile;
-import game.Style;
 
 public class PatternLineGameObject extends GameObject {
-    public PatternLineGameObject(int row){
+    public PatternLineGameObject(int row) {
         super(
-            new Vec2(
-                (row + 1) * PatternLine.TILE_SPACING,
-                Tile.SIZE
-            ),
-            new RectRendererComponent(Style.HL_COLOR),
-            new ButtonComponent()
+                new Vec2(
+                        (row + 1) * PatternLine.TILE_SPACING,
+                        Tile.SIZE
+                ),
+                new RectRendererComponent(Style.HL_COLOR),
+                new ButtonComponent()
         );
         getComponent(RectRendererComponent.class).disable();
     }

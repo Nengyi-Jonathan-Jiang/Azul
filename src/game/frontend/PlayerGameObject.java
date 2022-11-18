@@ -7,7 +7,7 @@ import engine.core.Vec2;
 public class PlayerGameObject extends GameObject {
     private final GameObject boardObject;
 
-    public PlayerGameObject(String playerName, int playerNum){
+    public PlayerGameObject(String playerName, int playerNum) {
         boardObject = new GameObject(new ImageRendererComponent("Azul Board.jpg", ImageRendererComponent.RenderSpeed.FAST));
         boardObject.setSize(boardObject.getComponent(ImageRendererComponent.class).getImageSize());
 
@@ -16,11 +16,10 @@ public class PlayerGameObject extends GameObject {
 
         setSize(boardObject.getSize().plus(new Vec2(0, textObject.getSize().y)));
 
-        if(playerNum < 2) {
+        if (playerNum < 2) {
             boardObject.setTopLeft(getTopLeftOffset());
             textObject.setBottomLeft(getBottomLeftOffset());
-        }
-        else{
+        } else {
             boardObject.setBottomLeft(getBottomLeftOffset());
             textObject.setTopLeft(getTopLeftOffset());
         }

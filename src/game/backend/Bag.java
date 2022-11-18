@@ -1,18 +1,21 @@
 package game.backend;
-import java.util.*;
 
-public class Bag{
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Bag {
     private final List<Tile> tiles;
     private final List<Tile> returnedTiles;
 
-    public Bag(){
+    public Bag() {
         tiles = new ArrayList<>();
         returnedTiles = new ArrayList<>();
 
-        for(var color : new Tile.TileColor[]{
-            Tile.TileColor.RED, Tile.TileColor.YELLOW, Tile.TileColor.BLACK, Tile.TileColor.BLUE, Tile.TileColor.WHITE
-        }){
-            for(int i = 0; i < 20; i++) {
+        for (var color : new Tile.TileColor[]{
+                Tile.TileColor.RED, Tile.TileColor.YELLOW, Tile.TileColor.BLACK, Tile.TileColor.BLUE, Tile.TileColor.WHITE
+        }) {
+            for (int i = 0; i < 20; i++) {
                 returnedTiles.add(new Tile(color));
             }
         }
@@ -20,9 +23,9 @@ public class Bag{
         refillBack();
     }
 
-    public Tile popTile(){
-        if(tiles.isEmpty()){
-            if(returnedTiles.isEmpty()){
+    public Tile popTile() {
+        if (tiles.isEmpty()) {
+            if (returnedTiles.isEmpty()) {
                 // No more Tiles! OH NO!!!!!! WHAT SHALL WE DO????
                 // We throw an obnoxious error, obviously
                 // At least it isn't a null pointer exception
@@ -37,11 +40,11 @@ public class Bag{
         return tiles.remove(tiles.size() - 1);
     }
 
-    public void returnTile(Tile t){
+    public void returnTile(Tile t) {
         returnedTiles.add(t);
     }
-  
-    public void refillBack(){
+
+    public void refillBack() {
         tiles.addAll(returnedTiles);
         returnedTiles.clear();
         Collections.shuffle(tiles);

@@ -1,36 +1,21 @@
 package game.backend;
+
 import engine.components.ButtonComponent;
 import engine.components.ImageRendererComponent;
 import engine.components.PositionAnimationComponent;
 import engine.components.RectRendererComponent;
 import engine.core.GameObject;
 import engine.core.Vec2;
-
 import game.Style;
 
-public class Tile implements Comparable<Tile>{
+public class Tile implements Comparable<Tile> {
     public static final double SIZE = 40;
     public final static TileColor[] allColors = {TileColor.RED, TileColor.YELLOW, TileColor.WHITE, TileColor.BLUE, TileColor.BLACK};
-
-    @Override
-    public int compareTo(Tile o) {
-        return color.compareTo(o.color);
-    }
-
-    public enum TileColor{
-        FIRST_PLAYER,
-        RED,
-        YELLOW,
-        WHITE,
-        BLUE,
-        BLACK,
-        NONE
-    }
     private final TileColor color;
     private final GameObject gameObj;
 
-    public Tile(TileColor color){
-        if(color == TileColor.NONE){
+    public Tile(TileColor color) {
+        if (color == TileColor.NONE) {
             throw new Error("Cannot instantiate Tile with no color");
         }
 
@@ -46,16 +31,8 @@ public class Tile implements Comparable<Tile>{
         unHighlight();
     }
 
-    public TileColor getColor(){
-        return color;
-    }
-
-    public GameObject getGameObject(){
-        return gameObj;
-    }
-
-    public static String getTileColorName(TileColor color){
-        return switch(color){
+    public static String getTileColorName(TileColor color) {
+        return switch (color) {
             case RED -> "Red";
             case YELLOW -> "Yellow";
             case WHITE -> "White";
@@ -66,11 +43,24 @@ public class Tile implements Comparable<Tile>{
         };
     }
 
-    public void highlight(){
+    @Override
+    public int compareTo(Tile o) {
+        return color.compareTo(o.color);
+    }
+
+    public TileColor getColor() {
+        return color;
+    }
+
+    public GameObject getGameObject() {
+        return gameObj;
+    }
+
+    public void highlight() {
         gameObj.getComponent(RectRendererComponent.class).enable();
     }
 
-    public void unHighlight(){
+    public void unHighlight() {
         gameObj.getComponent(RectRendererComponent.class).disable();
     }
 
@@ -79,11 +69,21 @@ public class Tile implements Comparable<Tile>{
         return "Tile{" + getTileColorName(color) + '}';
     }
 
-    public boolean isFirstPlayerMarker(){
+    public boolean isFirstPlayerMarker() {
         return color == TileColor.FIRST_PLAYER;
     }
 
-    public boolean isColorTile(){
+    public boolean isColorTile() {
         return !isFirstPlayerMarker();
+    }
+
+    public enum TileColor {
+        FIRST_PLAYER,
+        RED,
+        YELLOW,
+        WHITE,
+        BLUE,
+        BLACK,
+        NONE
     }
 }

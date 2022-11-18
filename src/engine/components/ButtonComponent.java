@@ -1,28 +1,23 @@
 package engine.components;
 
+import engine.core.Component;
 import engine.core.GameCanvas;
 import engine.core.Vec2;
-
-import java.awt.event.MouseEvent;
 
 /**
  * An abstract Button class.
  */
 public class ButtonComponent extends Component {
     /**
-     * @param e A mouse event.
+     * @param v The position in screen space of the mouse
      * @return Whether the mouse event occurred over the GameObject
      */
-    public final boolean contains(MouseEvent e){
-        Vec2 difference = new Vec2(e.getX(), e.getY()).minus(gameObject.getAbsolutePosition());
-        return difference.map(Math::abs).scaledBy(2).compareCoordinates(gameObject.getSize());
-    }
-
-    public final boolean contains(Vec2 v){
+    public final boolean contains(Vec2 v) {
         Vec2 difference = v.minus(gameObject.getAbsolutePosition());
         return difference.map(Math::abs).scaledBy(2).compareCoordinates(gameObject.getSize());
     }
 
     @Override
-    public void drawAndUpdate(GameCanvas canvas) {}
+    public void drawAndUpdate(GameCanvas canvas) {
+    }
 }

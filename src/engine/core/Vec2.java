@@ -6,12 +6,15 @@ import java.awt.geom.Point2D;
 import java.util.Objects;
 import java.util.function.Function;
 
-/** @noinspection unused*/
+/**
+ * @noinspection unused
+ */
 public final class Vec2 {
+    public static final Vec2 zero = new Vec2(0, 0);
     public final double x;
     public final double y;
 
-    public Vec2(double v){
+    public Vec2(double v) {
         this(v, v);
     }
 
@@ -23,7 +26,49 @@ public final class Vec2 {
     public static Vec2 fromDimension(Dimension d) {
         return new Vec2(d.width, d.height);
     }
-    public Dimension toDimension(){
+
+    public static Vec2 add(Vec2 a, Vec2 b) {
+        return new Vec2(a.x + b.x, a.y + b.y);
+    }
+
+    public static Vec2 sub(Vec2 a, Vec2 b) {
+        return new Vec2(a.x - b.x, a.y - b.y);
+    }
+
+    public static Vec2 scale(Vec2 p, double s) {
+        return new Vec2(p.x * s, p.y * s);
+    }
+
+    public static Vec2 scale(Vec2 p, double x, double y) {
+        return new Vec2(p.x * x, p.y * y);
+    }
+
+    public static double norm(Vec2 p) {
+        return Math.sqrt(p.x * p.x + p.y * p.y);
+    }
+
+    /**
+     * Returns true if a.x <= b.x and a.y <= b.y
+     */
+    public static boolean compareCoordinates(Vec2 a, Vec2 b) {
+        return a.x <= b.x && a.y <= b.y;
+    }
+
+    public static double distance(Vec2 a, Vec2 b) {
+        return sub(a, b).norm();
+    }
+
+    public static double manhattanDistance(Vec2 a, Vec2 b) {
+        return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+    }
+
+    public static Vec2 transform(Vec2 v, AffineTransform transform) {
+        Point2D.Double dst = new Point2D.Double();
+        transform.transform(new Point2D.Double(v.x, v.y), dst);
+        return new Vec2(dst.x, dst.y);
+    }
+
+    public Dimension toDimension() {
         return new Dimension((int) x, (int) y);
     }
 
@@ -51,41 +96,6 @@ public final class Vec2 {
     @Override
     public String toString() {
         return "(" + x + ", " + y + ')';
-    }
-
-    public static Vec2 add(Vec2 a, Vec2 b) {
-        return new Vec2(a.x + b.x, a.y + b.y);
-    }
-
-    public static Vec2 sub(Vec2 a, Vec2 b) {
-        return new Vec2(a.x - b.x, a.y - b.y);
-    }
-
-    public static Vec2 scale(Vec2 p, double s) {
-        return new Vec2(p.x * s, p.y * s);
-    }
-
-    public static Vec2 scale(Vec2 p, double x, double y) {
-        return new Vec2(p.x * x, p.y * y);
-    }
-
-    public static double norm(Vec2 p) {
-        return Math.sqrt(p.x * p.x + p.y * p.y);
-    }
-
-    /**
-     * Returns true if a.x <= b.x and a.y <= b.y
-     */
-    public static boolean compareCoordinates(Vec2 a, Vec2 b){
-        return a.x <= b.x && a.y <= b.y;
-    }
-
-    public static double distance(Vec2 a, Vec2 b) {
-        return sub(a, b).norm();
-    }
-
-    public static double manhattanDistance(Vec2 a, Vec2 b) {
-        return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
     }
 
     public Vec2 plus(Vec2 other) {
@@ -119,23 +129,15 @@ public final class Vec2 {
     /**
      * Returns true if x <= other.x and y <= other.y
      */
-    public boolean compareCoordinates(Vec2 other){
+    public boolean compareCoordinates(Vec2 other) {
         return compareCoordinates(this, other);
     }
 
-    public Vec2 map(Function<Double, Double> func){
+    public Vec2 map(Function<Double, Double> func) {
         return new Vec2(func.apply(x), func.apply(y));
     }
 
-    public static final Vec2 zero = new Vec2(0, 0);
-
-    public static Vec2 transform(Vec2 v, AffineTransform transform){
-        Point2D.Double dst = new Point2D.Double();
-        transform.transform(new Point2D.Double(v.x, v.y), dst);
-        return new Vec2(dst.x, dst.y);
-    }
-
-    public Vec2 transform(AffineTransform transform){
+    public Vec2 transform(AffineTransform transform) {
         return transform(this, transform);
     }
 }

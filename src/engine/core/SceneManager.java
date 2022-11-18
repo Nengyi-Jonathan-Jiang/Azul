@@ -1,10 +1,14 @@
 package engine.core;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
-import java.awt.event.*;
 import engine.input.MouseEvent;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.util.Queue;
+import java.util.*;
 
 /**
  * A class that runs an {@link AbstractScene} in an event loop. An action may schedule <i>pre-actions</i> to be run
@@ -13,22 +17,15 @@ import engine.input.MouseEvent;
  */
 public class SceneManager {
 
-    public static void run(AbstractScene a, GameCanvas component){run(a, component, 16);}
-    public static void run(AbstractScene a, GameCanvas component, int delay){new SceneManager(a, delay, component);}
-
     protected final Deque<Iterator<? extends AbstractScene>> scheduleStack;
     protected final Deque<AbstractScene> sceneStack;
-
     protected final Queue<MouseEvent> mouseEvents = new ArrayDeque<>();
     protected final Queue<KeyEvent> keyEvents = new ArrayDeque<>();
-
     protected final GameCanvas canvas;
-
     protected final int delay;
-
     protected AbstractScene lastExecutedScene;
 
-    protected SceneManager(AbstractScene a, int delay, GameCanvas canvas){
+    protected SceneManager(AbstractScene a, int delay, GameCanvas canvas) {
         sceneStack = new ArrayDeque<>();
         scheduleStack = new ArrayDeque<>();
 
@@ -41,11 +38,11 @@ public class SceneManager {
             public void mousePressed(java.awt.event.MouseEvent e) {
                 MouseEvent.MouseButton button = MouseEvent.MouseButton.NONE;
 
-                if(SwingUtilities.isLeftMouseButton(e)){
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     button = MouseEvent.MouseButton.LEFT;
                     Input.mouseDownL = true;
                 }
-                if(SwingUtilities.isRightMouseButton(e)){
+                if (SwingUtilities.isRightMouseButton(e)) {
                     button = MouseEvent.MouseButton.RIGHT;
                     Input.mouseDownR = true;
                 }
@@ -55,8 +52,8 @@ public class SceneManager {
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) Input.mouseDownL = false;
-                if(SwingUtilities.isRightMouseButton(e)) Input.mouseDownR = false;
+                if (SwingUtilities.isLeftMouseButton(e)) Input.mouseDownL = false;
+                if (SwingUtilities.isRightMouseButton(e)) Input.mouseDownR = false;
             }
         });
 
@@ -74,8 +71,9 @@ public class SceneManager {
             }
         });
 
-        scheduleAction(new AbstractScene(){
-            @Override public Iterator<AbstractScene> getScenesBefore() {
+        scheduleAction(new AbstractScene() {
+            @Override
+            public Iterator<AbstractScene> getScenesBefore() {
                 return Collections.singletonList(a).iterator();
             }
         });
@@ -83,50 +81,55 @@ public class SceneManager {
         run();
     }
 
-    protected void run(){
+    public static void run(AbstractScene a, GameCanvas component) {
+        run(a, component, 16);
+    }
+
+    public static void run(AbstractScene a, GameCanvas component, int delay) {
+        new SceneManager(a, delay, component);
+    }
+
+    protected void run() {
         new Thread(() -> {
-            while(true){
-                if(sceneStack.isEmpty()) break;
+            while (true) {
+                if (sceneStack.isEmpty()) break;
 
                 AbstractScene currentScene = sceneStack.peekFirst();
                 checkExecutionStart(currentScene);
 
-                if(currentScene.isFinished()){
+                if (currentScene.isFinished()) {
                     // Finish this action
                     currentScene.onExecutionEnd();
                     // Remove action from stack
                     sceneStack.pop();
 
                     Iterator<? extends AbstractScene> scenesAfter = currentScene.getScenesAfter();
-                    if(scenesAfter != null && scenesAfter.hasNext()){
+                    if (scenesAfter != null && scenesAfter.hasNext()) {
                         scheduleAction(new AbstractScene() {
                             @Override
                             public Iterator<? extends AbstractScene> getScenesBefore() {
                                 return scenesAfter;
                             }
                         });
-                    }
-                    else {
+                    } else {
                         // No more actions to execute, quit the event loop
                         if (scheduleStack.isEmpty()) break;
                             // Get the next action
                         else scheduleNextAction();
                     }
-                }
-                else{
+                } else {
                     executeAction(currentScene);
 
-                    try{
+                    try {
                         //noinspection BusyWait
                         Thread.sleep(delay);
-                    }
-                    catch(Exception e){/*Nothing*/}
+                    } catch (Exception e) {/*Nothing*/}
                 }
             }
         }).start();
     }
 
-    protected void scheduleAction(AbstractScene s){
+    protected void scheduleAction(AbstractScene s) {
 
         System.out.println("Scheduled scene " + s.getClass().getName());
 
@@ -135,43 +138,43 @@ public class SceneManager {
         s.onSchedule();
 
         Iterator<? extends AbstractScene> scenesBefore = s.getScenesBefore();
-        if(scenesBefore != null && scenesBefore.hasNext()) {
+        if (scenesBefore != null && scenesBefore.hasNext()) {
             scheduleStack.push(scenesBefore);
             scheduleAction(scenesBefore.next());
         }
     }
 
-    protected void scheduleNextAction(){
-        if(scheduleStack.isEmpty() || sceneStack.isEmpty()) throw new Error("Pop off schedule stack when empty");   //hopefully never happens
+    protected void scheduleNextAction() {
+        if (scheduleStack.isEmpty() || sceneStack.isEmpty())
+            throw new Error("Pop off schedule stack when empty");   //hopefully never happens
 
         Iterator<? extends AbstractScene> schedule = scheduleStack.peekFirst();
 
-        if(schedule != null && schedule.hasNext()){
+        if (schedule != null && schedule.hasNext()) {
             AbstractScene nextScene = schedule.next();
             scheduleAction(nextScene);
-        }
-        else{
+        } else {
             scheduleStack.pop();
         }
     }
 
-    protected void checkExecutionStart(AbstractScene scene){
-        if(scene != lastExecutedScene){
+    protected void checkExecutionStart(AbstractScene scene) {
+        if (scene != lastExecutedScene) {
             scene.onExecutionStart();
             lastExecutedScene = scene;
         }
     }
 
-    protected void executeAction(AbstractScene scene){
+    protected void executeAction(AbstractScene scene) {
         Point mousePosition = canvas.getMousePosition(true);
-        if(mousePosition != null) {
+        if (mousePosition != null) {
             Input.mousePosition = new Vec2(mousePosition.x, mousePosition.y);
         }
 
-        while(!mouseEvents.isEmpty()){
+        while (!mouseEvents.isEmpty()) {
             scene.onMouseClick(mouseEvents.remove());
         }
-        while(!keyEvents.isEmpty()){
+        while (!keyEvents.isEmpty()) {
             scene.onKeyPress(keyEvents.remove());
         }
         scene.update();

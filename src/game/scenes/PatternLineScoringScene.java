@@ -1,7 +1,10 @@
 package game.scenes;
 
 import engine.core.AbstractScene;
-import game.backend.*;
+import game.backend.Game;
+import game.backend.Player;
+import game.backend.Tile;
+import game.backend.WallScoreResult;
 
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicReference;
@@ -22,8 +25,8 @@ class PatternLineScoringScene extends AbstractScene {
     @Override
     public Iterator<? extends AbstractScene> getScenesBefore() {
         return makeIterator(
-            new ScoringTileMovementScene(row, player, game, placedTile, placeTileResult),
-            new ScoreMarkerMovementScene(game, player, placedTile, placeTileResult)
+                new ScoringTileMovementScene(row, player, game, placedTile, placeTileResult),
+                new ScoreMarkerMovementScene(game, player, placedTile, placeTileResult)
         );
     }
 }

@@ -10,7 +10,8 @@ import java.util.Objects;
 
 public class UnhighlightWallScene extends AbstractScene {
     private final Player player;
-    public UnhighlightWallScene(Player player){
+
+    public UnhighlightWallScene(Player player) {
         this.player = player;
     }
 

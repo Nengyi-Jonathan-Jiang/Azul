@@ -16,8 +16,6 @@ public class Player implements Comparable<Player> {
     private final PatternLines patternLines;
     private final FloorLine floorLine;
     private final Wall wall;
-    private final Hand hand;
-
     private Tile firstPlayerTile = null;
 
     public Player(String playerName, int playerNum) {
@@ -42,17 +40,7 @@ public class Player implements Comparable<Player> {
         scoreMarker = new ScoreMarker(this);
         boardObject.addChild(scoreMarker.getGameObject());
 
-        hand = new Hand();
-        boardObject.addChild(hand.getGameObject());
-
-        switch (playerNum) {
-            case 0 -> hand.getGameObject().setTopLeft(boardObject.getTopRightOffset().scaledBy(1.3, 0.4));
-            case 1 -> hand.getGameObject().setTopRight(boardObject.getTopLeftOffset().scaledBy(1.3, 0.4));
-            case 2 -> hand.getGameObject().setBottomRight(boardObject.getBottomLeftOffset().scaledBy(1.3, 0.4));
-            default -> hand.getGameObject().setBottomLeft(boardObject.getBottomRightOffset().scaledBy(1.3, 0.4));
-        }
-
-        if(playerNum == 0){
+        if (playerNum == 0) {
             setFirstPlayerTile(new Tile(Tile.TileColor.FIRST_PLAYER));
         }
     }
@@ -86,7 +74,7 @@ public class Player implements Comparable<Player> {
             }
         }
 
-        if(res.isEmpty()) return Collections.singletonList(floorLine);
+        if (res.isEmpty()) return Collections.singletonList(floorLine);
 
         return res;
     }
@@ -99,10 +87,6 @@ public class Player implements Comparable<Player> {
         return o.getScoreMarker().getScore() - this.scoreMarker.getScore();
     }
 
-    public Hand getHand() {
-        return hand;
-    }
-
     public FloorLine getFloorLine() {
         return floorLine;
     }
@@ -113,11 +97,11 @@ public class Player implements Comparable<Player> {
         tile.getGameObject().setPosition(new Vec2(52, 278).plus(boardObject.getTopLeftOffset()));
     }
 
-    public boolean hasFirstPlayerTile(){
+    public boolean hasFirstPlayerTile() {
         return firstPlayerTile != null;
     }
 
-    public Tile removeFirstPlayerTile(){
+    public Tile removeFirstPlayerTile() {
         Tile res = firstPlayerTile;
         firstPlayerTile = null;
         return res;

@@ -5,6 +5,7 @@ import engine.core.GameObject;
 import game.backend.*;
 import game.util.PositionAnimation;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -37,5 +38,10 @@ class ScoringTileMovementScene extends AbstractScene {
                 () -> placeTileResult.set(player.getWall().placeTile(row, placedTile.get())),
                 10
         );
+    }
+
+    @Override
+    public Iterator<? extends AbstractScene> getScenesAfter() {
+        return makeIterator(new WaitScene(game, 10));
     }
 }

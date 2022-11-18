@@ -101,7 +101,6 @@ public class TitleScene extends AbstractScene {
 
     @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
-        // TODO: after GameScene is implemented, change to return a GameScene
         return AbstractScene.makeIterator(new GameScene(new Game(
             (IntStream.range(0, numPlayers)).mapToObj(i -> new Player("Player " + (i + 1), i)).collect(Collectors.toList())
         )));

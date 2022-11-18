@@ -12,7 +12,7 @@ class PatternLineScoringScene extends AbstractScene {
     private final Integer row;
     private final Game game;
     private final Player player;
-    AtomicReference<WallScoreResult> placeTileResult;
+    AtomicReference<WallScoreResult> placeTileResult = new AtomicReference<>();
     AtomicReference<Tile> placedTile = new AtomicReference<>();
 
     public PatternLineScoringScene(Game game, Player player, Wall wall, Integer row, List<PatternLine> patternLines) {
@@ -26,15 +26,7 @@ class PatternLineScoringScene extends AbstractScene {
     public Iterator<? extends AbstractScene> getScenesBefore() {
         return makeIterator(
             new ScoringTileMovementScene(row, player, game, placedTile, placeTileResult),
-            new WaitScene(game, 10),
-            new ScoreMarkerMovementScene(player, placedTile.get(), placeTileResult.get()),
-            new WaitScene(game, 40)
+            new ScoreMarkerMovementScene(game, player, placedTile, placeTileResult)
         );
-    }
-
-    @Override
-    public void onExecutionEnd() {  // Unhighlight anything that was highlighted
-        placeTileResult.get().getTiles().forEach(Tile::unHighlight);
-        placedTile.get().unHighlight();
     }
 }

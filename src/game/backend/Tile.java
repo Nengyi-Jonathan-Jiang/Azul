@@ -10,6 +10,7 @@ import game.Style;
 
 public class Tile implements Comparable<Tile>{
     public static final double SIZE = 40;
+    public final static TileColor[] allColors = {TileColor.RED, TileColor.YELLOW, TileColor.WHITE, TileColor.BLUE, TileColor.BLACK};
 
     @Override
     public int compareTo(Tile o) {

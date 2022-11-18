@@ -1,11 +1,13 @@
 package game.scenes;
 
+import engine.core.AbstractScene;
 import game.backend.Game;
 import game.backend.Player;
 import game.backend.Tile;
 import game.backend.WallScoreResult;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -67,7 +69,7 @@ public class BonusCalculationScene extends PanningGameScene {
         return concatIterators(
                 Stream.of(getRowBonuses(), getColBonuses(), getColorBonuses())
                         .flatMap(List::stream)
-                        .map(result -> new ScoreMarkerMovementScene(player, null, result))
+                        .map(result -> new ScoreMarkerMovementScene(game, player, null, new AtomicReference<>(result)))
                         .collect(Collectors.toList())
                         .iterator(),
                 makeIterator(

@@ -6,7 +6,6 @@ import engine.core.GameCanvas;
 import game.scenes.TitleScene;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Iterator;
 
 public class App extends JFrame {

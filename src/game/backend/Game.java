@@ -17,7 +17,6 @@ public class Game {
     private final Bag bag;
     private final Middle middle;
 
-    // Todo: add players argument, must wait for Player class
     public Game(List<Player> players){
         this.players = players;
         this.bag = new Bag();

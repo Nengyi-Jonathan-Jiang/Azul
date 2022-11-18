@@ -8,7 +8,6 @@ import engine.core.Vec2;
 import engine.input.MouseEvent;
 import game.backend.*;
 import game.frontend.TextObject;
-import game.App;
 import game.util.PositionAnimation;
 
 import java.util.List;
@@ -134,9 +133,6 @@ public class FactoryOfferingScene extends PanningGameScene {
         if(selectedTile != null) selectedTile.unHighlight();
         if(availableLines != null) availableLines.forEach(ILine::unHighlight);
     }
-
-    @Override
-    public void onExecutionEnd() {}
 
     private void confirmSelect() {
         if(selectedTiles == null || selectedLine == null) return;

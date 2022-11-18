@@ -4,7 +4,6 @@ package game.frontend;
 
 import engine.components.ImageRendererComponent;
 import engine.components.PositionAnimationComponent;
-import engine.components.ScaledImageRendererComponent;
 import engine.core.GameObject;
 import engine.core.Vec2;
 import game.backend.Game;

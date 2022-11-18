@@ -1,11 +1,7 @@
-import engine.core.AbstractScene;
 import engine.core.GameCanvas;
 import engine.core.SceneManager;
-import engine.core.Vec2;
-import game.App;
 import game.backend.Game;
 import game.backend.Player;
-import game.frontend.TextObject;
 import game.scenes.RankingScene;
 
 import javax.swing.*;

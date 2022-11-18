@@ -2,7 +2,6 @@ package engine.core;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 /**
@@ -12,11 +11,8 @@ import java.awt.image.BufferedImage;
 public class GameCanvas extends JPanel {
     private AbstractScene currScene = null;
     public Graphics2D graphics = null;
-    private final double preferredWidth, preferredHeight;
 
     public GameCanvas(int width, int height){
-        preferredWidth = width;
-        preferredHeight = height;
         setPreferredSize(new Dimension(width, height));
     }
 

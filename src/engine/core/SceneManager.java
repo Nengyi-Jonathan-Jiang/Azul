@@ -1,7 +1,6 @@
 package engine.core;
 
 import java.awt.*;
-import java.awt.geom.NoninvertibleTransformException;
 import java.util.*;
 import javax.swing.*;
 import java.awt.event.*;

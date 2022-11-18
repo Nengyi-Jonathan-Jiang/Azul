@@ -11,9 +11,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-// TODO
 public class BonusCalculationScene extends PanningGameScene {
-    Player player;
+    private final Player player;
     public BonusCalculationScene(Player player, Game game){
         super(game);
         this.player = player;
@@ -24,9 +23,9 @@ public class BonusCalculationScene extends PanningGameScene {
         List<WallScoreResult> res = new ArrayList<>();
 
         Tile[][] pBoard = player.getWall().getGrid();
-        for(int r = 0; r< pBoard.length; r++) {
-            List<Tile> tiles = Arrays.stream(pBoard[r]).filter(Objects::nonNull).collect(Collectors.toList());
-            if(tiles.size() == 5){
+        for (Tile[] value : pBoard) {
+            List<Tile> tiles = Arrays.stream(value).filter(Objects::nonNull).collect(Collectors.toList());
+            if (tiles.size() == 5) {
                 res.add(new WallScoreResult(tiles, 2));
             }
         }

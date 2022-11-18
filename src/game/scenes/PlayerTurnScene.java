@@ -10,7 +10,6 @@ import game.util.PositionAnimation;
 
 import java.util.Iterator;
 
-// TODO
 public class PlayerTurnScene extends AbstractScene {
     public final Game game;
     public final Player player;

@@ -1,9 +1,0 @@
-defaultDuration 20
-startFrame "Tiles/Tile First Player.png"
-frame "Tiles/Tile Black.png"
-frame "Tiles/Tile Blue.png"
-frame "Tiles/Tile Red.png"
-frame "Tiles/Tile White.png"
-frame "Tiles/Tile Yellow.png"
-frame "Tiles/Tile First Player.png" 10
-endFrame "Tiles/Tile First Player.png"

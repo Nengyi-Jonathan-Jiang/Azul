@@ -4,7 +4,6 @@ import engine.components.ImageRendererComponent;
 import engine.core.GameObject;
 import engine.core.Vec2;
 
-// For testing purposes
 public class PlayerGameObject extends GameObject {
     private final GameObject boardObject;
 

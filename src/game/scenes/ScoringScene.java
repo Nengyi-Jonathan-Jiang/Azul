@@ -29,7 +29,6 @@ public class ScoringScene extends AbstractScene {
     @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
         List<PatternLine> patternLines = player.getPatternLines().getLines();
-        Wall wall = player.getWall();
         List<Integer> filledRows = new ArrayList<>();
 
         for(int i = 0; i < 5; i++){
@@ -40,7 +39,7 @@ public class ScoringScene extends AbstractScene {
 
         return concatIterators(
             makeIterator(new WaitScene(game, 10)),
-            makeLoopIterator(filledRows, row -> new PatternLineScoringScene(game, player, wall, row, patternLines)),
+            makeLoopIterator(filledRows, row -> new PatternLineScoringScene(game, player, row)),
             makeIterator(
                 new FloorLineDeductionScene(game, player),
                 new WaitScene(game, 10),

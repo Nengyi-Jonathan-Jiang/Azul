@@ -1,8 +1,5 @@
-import game.backend.Game;
 import game.backend.Player;
 import game.backend.Tile;
-
-import java.util.List;
 
 public class WallCompleteRowTest {
     public static void main(String[] args){

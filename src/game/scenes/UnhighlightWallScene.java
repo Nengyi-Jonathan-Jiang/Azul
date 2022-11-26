@@ -1,9 +1,9 @@
 package game.scenes;
 
 import engine.core.AbstractScene;
-import game.backend.Player;
+import game.backend.player.Player;
 import game.backend.Tile;
-import game.backend.Wall;
+import game.backend.player.Wall;
 
 import java.util.Arrays;
 import java.util.Objects;

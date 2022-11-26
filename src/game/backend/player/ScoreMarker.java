@@ -1,4 +1,4 @@
-package game.backend;
+package game.backend.player;
 
 import engine.components.PositionAnimationComponent;
 import engine.components.RectRendererComponent;

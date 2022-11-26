@@ -1,9 +1,9 @@
 package game.scenes;
 
 import engine.core.AbstractScene;
-import game.backend.AbstractTileSet;
+import game.backend.board.AbstractTileSet;
 import game.backend.Game;
-import game.backend.Player;
+import game.backend.player.Player;
 import game.backend.Tile;
 import game.util.PositionAnimation;
 
@@ -50,8 +50,10 @@ public class RoundScene extends AbstractScene {
 
                             @Override
                             public AbstractScene get() {
+                                Player p = game.getPlayers().get((player++ + startingPlayer.get()) % game.getPlayers().size());
+
                                 return groupScenes(
-                                        new PlayerTurnScene(game, game.getPlayers().get((player++ + startingPlayer.get()) % game.getPlayers().size())),
+                                        p.isHumanPlayer() ? new PlayerTurnScene(game, p) : new ComputerTurnScene(game, p),
                                         new WaitScene(game, 50)
                                 );
                             }

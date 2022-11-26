@@ -10,13 +10,13 @@ import game.util.PositionAnimation;
 
 import java.util.Iterator;
 
-public class PlayerTurnScene extends AbstractScene {
+public class ComputerTurnScene extends AbstractScene {
     public final Game game;
     public final Player player;
     private int animation = 0;
 
 
-    public PlayerTurnScene(Game game, Player player) {
+    public ComputerTurnScene(Game game, Player player) {
         this.game = game;
         this.player = player;
     }
@@ -47,6 +47,6 @@ public class PlayerTurnScene extends AbstractScene {
 
     @Override
     public Iterator<AbstractScene> getScenesAfter() {
-        return makeIterator(new FactoryOfferingScene(game, player));
+        return makeIterator(new ComputerFactoryOfferingScene(game, player));
     }
 }

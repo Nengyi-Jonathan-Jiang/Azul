@@ -3,6 +3,9 @@ package game.scenes;
 import engine.core.AbstractScene;
 import engine.core.GameObject;
 import game.backend.*;
+import game.backend.player.PatternLine;
+import game.backend.player.Player;
+import game.backend.player.WallScoreResult;
 import game.util.PositionAnimation;
 
 import java.util.Iterator;

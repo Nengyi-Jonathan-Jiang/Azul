@@ -11,7 +11,7 @@ import engine.input.MouseEvent;
 import game.App;
 import game.Style;
 import game.backend.Game;
-import game.backend.Player;
+import game.backend.player.Player;
 import game.frontend.TextObject;
 
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
-package game.backend;
+package game.backend.player;
 
 import engine.core.GameObject;
+import game.backend.Tile;
 
 public interface ILine {
     void addTile(Tile t);

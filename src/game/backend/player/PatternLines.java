@@ -1,4 +1,4 @@
-package game.backend;
+package game.backend.player;
 
 import engine.core.GameObject;
 import engine.core.Vec2;

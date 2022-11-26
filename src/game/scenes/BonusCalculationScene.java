@@ -1,10 +1,13 @@
 package game.scenes;
 
+import engine.components.PositionAnimationComponent;
 import engine.core.AbstractScene;
+import engine.core.Vec2;
+import game.App;
 import game.backend.Game;
-import game.backend.Player;
+import game.backend.player.Player;
 import game.backend.Tile;
-import game.backend.WallScoreResult;
+import game.backend.player.WallScoreResult;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -17,7 +20,14 @@ public class BonusCalculationScene extends PanningGameScene {
     public BonusCalculationScene(Player player, Game game) {
         super(game);
         this.player = player;
+    }
 
+    @Override
+    public void onExecutionStart() {
+        game.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(
+                player.getGameObject().getPosition().scaledBy(-1).plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5)),
+                10
+        );
     }
 
     public List<WallScoreResult> getRowBonuses() {
@@ -67,14 +77,13 @@ public class BonusCalculationScene extends PanningGameScene {
     @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
         return concatIterators(
+                makeIterator(new WaitScene(game, 10)),
                 Stream.of(getRowBonuses(), getColBonuses(), getColorBonuses())
                         .flatMap(List::stream)
                         .map(result -> new ScoreMarkerMovementScene(game, player, null, new AtomicReference<>(result)))
                         .collect(Collectors.toList())
                         .iterator(),
-                makeIterator(
-                        new ScoringConfirmationScene(game)
-                )
+                makeIterator(new ScoringConfirmationScene(game))
         );
     }
 }

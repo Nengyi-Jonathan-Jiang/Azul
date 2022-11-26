@@ -1,10 +1,12 @@
-package game.backend;
+package game.backend.board;
 
 import engine.core.GameObject;
 import engine.core.Vec2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Middle {
     private final List<Factory> factories;
@@ -61,5 +63,9 @@ public class Middle {
 
     public GameObject getGameObject() {
         return gameObject;
+    }
+
+    public List<AbstractTileSet> getAllTileSets(){
+        return Stream.concat(factories.stream(), Stream.of(center)).collect(Collectors.toList());
     }
 }

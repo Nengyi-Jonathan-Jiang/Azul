@@ -1,8 +1,9 @@
-package game.backend;
+package game.backend.player;
 
 import engine.components.RectRendererComponent;
 import engine.core.GameObject;
 import game.Style;
+import game.backend.Tile;
 import game.frontend.FloorLineGameObject;
 
 import java.util.ArrayList;
@@ -26,6 +27,26 @@ public class FloorLine implements ILine {
     public void addTile(Tile t) {
         tiles.add(t);
         gameObject.addChild(t.getGameObject());
+    }
+
+    public Tile popTile(){
+        return tiles.remove(tiles.size() - 1);
+    }
+
+    public static int getDeduction(int num){
+        int res = 0;
+        for (int i = 0; i < num && i < deductions.length; i++) {
+            res += deductions[i];
+        }
+        return res;
+    }
+
+    public int getDeduction() {
+        return getDeduction(tiles.size());
+    }
+
+    public int getNumTiles(){
+        return tiles.size();
     }
 
     public void highlight() {
@@ -55,14 +76,6 @@ public class FloorLine implements ILine {
     @Override
     public boolean canAddTile() {
         return true;
-    }
-
-    public int getDeduction() {
-        int res = 0;
-        for (int i = 0; i < tiles.size(); i++) {
-            res += deductions[i];
-        }
-        return res;
     }
 
     public GameObject getGameObject() {

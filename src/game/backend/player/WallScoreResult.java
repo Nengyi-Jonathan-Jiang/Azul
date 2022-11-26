@@ -1,4 +1,6 @@
-package game.backend;
+package game.backend.player;
+
+import game.backend.Tile;
 
 import java.util.List;
 

@@ -4,7 +4,7 @@ import engine.components.ButtonComponent;
 import engine.components.RectRendererComponent;
 import engine.core.GameObject;
 import engine.core.Vec2;
-import game.backend.FloorLine;
+import game.backend.player.FloorLine;
 
 public class FloorLineGameObject extends GameObject {
     public FloorLineGameObject() {

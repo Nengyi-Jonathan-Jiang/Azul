@@ -5,8 +5,8 @@ import engine.core.AbstractScene;
 import engine.core.Vec2;
 import game.App;
 import game.backend.Game;
-import game.backend.PatternLine;
-import game.backend.Player;
+import game.backend.player.PatternLine;
+import game.backend.player.Player;
 
 import java.util.ArrayList;
 import java.util.Iterator;

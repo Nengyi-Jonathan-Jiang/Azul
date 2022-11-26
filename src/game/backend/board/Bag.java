@@ -1,4 +1,6 @@
-package game.backend;
+package game.backend.board;
+
+import game.backend.Tile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,8 +36,6 @@ public class Bag {
             }
             refillBack();
         }
-
-        System.out.println("BAG SIZE: " + (tiles.size() - 1));
 
         return tiles.remove(tiles.size() - 1);
     }

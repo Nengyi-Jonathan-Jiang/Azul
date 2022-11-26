@@ -8,6 +8,11 @@ import engine.core.Input;
 import engine.core.Vec2;
 import engine.input.MouseEvent;
 import game.backend.*;
+import game.backend.board.AbstractTileSet;
+import game.backend.player.FloorLine;
+import game.backend.player.ILine;
+import game.backend.player.PatternLine;
+import game.backend.player.Player;
 import game.frontend.TextObject;
 import game.util.PositionAnimation;
 
@@ -58,10 +63,7 @@ public class FactoryOfferingScene extends PanningGameScene {
         if (me.button != MouseEvent.MouseButton.LEFT) return;
 
         // Handle click on tile
-        for (AbstractTileSet factory : Stream.concat(
-                game.getMiddle().getFactories().stream(),
-                Stream.of(game.getMiddle().getCenter())
-        ).collect(Collectors.toList())) {
+        for (AbstractTileSet factory : game.getMiddle().getAllTileSets()) {
             for (Tile t : factory.getAllTiles()) {
                 if (t.isFirstPlayerMarker()) continue;
                 if (t.getGameObject().getComponent(ButtonComponent.class).contains(me.position)) {

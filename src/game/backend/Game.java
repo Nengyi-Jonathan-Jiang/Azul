@@ -4,6 +4,9 @@ import engine.core.GameCanvas;
 import engine.core.GameObject;
 import engine.core.Vec2;
 import game.App;
+import game.backend.board.Bag;
+import game.backend.board.Middle;
+import game.backend.player.Player;
 import game.frontend.GameGameObject;
 import game.frontend.WorldGameObject;
 

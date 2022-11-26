@@ -1,11 +1,9 @@
-package game.backend;
+package game.backend.board;
 
 import engine.core.GameObject;
+import game.backend.Tile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class AbstractTileSet {
@@ -52,5 +50,9 @@ public abstract class AbstractTileSet {
 
     public GameObject getGameObject() {
         return gameObject;
+    }
+
+    public Set<Tile.TileColor> getColors(){
+        return tiles.keySet();
     }
 }

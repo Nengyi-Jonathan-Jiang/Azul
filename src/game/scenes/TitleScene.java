@@ -9,7 +9,8 @@ import engine.input.MouseEvent;
 import game.App;
 import game.Style;
 import game.backend.Game;
-import game.backend.Player;
+import game.backend.ai.styles.GreedyComputer;
+import game.backend.player.Player;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -106,7 +107,14 @@ public class TitleScene extends AbstractScene {
     @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
         return AbstractScene.makeIterator(new GameScene(new Game(
-                (IntStream.range(0, numPlayers)).mapToObj(i -> new Player("Player " + (i + 1), i)).collect(Collectors.toList())
+                (IntStream.range(0, numPlayers)).mapToObj(
+                        i -> {
+                            if(i + 1 == numPlayers){
+                                return new Player("Jeremy (Bot)", i, new GreedyComputer());
+                            }
+                            return new Player("Player " + (i + 1), i, null);
+                        }
+                ).collect(Collectors.toList())
         )));
     }
 }

@@ -1,7 +1,8 @@
-package game.backend;
+package game.backend.player;
 
 import engine.core.GameObject;
 import engine.core.Vec2;
+import game.backend.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +54,19 @@ public class Wall {
         return col;
     }
 
+    public void removeTile(int row, int col){
+        grid[row][col].getGameObject().removeFromParent();
+        grid[row][col] = null;
+    }
+
     @SuppressWarnings("DuplicatedCode")
     public WallScoreResult placeTile(int row, Tile square) {
         int col = getCol(row, square.getColor());
+        if(grid[row][col] != null){
+            throw new Error("Attempted to overwrite wall tile");
+        }
         grid[row][col] = square;
+
         gameObject.addChild(square.getGameObject());
         square.getGameObject().setTopLeft(new Vec2(col, row).scaledBy(44.2, 45).plus(gameObject.getTopLeftOffset()));
 

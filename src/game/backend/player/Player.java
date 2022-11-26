@@ -1,12 +1,16 @@
-package game.backend;
+package game.backend.player;
 
 import engine.core.GameObject;
 import engine.core.Vec2;
+import game.backend.*;
+import game.backend.ai.ComputerMove;
+import game.backend.ai.PlayStyle;
 import game.frontend.PlayerGameObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Player implements Comparable<Player> {
     private final String name;
@@ -17,9 +21,11 @@ public class Player implements Comparable<Player> {
     private final FloorLine floorLine;
     private final Wall wall;
     private Tile firstPlayerTile = null;
+    private final PlayStyle playStyle;
 
-    public Player(String playerName, int playerNum) {
+    public Player(String playerName, int playerNum, PlayStyle playStyle) {
         name = playerName;
+        this.playStyle = playStyle;
         floorLine = new FloorLine();
         patternLines = new PatternLines();
         wall = new Wall();
@@ -105,5 +111,64 @@ public class Player implements Comparable<Player> {
         Tile res = firstPlayerTile;
         firstPlayerTile = null;
         return res;
+    }
+
+    public boolean isHumanPlayer(){
+        return playStyle == null;
+    }
+
+    public ComputerMove getMove(Game game){
+        if(isHumanPlayer()){
+            throw new Error("Cannot get computed move for physical player");
+        }
+        return playStyle.getMove(this, game);
+    }
+
+    public double whatIfScore(){
+        double max = 0;
+
+        for(int i = 0; i <= 0b11111; i++){
+            int rawScore = 0;
+            double multiplier = 1.0;
+
+            List<Vec2> temporaryPositions = new ArrayList<>();
+
+            for(int r = 0; r < 5; r++){
+                PatternLine line = patternLines.getLine(r);
+                // DO NOT MERGE THESE IF STATEMENTS THEY DO DIFFERENT THINGS
+                if((i & (1 << r)) == 0) continue;
+                if(line.getNumTiles() == 0) break;
+
+                Tile.TileColor lineColor = line.getCurrentTileColor();
+
+                multiplier *= 1. * line.getNumTiles() / line.getCapacity();
+
+                int col = wall.getCol(r, lineColor);
+                temporaryPositions.add(new Vec2(r, col));
+                rawScore += wall.placeTile(r, new Tile(lineColor)).getScoreAdded();
+            }
+
+            for(Vec2 v : temporaryPositions) wall.removeTile((int)v.x, (int)v.y);
+
+            max = Math.max(max, rawScore * multiplier);
+        }
+
+        return max;
+    }
+
+    public double whatIfScore(ILine line, int num, Tile.TileColor color){
+        if(line instanceof FloorLine){
+            return this.whatIfScore()
+                - FloorLine.getDeduction(floorLine.getNumTiles() + num)
+                + floorLine.getDeduction();
+        }
+        PatternLine l = (PatternLine) line;
+
+        int n = Math.min(l.getNumTiles() + num, l.getCapacity());
+        int floor = Math.max(l.getNumTiles() + num - l.getCapacity(), 0);
+
+        return l.runWithNumTiles(n, color, this::whatIfScore)
+                - FloorLine.getDeduction(floorLine.getNumTiles() + floor)
+                + floorLine.getDeduction();
     }
 }

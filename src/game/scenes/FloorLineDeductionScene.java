@@ -3,7 +3,7 @@ package game.scenes;
 import engine.core.AbstractScene;
 import engine.core.GameObject;
 import game.backend.Game;
-import game.backend.Player;
+import game.backend.player.Player;
 import game.backend.Tile;
 import game.util.PositionAnimation;
 

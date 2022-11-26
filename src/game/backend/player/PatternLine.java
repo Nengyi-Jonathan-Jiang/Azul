@@ -1,13 +1,15 @@
-package game.backend;
+package game.backend.player;
 
 import engine.components.RectRendererComponent;
 import engine.core.GameObject;
 import game.Style;
+import game.backend.Tile;
 import game.frontend.PatternLineGameObject;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class PatternLine implements ILine {
@@ -74,5 +76,31 @@ public class PatternLine implements ILine {
 
     public void unHighlight() {
         gameObject.getComponent(RectRendererComponent.class).disable();
+    }
+
+    public int getNumTiles(){
+        return numTiles;
+    }
+
+    public int getCapacity(){
+        return tiles.length;
+    }
+
+    public Tile.TileColor getCurrentTileColor() {
+        return currentTileColor;
+    }
+
+    public <T> T runWithNumTiles(int num, Tile.TileColor color, Supplier<T> callback){
+        int n = numTiles;
+        numTiles = num;
+
+        Tile.TileColor c = currentTileColor;
+        currentTileColor = color;
+
+        T res = callback.get();
+
+        numTiles = n;
+        currentTileColor = c;
+        return res;
     }
 }

@@ -4,7 +4,7 @@ import engine.core.AbstractScene;
 import engine.core.GameCanvas;
 import engine.core.Vec2;
 import game.App;
-import game.backend.Factory;
+import game.backend.board.Factory;
 import game.backend.Game;
 import game.backend.Tile;
 import game.util.PositionAnimation;

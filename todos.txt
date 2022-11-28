@@ -1,0 +1,17 @@
+TODO:
+==============================================
+- fix ranking scene
+==============================================
+- add button for enabling/disabling Jeremy
+- add rules scene
+- highlight border of selected player
+- highlight buttons on hover, buttons have animation (pulsating halo effect?)
+- add delay to jeremy (.5s before and after move)
+==============================================
+- player name selection
+- game UI all to top
+==============================================
+- add ambient animations
+- add music and sfx
+- trash talk (Easter egg)
+- change background (ideas: MC terracotta, palace scene, patterns)

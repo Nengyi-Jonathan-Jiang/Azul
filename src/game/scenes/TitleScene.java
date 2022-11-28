@@ -126,6 +126,7 @@ public class TitleScene extends AbstractScene {
     public Iterator<? extends AbstractScene> getScenesAfter() {
         return AbstractScene.makeIterator(new GameScene(new Game(
                 (IntStream.range(0, numPlayers)).mapToObj(
+                        // Max player name length: 14
                         i -> {
                             if(enableJeremy && i + 1 == numPlayers){
                                 return new Player("Jeremy (Bot)", i, new GreedyComputer());

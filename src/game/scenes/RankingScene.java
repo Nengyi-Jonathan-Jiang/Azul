@@ -1,9 +1,6 @@
 package game.scenes;
 
-import engine.components.ButtonComponent;
-import engine.components.ImageRendererComponent;
-import engine.components.RectRendererComponent;
-import engine.components.TextStyle;
+import engine.components.*;
 import engine.core.AbstractScene;
 import engine.core.GameCanvas;
 import engine.core.GameObject;
@@ -13,6 +10,7 @@ import game.App;
 import game.Style;
 import game.backend.Game;
 import game.backend.player.Player;
+import game.frontend.ButtonObject;
 import game.frontend.TextObject;
 
 import java.util.ArrayList;
@@ -21,12 +19,13 @@ import java.util.List;
 
 public class RankingScene extends AbstractScene {
     private final GameObject background;
-    private final TextObject winText;
+    private final ButtonObject winText;
     private final GameObject playAgainButton;
     private final List<Player> players = new ArrayList<>();
     private final List<GameObject> playerNames = new ArrayList<>();
-    private final List<GameObject> playerScores = new ArrayList<>();
     private boolean finished;
+
+    private static final int TEXT_WIDTH = 560;
 
     public RankingScene(Game game) {
         Vec2 SCREEN_CENTER = new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5);
@@ -36,20 +35,29 @@ public class RankingScene extends AbstractScene {
         background.setPosition(SCREEN_CENTER);
 
         // Logo image
-        GameObject logo = new GameObject(new Vec2(0, App.HEIGHT * -.39), Vec2.zero, new ImageRendererComponent("logo.png"));
-        logo.setSize(new Vec2(575, 408).scaledBy(.5));
+        GameObject logo = new GameObject(new Vec2(0, App.HEIGHT * -.35), Vec2.zero, new ImageRendererComponent("logo.png"));
+        logo.setSize(new Vec2(575, 408).scaledBy(.7));
         background.addChild(logo);
 
         players.addAll(game.getPlayers());
 
 
+        winText = new ButtonObject(
+                new Vec2(0, -50), new Vec2(TEXT_WIDTH, 60),
+                "",
+                new TextStyle(Style.font_huge, TextStyle.ALIGN_CENTER),
+                () -> new RoundedRectRendererComponent(30, Style.FG_COLOR, Style.BG_COLOR)
+        );
 
-        winText = new TextObject("", new TextStyle(Style.font_huge, TextStyle.ALIGN_CENTER));
-        winText.setPosition(new Vec2(0, -50));
-
-        GameObject text1 = new TextObject("Leaderboard", new TextStyle(Style.font_huge, TextStyle.ALIGN_CENTER));
-        text1.setPosition(new Vec2(0, -200));
-        text1.setSize(new Vec2(430, 80));
+        GameObject text1 = new GameObject(
+                new Vec2(0, -150),
+                new Vec2(TEXT_WIDTH, 80),
+                new RoundedRectRendererComponent(30, Style.FG_COLOR, Style.BG_COLOR),
+                new TextRendererComponent(
+                        "Leaderboard",
+                        new TextStyle(Style.font_huge, TextStyle.ALIGN_CENTER)
+                )
+        );
 
         playAgainButton = new TextObject("Play Again?", new TextStyle(Style.font_large, TextStyle.ALIGN_CENTER));
         playAgainButton.setPosition(new Vec2(0, 350));
@@ -67,8 +75,8 @@ public class RankingScene extends AbstractScene {
         for (int i = 0; i < players.size(); i++) {
             Player p = players.get(i);
 
-            GameObject back = new GameObject(new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR));
-            back.setSize(new Vec2(430, 40));
+            GameObject back = new GameObject(new RoundedRectRendererComponent(20, Style.FG_COLOR, Style.BG_COLOR));
+            back.setSize(new Vec2(TEXT_WIDTH, 40));
 
             TextObject nameObject = new TextObject(p.getName(), new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_LEFT | TextStyle.ALIGN_VERTICAL));
             TextObject scoreObject = new TextObject(
@@ -88,15 +96,13 @@ public class RankingScene extends AbstractScene {
             playerNames.add(back);
         }
 
-        winText.setText(players.get(0).getName() + " wins!");
-        winText.setSize(new Vec2(430, 60));
+        winText.getComponent(TextRendererComponent.class).setText(players.get(0).getName() + " wins!");
     }
 
     @Override
     public void draw(GameCanvas canvas) {
         background.draw(canvas);
         playerNames.forEach(o -> o.draw(canvas));
-        playerScores.forEach(o -> o.draw(canvas));
         playAgainButton.draw(canvas);
     }
 

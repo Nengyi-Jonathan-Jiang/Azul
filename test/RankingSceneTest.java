@@ -19,7 +19,9 @@ public class RankingSceneTest extends JFrame {
         pack();
 
         List<Player> playerList;
-        playerList = IntStream.range(0, 4).mapToObj(i -> new Player("Player " + (i + 1), i, null)).collect(Collectors.toList());
+        playerList = IntStream.range(0, 4).mapToObj(i -> new Player(
+                i == 2 ? "Jeremy (Bot)" : "Player " + (i + 1), i, null)
+        ).collect(Collectors.toList());
         playerList.get(0).getScoreMarker().setScore(10);
         playerList.get(1).getScoreMarker().setScore(20);
         playerList.get(2).getScoreMarker().setScore(50);

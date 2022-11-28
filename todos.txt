@@ -1,7 +1,6 @@
 TODO:
 ==============================================
 - fix ranking scene UI
-- center title screen
 ==============================================
 - add button for enabling/disabling Jeremy
 - add rules scene

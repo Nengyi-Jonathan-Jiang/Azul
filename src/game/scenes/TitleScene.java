@@ -27,7 +27,6 @@ public class TitleScene extends AbstractScene {
     public TitleScene() {
         // The base game object
         gObject = new GameObject(new Vec2(App.WIDTH, App.HEIGHT));
-        gObject.setTopLeft(Vec2.zero);
 
         // Background image
         GameObject background = new GameObject(new ImageRendererComponent("table.jpg"));
@@ -96,6 +95,8 @@ public class TitleScene extends AbstractScene {
 
     @Override
     public void draw(GameCanvas canvas) {
+        double screenWidth = canvas.getWidth(), screenHeight = canvas.getHeight();
+        gObject.setPosition(new Vec2(screenWidth, screenHeight).scaledBy(.5));
         gObject.draw(canvas);
     }
 

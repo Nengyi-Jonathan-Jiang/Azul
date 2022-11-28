@@ -24,6 +24,9 @@ public class TitleScene extends AbstractScene {
     private int numPlayers;
     private boolean finished = false;
 
+    private boolean enableJeremy = false;
+    private final GameObject jeremyButton;
+
     public TitleScene() {
         // The base game object
         gObject = new GameObject(new Vec2(App.WIDTH, App.HEIGHT));
@@ -57,8 +60,16 @@ public class TitleScene extends AbstractScene {
             );
         }
 
-        startButton = new GameObject(
+        jeremyButton = new GameObject(
                 TEXT_SIZE.scaledBy(0, 3),
+                TEXT_SIZE,
+                new RectRendererComponent(Style.FG_COLOR, Style.DM_COLOR),
+                new TextRendererComponent("Enable Jeremy (Bot)", new TextStyle(Style.font_large, Style.FG_COLOR, TextStyle.ALIGN_CENTER)),
+                new ButtonComponent()
+        );
+
+        startButton = new GameObject(
+                TEXT_SIZE.scaledBy(0, 4.5),
                 TEXT_SIZE,
                 new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR),
                 new TextRendererComponent("Start Game", new TextStyle(Style.font_large, Style.FG_COLOR, TextStyle.ALIGN_CENTER)),
@@ -67,7 +78,7 @@ public class TitleScene extends AbstractScene {
 
         gObject.addChildren(background, logo, playerSelectText);
         gObject.addChildren(playerSelectButtons);
-        gObject.addChild(startButton);
+        gObject.addChildren(jeremyButton, startButton);
 
         selectNumPlayers(2);
     }
@@ -75,8 +86,9 @@ public class TitleScene extends AbstractScene {
     private void selectNumPlayers(int idx) {
         for (int i = 0; i < 3; i++) {
             RectRendererComponent r = playerSelectButtons[i].getComponent(RectRendererComponent.class);
-            Color c = i == idx ? Style.HL_COLOR : Style.FG_COLOR;
-            r.setBorderColor(c);
+            Color c = i == idx ? Style.BG_COLOR : Style.DM_COLOR;
+//            r.setBorderColor(c);
+            r.setFillColor(c);
         }
         numPlayers = idx + 2;
     }
@@ -84,6 +96,11 @@ public class TitleScene extends AbstractScene {
     @Override
     public void onMouseClick(MouseEvent me) {
         if (finished |= startButton.getComponent(ButtonComponent.class).contains(me.position)) return;
+
+        if(jeremyButton.getComponent(ButtonComponent.class).contains(me.position)){
+            Color c = (enableJeremy ^= true) ? Style.BG_COLOR : Style.DM_COLOR;
+            jeremyButton.getComponent(RectRendererComponent.class).setFillColor(c);
+        }
 
         for (int i = 0; i < 3; i++) {
             if (playerSelectButtons[i].getComponent(ButtonComponent.class).contains(me.position)) {
@@ -110,7 +127,7 @@ public class TitleScene extends AbstractScene {
         return AbstractScene.makeIterator(new GameScene(new Game(
                 (IntStream.range(0, numPlayers)).mapToObj(
                         i -> {
-                            if(i + 1 == numPlayers){
+                            if(enableJeremy && i + 1 == numPlayers){
                                 return new Player("Jeremy (Bot)", i, new GreedyComputer());
                             }
                             return new Player("Player " + (i + 1), i, null);

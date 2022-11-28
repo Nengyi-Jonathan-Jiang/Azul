@@ -28,20 +28,25 @@ public class RankingScene extends AbstractScene {
     private boolean finished;
 
     public RankingScene(Game game) {
-
         Vec2 SCREEN_CENTER = new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5);
 
         background = new GameObject(new ImageRendererComponent("table.jpg"));
         background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
         background.setPosition(SCREEN_CENTER);
 
+
+
         players.addAll(game.getPlayers());
 
+
+
         winText = new TextObject("");
-        winText.setPosition(new Vec2(0, -100).plus(SCREEN_CENTER));
+        winText.setPosition(new Vec2(0, -100));
 
         playAgainButton = new TextObject("Play Again?");
-        playAgainButton.setPosition(new Vec2(App.WIDTH / 2., App.HEIGHT - 100));
+        playAgainButton.setPosition(new Vec2(0, 500));
+
+        background.addChildren(winText, playAgainButton);
     }
 
     @Override
@@ -80,7 +85,6 @@ public class RankingScene extends AbstractScene {
     @Override
     public void draw(GameCanvas canvas) {
         background.draw(canvas);
-        winText.draw(canvas);
         playerNames.forEach(o -> o.draw(canvas));
         playerScores.forEach(o -> o.draw(canvas));
         playAgainButton.draw(canvas);

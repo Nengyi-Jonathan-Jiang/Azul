@@ -44,13 +44,18 @@ public class RankingScene extends AbstractScene {
 
 
 
-        winText = new TextObject("");
-        winText.setPosition(new Vec2(0, -100));
+        winText = new TextObject("", new TextStyle(Style.font_huge, TextStyle.ALIGN_CENTER));
+        winText.setPosition(new Vec2(0, -50));
 
-        playAgainButton = new TextObject("Play Again?");
-        playAgainButton.setPosition(new Vec2(0, 500));
+        GameObject text1 = new TextObject("Leaderboard", new TextStyle(Style.font_huge, TextStyle.ALIGN_CENTER));
+        text1.setPosition(new Vec2(0, -200));
+        text1.setSize(new Vec2(430, 80));
 
-        background.addChildren(winText, playAgainButton);
+        playAgainButton = new TextObject("Play Again?", new TextStyle(Style.font_large, TextStyle.ALIGN_CENTER));
+        playAgainButton.setPosition(new Vec2(0, 350));
+        playAgainButton.setSize(new Vec2(240, 80));
+
+        background.addChildren(winText, playAgainButton, text1);
     }
 
     @Override
@@ -78,15 +83,13 @@ public class RankingScene extends AbstractScene {
             scoreObject.getRectComponent().disable();
 
             back.addChildren(nameObject, scoreObject);
-            back.setPosition(new Vec2(0, i * 60 + 100).plus(SCREEN_CENTER));
-
-//            playerNames.add(nameObject);
-//            playerScores.add(scoreObject);
+            back.setPosition(new Vec2(0, i * 60 + 50).plus(SCREEN_CENTER));
 
             playerNames.add(back);
         }
 
         winText.setText(players.get(0).getName() + " wins!");
+        winText.setSize(new Vec2(430, 60));
     }
 
     @Override

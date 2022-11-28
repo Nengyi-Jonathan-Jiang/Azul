@@ -12,10 +12,9 @@ public class Style {
     public final static Color HL2_COLOR = new Color(25, 215, 0);
 
     public final static double TEXT_PADDING = 10.;
-    public final static double TEXT_SIZE_MEDIUM = 20.;
-    public final static double TEXT_SIZE_LARGE = 30.;
 
     public static final Font font = FontLoader.load("Algerian Regular.ttf");
-    public static final Font font_medium = font.deriveFont((float) TEXT_SIZE_MEDIUM);
-    public static final Font font_large = font.deriveFont((float) TEXT_SIZE_LARGE);
+    public static final Font font_medium = font.deriveFont(20f);
+    public static final Font font_large = font.deriveFont(30f);
+    public static final Font font_huge = font.deriveFont(40f);
 }

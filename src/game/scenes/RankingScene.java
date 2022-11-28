@@ -2,6 +2,7 @@ package game.scenes;
 
 import engine.components.ButtonComponent;
 import engine.components.ImageRendererComponent;
+import engine.components.RectRendererComponent;
 import engine.components.TextStyle;
 import engine.core.AbstractScene;
 import engine.core.GameCanvas;
@@ -34,7 +35,10 @@ public class RankingScene extends AbstractScene {
         background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
         background.setPosition(SCREEN_CENTER);
 
-
+        // Logo image
+        GameObject logo = new GameObject(new Vec2(0, App.HEIGHT * -.39), Vec2.zero, new ImageRendererComponent("logo.png"));
+        logo.setSize(new Vec2(575, 408).scaledBy(.5));
+        background.addChild(logo);
 
         players.addAll(game.getPlayers());
 
@@ -58,7 +62,10 @@ public class RankingScene extends AbstractScene {
         for (int i = 0; i < players.size(); i++) {
             Player p = players.get(i);
 
-            GameObject nameObject = new TextObject(p.getName(), new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_LEFT | TextStyle.ALIGN_VERTICAL));
+            GameObject back = new GameObject(new RectRendererComponent(Style.FG_COLOR, Style.BG_COLOR));
+            back.setSize(new Vec2(430, 40));
+
+            TextObject nameObject = new TextObject(p.getName(), new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_LEFT | TextStyle.ALIGN_VERTICAL));
             TextObject scoreObject = new TextObject(
                     p.getScoreMarker().getScore() + "",
                     new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_RIGHT | TextStyle.ALIGN_VERTICAL)
@@ -67,16 +74,16 @@ public class RankingScene extends AbstractScene {
             nameObject.setSize(nameObject.getSize().scaledBy(0, 1).plus(new Vec2(400, 0)));
             scoreObject.setSize(nameObject.getSize().scaledBy(0, 1).plus(new Vec2(400, 0)));
 
+            nameObject.getRectComponent().disable();
             scoreObject.getRectComponent().disable();
 
-            nameObject.setPosition(new Vec2(0, i * 100).plus(SCREEN_CENTER));
-            scoreObject.setPosition(new Vec2(0, i * 100).plus(SCREEN_CENTER));
+            back.addChildren(nameObject, scoreObject);
+            back.setPosition(new Vec2(0, i * 60 + 100).plus(SCREEN_CENTER));
 
-            playerNames.add(nameObject);
-            playerScores.add(scoreObject);
+//            playerNames.add(nameObject);
+//            playerScores.add(scoreObject);
 
-            System.out.println(nameObject);
-            System.out.println(scoreObject);
+            playerNames.add(back);
         }
 
         winText.setText(players.get(0).getName() + " wins!");

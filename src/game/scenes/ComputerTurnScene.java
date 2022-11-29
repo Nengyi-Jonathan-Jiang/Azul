@@ -47,6 +47,10 @@ public class ComputerTurnScene extends AbstractScene {
 
     @Override
     public Iterator<AbstractScene> getScenesAfter() {
-        return makeIterator(new ComputerFactoryOfferingScene(game, player));
+        return makeIterator(
+                new WaitScene(game, 30),
+                new ComputerFactoryOfferingScene(game, player),
+                new WaitScene(game, 30)
+        );
     }
 }

@@ -171,4 +171,12 @@ public class Player implements Comparable<Player> {
                 - FloorLine.getDeduction(floorLine.getNumTiles() + floor)
                 + floorLine.getDeduction();
     }
+
+    public void highlight(){
+        playerObject.highlight();
+    }
+
+    public void unhighlight(){
+        playerObject.unHighlight();
+    }
 }

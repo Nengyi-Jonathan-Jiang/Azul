@@ -4,7 +4,9 @@ import engine.components.ButtonComponent;
 import engine.components.RectRendererComponent;
 import engine.components.TextRendererComponent;
 import engine.components.TextStyle;
+import engine.core.GameCanvas;
 import engine.core.GameObject;
+import engine.core.Input;
 import engine.core.Vec2;
 import game.Style;
 
@@ -13,12 +15,16 @@ import java.util.function.Supplier;
 import java.awt.Color;
 
 public class ButtonObject extends GameObject {
+    private final RectRendererComponent rectcomponent;
     public ButtonObject(Vec2 pos, Vec2 size, String text, TextStyle style, Supplier<RectRendererComponent> c){
-        super(
-                c.get(),
+        super();
+
+        addComponents(
+                rectcomponent = c.get(),
                 new TextRendererComponent(text, style),
                 new ButtonComponent()
         );
+
         getComponent(TextRendererComponent.class).setText(text);
         setPosition(pos);
         if(size == null){
@@ -34,11 +40,18 @@ public class ButtonObject extends GameObject {
         return getComponent(ButtonComponent.class).contains(v);
     }
 
+    @Override
+    public GameObject draw(GameCanvas canvas) {
+        super.draw(canvas);
+        setFill(contains(Input.getMousePosition()) ? Style.SH_COLOR : Style.BG_COLOR);
+        return this;
+    }
+
     public void setBorder(Color c){
-        getComponent(RectRendererComponent.class).setBorderColor(c);
+        rectcomponent.setBorderColor(c);
     }
 
     public void setFill(Color c){
-        getComponent(RectRendererComponent.class).setFillColor(c);
+        rectcomponent.setFillColor(c);
     }
 }

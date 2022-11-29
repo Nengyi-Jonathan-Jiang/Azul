@@ -1,14 +1,11 @@
 TODO:
 ==============================================
-- fix ranking scene UI
-==============================================
-- add rules scene
-- highlight border of selected player
 - highlight buttons on hover, buttons have animation (pulsating halo effect?)
-- add delay to jeremy (.5s before and after move)
+- add rules scene
 ==============================================
 - player name selection
 - game UI all to top
+- fix ranking scene UI
 ==============================================
 - add ambient animations
 - add music and sfx

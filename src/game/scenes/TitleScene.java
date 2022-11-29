@@ -13,6 +13,7 @@ import game.backend.ai.styles.GreedyComputer;
 import game.backend.player.Player;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -107,6 +108,15 @@ public class TitleScene extends AbstractScene {
                 selectNumPlayers(i);
                 return;
             }
+        }
+    }
+
+    @Override
+    public void onKeyPress(KeyEvent ke) {
+        if(ke.getKeyChar() == '`'){
+            finished = true;
+            numPlayers = 1;
+            enableJeremy = true;
         }
     }
 

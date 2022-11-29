@@ -13,13 +13,14 @@ import game.backend.player.Player;
 import game.frontend.ButtonObject;
 import game.frontend.TextObject;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class RankingScene extends AbstractScene {
     private final GameObject background;
-    private final ButtonObject winText;
+    private final GameObject winText;
     private final GameObject playAgainButton;
     private final List<Player> players = new ArrayList<>();
     private final List<GameObject> playerNames = new ArrayList<>();
@@ -42,11 +43,20 @@ public class RankingScene extends AbstractScene {
         players.addAll(game.getPlayers());
 
 
-        winText = new ButtonObject(
-                new Vec2(0, -50), new Vec2(TEXT_WIDTH, 60),
-                "",
-                new TextStyle(Style.font_huge, TextStyle.ALIGN_CENTER),
-                () -> new RoundedRectRendererComponent(30, Style.FG_COLOR, Style.BG_COLOR)
+//        winText = new ButtonObject(
+//                Vec2.zero, new Vec2(TEXT_WIDTH, 60),
+//                "",
+//                new TextStyle(Style.font_huge, new Color(152, 0, 0), TextStyle.ALIGN_CENTER),
+//                () -> new RoundedRectRendererComponent(30, Style.FG_COLOR, Style.BG_COLOR)
+//        );
+
+        winText = new GameObject(
+                Vec2.zero, new Vec2(TEXT_WIDTH, 60),
+                new RoundedRectRendererComponent(30, Style.FG_COLOR, Style.BG_COLOR),
+                new TextRendererComponent(
+                        "",
+                        new TextStyle(Style.font_huge, new Color(152, 0, 0), TextStyle.ALIGN_CENTER)
+                )
         );
 
         GameObject text1 = new GameObject(
@@ -59,9 +69,13 @@ public class RankingScene extends AbstractScene {
                 )
         );
 
-        playAgainButton = new TextObject("Play Again?", new TextStyle(Style.font_large, TextStyle.ALIGN_CENTER));
-        playAgainButton.setPosition(new Vec2(0, 350));
-        playAgainButton.setSize(new Vec2(240, 80));
+        playAgainButton = new ButtonObject(
+                new Vec2(0, 350),
+                new Vec2(240, 80),
+                "Play Again?",
+                new TextStyle(Style.font_large, TextStyle.ALIGN_CENTER),
+                () -> new RoundedRectRendererComponent(30, Style.FG_COLOR, Style.BG_COLOR)
+        );
 
         background.addChildren(winText, playAgainButton, text1);
     }
@@ -78,20 +92,23 @@ public class RankingScene extends AbstractScene {
             GameObject back = new GameObject(new RoundedRectRendererComponent(20, Style.FG_COLOR, Style.BG_COLOR));
             back.setSize(new Vec2(TEXT_WIDTH, 40));
 
-            TextObject nameObject = new TextObject(p.getName(), new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_LEFT | TextStyle.ALIGN_VERTICAL));
+            TextObject nameObject = new TextObject(
+                    (i + 1) + ". " + p.getName(),
+                    new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_LEFT | TextStyle.ALIGN_VERTICAL))
+                ;
             TextObject scoreObject = new TextObject(
                     p.getScoreMarker().getScore() + "",
                     new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_RIGHT | TextStyle.ALIGN_VERTICAL)
             );
 
-            nameObject.setSize(nameObject.getSize().scaledBy(0, 1).plus(new Vec2(400, 0)));
-            scoreObject.setSize(nameObject.getSize().scaledBy(0, 1).plus(new Vec2(400, 0)));
+            nameObject.setSize(nameObject.getSize().scaledBy(0, 1).plus(new Vec2(TEXT_WIDTH - 40, 0)));
+            scoreObject.setSize(nameObject.getSize().scaledBy(0, 1).plus(new Vec2(TEXT_WIDTH - 40, 0)));
 
             nameObject.getRectComponent().disable();
             scoreObject.getRectComponent().disable();
 
             back.addChildren(nameObject, scoreObject);
-            back.setPosition(new Vec2(0, i * 60 + 50).plus(SCREEN_CENTER));
+            back.setPosition(new Vec2(0, i * 50 + 100).plus(SCREEN_CENTER));
 
             playerNames.add(back);
         }

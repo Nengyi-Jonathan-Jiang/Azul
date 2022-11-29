@@ -30,7 +30,6 @@ public class RoundScene extends AbstractScene {
                             List<Player> players = game.getPlayers();
                             for (int i = 0; i < players.size(); i++) {
                                 if (players.get(i).hasFirstPlayerTile()) {
-                                    System.out.println(players.get(i).getName() + " has first player tile");
                                     startingPlayer.set(i);
                                     Tile t = players.get(i).removeFirstPlayerTile();
                                     PositionAnimation.animate(t.getGameObject(), () -> game.getMiddle().getCenter().addFirstPlayerTile(t), 10);

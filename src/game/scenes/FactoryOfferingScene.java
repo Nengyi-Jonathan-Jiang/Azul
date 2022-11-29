@@ -47,6 +47,16 @@ public class FactoryOfferingScene extends PanningGameScene {
         confirmButton = new TextObject("Confirm Move");
     }
 
+    @Override
+    public void onExecutionEnd() {
+        player.unhighlight();
+    }
+
+    @Override
+    public void onExecutionStart() {
+        player.highlight();
+    }
+
     public void setInstructions(String text) {
         instructions.setText(text);
     }
@@ -151,17 +161,11 @@ public class FactoryOfferingScene extends PanningGameScene {
                 if (player.getFloorLine().isFull()) {
                     game.getBag().returnTile(tile);
                     tile.getGameObject().removeFromParent();
-
-                    System.out.println("Floor line overflow on tile " + tile);
                 } else {
                     PositionAnimation.animate(tile.getGameObject(), () -> player.getFloorLine().addTile(tile), 10);
-
-                    System.out.println("Pattern line overflow on tile " + tile);
                 }
             } else {
                 PositionAnimation.animate(tile.getGameObject(), () -> selectedLine.addTile(tile), 10);
-
-                System.out.println("Moved " + tile + " to pattern line");
             }
         }
         selectedTiles.clear();

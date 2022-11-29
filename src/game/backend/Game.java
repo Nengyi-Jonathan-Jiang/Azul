@@ -24,6 +24,7 @@ public class Game {
         this.players = players;
         this.bag = new Bag();
         this.middle = new Middle(switch (players.size()) {
+            case 1 -> 2;
             case 2 -> 5;
             case 3 -> 7;
             case 4 -> 9;

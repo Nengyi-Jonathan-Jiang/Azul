@@ -16,6 +16,8 @@ public class GameObject {
     protected Vec2 position, size;
     protected GameObject parent;
 
+    protected boolean enabled = true;
+
     public GameObject(Component... components) {
         this(Vec2.zero, components);
     }
@@ -207,6 +209,8 @@ public class GameObject {
      * @param canvas The {@link GameCanvas} on which to draw the GameObject
      */
     public GameObject draw(GameCanvas canvas) {
+        if(!enabled) return this;
+
         for (Component component : componentList) {
             if (component.isEnabled()) {
                 component.drawAndUpdate(canvas);
@@ -284,5 +288,12 @@ public class GameObject {
     private void setParent(GameObject object) {
         if (parent != null) parent.children.remove(this);
         parent = object;
+    }
+
+    public void enable() {
+        this.enabled = true;
+    }
+    public void disable() {
+        this.enabled = false;
     }
 }

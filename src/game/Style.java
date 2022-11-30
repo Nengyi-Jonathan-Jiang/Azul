@@ -5,12 +5,17 @@ import engine.util.FontLoader;
 import java.awt.*;
 
 public class Style {
+    public final static Color TR_COLOR = new Color(0, 0, 0, 0);
     public final static Color FG_COLOR = new Color(0, 0, 0);
     public final static Color BG_COLOR = new Color(252, 245, 229);
     public final static Color SH_COLOR = new Color(231, 225, 211);
     public final static Color DM_COLOR = new Color(173, 169, 158);
     public final static Color HL_COLOR = new Color(255, 215, 0);
     public final static Color HL2_COLOR = new Color(25, 215, 0);
+
+    public static Color makeTransparent(Color c, int alpha){
+        return new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
+    }
 
     public final static double TEXT_PADDING = 10.;
 

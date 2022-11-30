@@ -2,11 +2,13 @@ package game.scenes;
 
 import engine.components.ButtonComponent;
 import engine.components.PositionAnimationComponent;
+import engine.components.RectRendererComponent;
 import engine.core.GameCanvas;
 import engine.core.GameObject;
 import engine.core.Input;
 import engine.core.Vec2;
 import engine.input.MouseEvent;
+import game.Style;
 import game.backend.*;
 import game.backend.board.AbstractTileSet;
 import game.backend.player.FloorLine;
@@ -27,6 +29,9 @@ public class FactoryOfferingScene extends PanningGameScene {
     private final TextObject confirmButton;
     private boolean finished = false;
 
+    private final GameObject panel;
+    private static final double PANEL_SIZE = 65;
+
 
     private List<Tile> selectedTiles = null;
     private AbstractTileSet selectedTileSet = null;
@@ -39,12 +44,20 @@ public class FactoryOfferingScene extends PanningGameScene {
         super(game);
         this.player = player;
 
+        panel = new GameObject(new RectRendererComponent(Style.FG_COLOR, Style.makeTransparent(Style.DM_COLOR, 127)));
+
         playerTurnIndicator = new TextObject(player.getName() + "'s Turn");
+        playerTurnIndicator.setSize(new Vec2(180, 45));
 
         instructions = new TextObject("");
+        instructions.setSize(new Vec2(PANEL_SIZE - 2 * Style.TEXT_PADDING, 45));
         setInstructions("Click on a tile in the factories or the center to select it");
 
-        confirmButton = new TextObject("Confirm Move");
+        System.out.println(instructions.getSize().y);
+
+        confirmButton = new TextObject("Next");
+
+        panel.addChildren(playerTurnIndicator, instructions, confirmButton);
     }
 
     @Override
@@ -62,9 +75,21 @@ public class FactoryOfferingScene extends PanningGameScene {
     }
 
     public void updateUIPositions(GameCanvas canvas) {
-        instructions.setTopRight(new Vec2(canvas.getWidth(), 0));
-        confirmButton.setBottomRight(new Vec2(canvas.getWidth(), canvas.getHeight()));
-        playerTurnIndicator.setTopLeft(Vec2.zero);
+        panel.setSize(new Vec2(canvas.getWidth(), PANEL_SIZE));
+        panel.setTopLeft(Vec2.zero);
+
+        Vec2 offset = panel.getTopLeftOffset();
+        playerTurnIndicator.setTopLeft(new Vec2(Style.TEXT_PADDING, Style.TEXT_PADDING).plus(offset));
+        instructions.setTopLeft(new Vec2(Style.TEXT_PADDING + 200, Style.TEXT_PADDING).plus(offset));
+
+        confirmButton.setTopRight(new Vec2(canvas.getWidth() - Style.TEXT_PADDING, Style.TEXT_PADDING).plus(offset));
+
+        if (selectedTile != null && selectedLine != null) {
+            confirmButton.enable();
+        }
+        else{
+            confirmButton.disable();
+        }
     }
 
     @Override
@@ -109,7 +134,7 @@ public class FactoryOfferingScene extends PanningGameScene {
 
     private void selectPatternLine(ILine line) {
         selectedLine = line;
-        setInstructions("Click on the confirm button to confirm your move");
+        setInstructions("Click the next button to finish your turn");
     }
 
     private void unselectPatternLine() {
@@ -209,11 +234,12 @@ public class FactoryOfferingScene extends PanningGameScene {
 
         updateUIPositions(canvas);
 
-        playerTurnIndicator.draw(canvas);
-        instructions.draw(canvas);
-
-        if (selectedTile != null && selectedLine != null)
-            confirmButton.draw(canvas);
+//        playerTurnIndicator.draw(canvas);
+//        instructions.draw(canvas);
+//
+//        if (selectedTile != null && selectedLine != null)
+//            confirmButton.draw(canvas);
+        panel.draw(canvas);
     }
 
     @Override

@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class RankingScene extends AbstractScene {
+    private final GameObject gObject = new GameObject();
     private final GameObject background;
     private final GameObject winText;
     private final GameObject playAgainButton;
@@ -29,11 +30,8 @@ public class RankingScene extends AbstractScene {
     private static final int TEXT_WIDTH = 560;
 
     public RankingScene(Game game) {
-        Vec2 SCREEN_CENTER = new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5);
-
         background = new GameObject(new ImageRendererComponent("table.jpg"));
         background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
-        background.setPosition(SCREEN_CENTER);
 
         // Logo image
         GameObject logo = new GameObject(new Vec2(0, App.HEIGHT * -.35), Vec2.zero, new ImageRendererComponent("logo.png"));
@@ -41,14 +39,6 @@ public class RankingScene extends AbstractScene {
         background.addChild(logo);
 
         players.addAll(game.getPlayers());
-
-
-//        winText = new ButtonObject(
-//                Vec2.zero, new Vec2(TEXT_WIDTH, 60),
-//                "",
-//                new TextStyle(Style.font_huge, new Color(152, 0, 0), TextStyle.ALIGN_CENTER),
-//                () -> new RoundedRectRendererComponent(30, Style.FG_COLOR, Style.BG_COLOR)
-//        );
 
         winText = new GameObject(
                 Vec2.zero, new Vec2(TEXT_WIDTH, 60),
@@ -78,6 +68,7 @@ public class RankingScene extends AbstractScene {
         );
 
         background.addChildren(winText, playAgainButton, text1);
+        gObject.addChild(background);
     }
 
     @Override
@@ -108,19 +99,25 @@ public class RankingScene extends AbstractScene {
             scoreObject.getRectComponent().disable();
 
             back.addChildren(nameObject, scoreObject);
-            back.setPosition(new Vec2(0, i * 50 + 100).plus(SCREEN_CENTER));
+            back.setPosition(new Vec2(0, i * 50 + 100));
 
             playerNames.add(back);
         }
 
         winText.getComponent(TextRendererComponent.class).setText(players.get(0).getName() + " wins!");
+
+        gObject.addChildren(playerNames.toArray(GameObject[]::new));
     }
 
     @Override
     public void draw(GameCanvas canvas) {
-        background.draw(canvas);
-        playerNames.forEach(o -> o.draw(canvas));
-        playAgainButton.draw(canvas);
+        double screenWidth = canvas.getWidth(), screenHeight = canvas.getHeight();
+        gObject.setPosition(new Vec2(screenWidth, screenHeight).scaledBy(.5));
+        gObject.draw(canvas);
+
+//        background.draw(canvas);
+//        playerNames.forEach(o -> o.draw(canvas));
+//        playAgainButton.draw(canvas);
     }
 
     public boolean isFinished() {

@@ -6,8 +6,8 @@ TODO:
 - player name selection
 - game UI all to top
 - fix ranking scene UI
+- change background (ideas: MC terracotta, palace scene, patterns)
 ==============================================
 - add ambient animations
 - add music and sfx
 - trash talk (Easter egg)
-- change background (ideas: MC terracotta, palace scene, patterns)

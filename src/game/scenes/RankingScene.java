@@ -108,8 +108,6 @@ public class RankingScene extends AbstractScene {
 
     @Override
     public void draw(GameCanvas canvas) {
-        double screenWidth = canvas.getWidth(), screenHeight = canvas.getHeight();
-        gObject.setPosition(new Vec2(screenWidth, screenHeight).scaledBy(.5));
         gObject.draw(canvas);
     }
 

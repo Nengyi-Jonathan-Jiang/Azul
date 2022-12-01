@@ -71,7 +71,7 @@ public class TitleScene extends AbstractScene {
                 TEXT_SIZE.scaledBy(0, 3),
                 TEXT_SIZE,
                 new RectRendererComponent(Style.FG_COLOR, Style.DM_COLOR),
-                new TextRendererComponent("Enable Jeremy (Bot)", new TextStyle(Style.font_large, Style.FG_COLOR, TextStyle.ALIGN_CENTER)),
+                new TextRendererComponent("Jeremy Bot (Disabled)", new TextStyle(Style.font_large, Style.FG_COLOR, TextStyle.ALIGN_CENTER)),
                 new ButtonComponent()
         );
 
@@ -86,7 +86,6 @@ public class TitleScene extends AbstractScene {
         gObject.addChildren(background, logo, playerSelectText);
         gObject.addChildren(playerSelectButtons);
         gObject.addChildren(jeremyButton, startButton);
-
         selectNumPlayers(2);
 
         help = new TextObject("Azul Rules");
@@ -112,6 +111,11 @@ public class TitleScene extends AbstractScene {
         if(jeremyButton.getComponent(ButtonComponent.class).contains(me.position)){
             Color c = (enableJeremy ^= true) ? Style.BG_COLOR : Style.DM_COLOR;
             jeremyButton.getComponent(RectRendererComponent.class).setFillColor(c);
+            jeremyButton.getComponent(TextRendererComponent.class).setText(
+                    enableJeremy
+                        ? "Jeremy Bot (Enabled)"
+                        : "Jeremy Bot (Disabled)"
+            );
         }
 
         for (int i = 0; i < 3; i++) {

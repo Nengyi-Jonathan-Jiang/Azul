@@ -1,6 +1,5 @@
 package game.scenes;
 
-import engine.core.AbstractScene;
 import engine.core.GameCanvas;
 import engine.core.Vec2;
 import game.App;
@@ -12,14 +11,14 @@ import game.util.PositionAnimation;
 import java.util.Collections;
 import java.util.List;
 
-public class TileDistributionScene extends AbstractScene {
-    private final Game game;
+public class TileDistributionScene extends BasicGameScene {
     public int currentFactory = 0;
     public int tileDistributionCooldown = 0;
     public int elapsedTime = 0;
 
     public TileDistributionScene(Game game) {
-        this.game = game;
+        super(game, false);
+        infoPanel.setChildren("Distributing tiles to factories", null);
     }
 
     @Override
@@ -48,11 +47,6 @@ public class TileDistributionScene extends AbstractScene {
         PositionAnimation.animate(tile.getGameObject(), () -> factories.get((currentFactory++) % factories.size()).addTiles(Collections.singletonList(tile)), 10);
 
         tileDistributionCooldown = 5;
-    }
-
-    @Override
-    public void draw(GameCanvas canvas) {
-        game.draw(canvas);
     }
 
     @Override

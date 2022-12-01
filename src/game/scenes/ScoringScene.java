@@ -2,6 +2,7 @@ package game.scenes;
 
 import engine.components.PositionAnimationComponent;
 import engine.core.AbstractScene;
+import engine.core.InstantaneousScene;
 import engine.core.Vec2;
 import game.App;
 import game.backend.Game;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ScoringScene extends AbstractScene {
+public class ScoringScene extends InstantaneousScene {
     private final Game game;
     private final Player player;
 
@@ -22,7 +23,7 @@ public class ScoringScene extends AbstractScene {
     }
 
     @Override
-    public void onExecutionStart() {
+    public void execute() {
         game.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(
                 player.getGameObject().getPosition().scaledBy(-1).plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5)),
                 10
@@ -35,18 +36,18 @@ public class ScoringScene extends AbstractScene {
         List<Integer> filledRows = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
-            if (!patternLines.get(i).canAddTile()) {
+            if (patternLines.get(i).canAddTile()) {
                 filledRows.add(i);
             }
         }
 
         return concatIterators(
-                makeIterator(new WaitScene(game, 10)),
+                makeIterator(new WaitScene(game, 10, "Scoring " + player, null)),
                 makeLoopIterator(filledRows, row -> new PatternLineScoringScene(game, player, row)),
                 makeIterator(
                         new FloorLineDeductionScene(game, player),
-                        new WaitScene(game, 10),
-                        new ScoringConfirmationScene(game)
+                        new WaitScene(game, 10, "Scoring " + player, null),
+                        new ScoringConfirmationScene(game, player)
                 )
         );
     }

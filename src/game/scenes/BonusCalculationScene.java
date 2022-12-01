@@ -2,6 +2,7 @@ package game.scenes;
 
 import engine.components.PositionAnimationComponent;
 import engine.core.AbstractScene;
+import engine.core.InstantaneousScene;
 import engine.core.Vec2;
 import game.App;
 import game.backend.Game;
@@ -14,16 +15,17 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BonusCalculationScene extends PanningGameScene {
+public class BonusCalculationScene extends InstantaneousScene {
+    private final Game game;
     private final Player player;
 
     public BonusCalculationScene(Player player, Game game) {
-        super(game);
+        this.game = game;
         this.player = player;
     }
 
     @Override
-    public void onExecutionStart() {
+    public void execute() {
         game.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(
                 player.getGameObject().getPosition().scaledBy(-1).plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5)),
                 10
@@ -77,13 +79,21 @@ public class BonusCalculationScene extends PanningGameScene {
     @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
         return concatIterators(
-                makeIterator(new WaitScene(game, 10)),
-                Stream.of(getRowBonuses(), getColBonuses(), getColorBonuses())
-                        .flatMap(List::stream)
-                        .map(result -> new ScoreMarkerMovementScene(game, player, null, new AtomicReference<>(result)))
-                        .collect(Collectors.toList())
-                        .iterator(),
-                makeIterator(new ScoringConfirmationScene(game))
+            makeIterator(new WaitScene(game, 10, "Calculating bonuses for " + player, null)),
+            Stream.of(getRowBonuses(), getColBonuses(), getColorBonuses())
+                .flatMap(List::stream)
+                .map(result ->
+                    new ScoreMarkerMovementScene(game, player, null, new AtomicReference<>(result)){
+                        @Override
+                        public Iterator<? extends AbstractScene> getScenesAfter() { return makeIterator(
+                            new WaitScene(game, 50, "Calculating bonuses for " + player, null),
+                            new UnhighlightWallScene(player)
+                        );}
+                    }
+                )
+                .collect(Collectors.toList())
+                .iterator(),
+            makeIterator(new ScoringConfirmationScene(game, player))
         );
     }
 }

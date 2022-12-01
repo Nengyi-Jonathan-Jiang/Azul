@@ -75,7 +75,7 @@ public class FloorLine implements ILine {
 
     @Override
     public boolean canAddTile() {
-        return true;
+        return false;
     }
 
     public GameObject getGameObject() {

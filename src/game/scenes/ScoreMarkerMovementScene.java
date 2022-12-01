@@ -36,6 +36,6 @@ class ScoreMarkerMovementScene extends AbstractScene {
 
     @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
-        return makeIterator(new WaitScene(game, 50), new UnhighlightWallScene(player));
+        return makeIterator(new WaitScene(game, 50, "Scoring " + player, null), new UnhighlightWallScene(player));
     }
 }

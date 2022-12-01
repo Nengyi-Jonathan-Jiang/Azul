@@ -2,36 +2,24 @@ package game.scenes;
 
 import engine.components.ButtonComponent;
 import engine.components.PositionAnimationComponent;
-import engine.components.RectRendererComponent;
-import engine.core.GameCanvas;
-import engine.core.GameObject;
-import engine.core.Input;
-import engine.core.Vec2;
+import engine.core.*;
 import engine.input.MouseEvent;
-import game.Style;
 import game.backend.*;
 import game.backend.board.AbstractTileSet;
 import game.backend.player.FloorLine;
 import game.backend.player.ILine;
 import game.backend.player.PatternLine;
 import game.backend.player.Player;
-import game.frontend.TextObject;
 import game.util.PositionAnimation;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FactoryOfferingScene extends PanningGameScene {
-    private final TextObject playerTurnIndicator;
-    private final TextObject instructions;
+public class FactoryOfferingScene extends BasicGameScene {
     private final Player player;
-    private final TextObject confirmButton;
     private boolean finished = false;
-
-    private final GameObject panel;
-    private static final double PANEL_SIZE = 65;
-
 
     private List<Tile> selectedTiles = null;
     private AbstractTileSet selectedTileSet = null;
@@ -44,20 +32,9 @@ public class FactoryOfferingScene extends PanningGameScene {
         super(game);
         this.player = player;
 
-        panel = new GameObject(new RectRendererComponent(Style.FG_COLOR, Style.makeTransparent(Style.DM_COLOR, 127)));
+        infoPanel.setChildren(player.getName() + "'s Turn", "", "Next");
 
-        playerTurnIndicator = new TextObject(player.getName() + "'s Turn");
-        playerTurnIndicator.setSize(new Vec2(180, 45));
-
-        instructions = new TextObject("");
-        instructions.setSize(new Vec2(PANEL_SIZE - 2 * Style.TEXT_PADDING, 45));
         setInstructions("Click on a tile in the factories or the center to select it");
-
-        System.out.println(instructions.getSize().y);
-
-        confirmButton = new TextObject("Next");
-
-        panel.addChildren(playerTurnIndicator, instructions, confirmButton);
     }
 
     @Override
@@ -71,25 +48,7 @@ public class FactoryOfferingScene extends PanningGameScene {
     }
 
     public void setInstructions(String text) {
-        instructions.setText(text);
-    }
-
-    public void updateUIPositions(GameCanvas canvas) {
-        panel.setSize(new Vec2(canvas.getWidth(), PANEL_SIZE));
-        panel.setTopLeft(Vec2.zero);
-
-        Vec2 offset = panel.getTopLeftOffset();
-        playerTurnIndicator.setTopLeft(new Vec2(Style.TEXT_PADDING, Style.TEXT_PADDING).plus(offset));
-        instructions.setTopLeft(new Vec2(Style.TEXT_PADDING + 200, Style.TEXT_PADDING).plus(offset));
-
-        confirmButton.setTopRight(new Vec2(canvas.getWidth() - Style.TEXT_PADDING, Style.TEXT_PADDING).plus(offset));
-
-        if (selectedTile != null && selectedLine != null) {
-            confirmButton.enable();
-        }
-        else{
-            confirmButton.disable();
-        }
+        infoPanel.set(1, text);
     }
 
     @Override
@@ -122,7 +81,7 @@ public class FactoryOfferingScene extends PanningGameScene {
 
         // Handle continue button
         if (selectedTiles != null && selectedLine != null) {
-            if (confirmButton.getComponent(ButtonComponent.class).contains(me.position)) {
+            if (infoPanel.getRight().getComponent(ButtonComponent.class).contains(me.position)) {
                 confirmSelect();
                 return;
             }
@@ -182,7 +141,7 @@ public class FactoryOfferingScene extends PanningGameScene {
 
         // Animate tile movement to pattern line
         for (Tile tile : selectedTiles) {
-            if (selectedLine instanceof FloorLine || !selectedLine.canAddTile() || tile.isFirstPlayerMarker()) {
+            if (selectedLine instanceof FloorLine || selectedLine.canAddTile() || tile.isFirstPlayerMarker()) {
                 if (player.getFloorLine().isFull()) {
                     game.getBag().returnTile(tile);
                     tile.getGameObject().removeFromParent();
@@ -222,24 +181,22 @@ public class FactoryOfferingScene extends PanningGameScene {
             tile.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(targetPos, 10);
         }
 
-        unselectPatternLine();
-        unselectTiles();
+        selectedLine = null;
+        selectedTiles = null;
+        selectedTileSet = null;
+        selectedTile = null;
+        availableLines = null;
 
         finished = true;
     }
 
     @Override
     public void draw(GameCanvas canvas) {
+        if(selectedLine != null && selectedTile != null){
+            infoPanel.getRight().enable();
+        } else infoPanel.getRight().disable();
+
         super.draw(canvas);
-
-        updateUIPositions(canvas);
-
-//        playerTurnIndicator.draw(canvas);
-//        instructions.draw(canvas);
-//
-//        if (selectedTile != null && selectedLine != null)
-//            confirmButton.draw(canvas);
-        panel.draw(canvas);
     }
 
     @Override
@@ -286,5 +243,10 @@ public class FactoryOfferingScene extends PanningGameScene {
     @Override
     public boolean isFinished() {
         return finished;
+    }
+
+    @Override
+    public Iterator<? extends AbstractScene> getScenesAfter() {
+        return makeIterator(new WaitScene(game, 40, infoPanel.getArgs()));
     }
 }

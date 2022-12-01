@@ -15,12 +15,12 @@ import java.util.function.Supplier;
 import java.awt.Color;
 
 public class ButtonObject extends GameObject {
-    private final RectRendererComponent rectcomponent;
+    private final RectRendererComponent rectRendererComponent;
     public ButtonObject(Vec2 pos, Vec2 size, String text, TextStyle style, Supplier<RectRendererComponent> c){
         super();
 
         addComponents(
-                rectcomponent = c.get(),
+                rectRendererComponent = c.get(),
                 new TextRendererComponent(text, style),
                 new ButtonComponent()
         );
@@ -48,10 +48,10 @@ public class ButtonObject extends GameObject {
     }
 
     public void setBorder(Color c){
-        rectcomponent.setBorderColor(c);
+        rectRendererComponent.setBorderColor(c);
     }
 
     public void setFill(Color c){
-        rectcomponent.setFillColor(c);
+        rectRendererComponent.setFillColor(c);
     }
 }

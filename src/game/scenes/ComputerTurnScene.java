@@ -1,7 +1,7 @@
 package game.scenes;
 
 import engine.core.AbstractScene;
-import engine.core.GameCanvas;
+import engine.core.InstantaneousScene;
 import engine.core.Vec2;
 import game.App;
 import game.backend.Game;
@@ -10,10 +10,9 @@ import game.util.PositionAnimation;
 
 import java.util.Iterator;
 
-public class ComputerTurnScene extends AbstractScene {
+public class ComputerTurnScene extends InstantaneousScene {
     public final Game game;
     public final Player player;
-    private int animation = 0;
 
 
     public ComputerTurnScene(Game game, Player player) {
@@ -22,7 +21,7 @@ public class ComputerTurnScene extends AbstractScene {
     }
 
     @Override
-    public void onExecutionStart() {
+    public void execute() {
         PositionAnimation.animate(game.getGameObject(), () -> game.getGameObject().setPosition(
                 player.getGameObject().getPosition()
                         .scaledBy(-.5, -.5)
@@ -31,26 +30,11 @@ public class ComputerTurnScene extends AbstractScene {
     }
 
     @Override
-    public void update() {
-        animation++;
-    }
-
-    @Override
-    public void draw(GameCanvas canvas) {
-        game.draw(canvas);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return animation > 10;
-    }
-
-    @Override
     public Iterator<AbstractScene> getScenesAfter() {
         return makeIterator(
-                new WaitScene(game, 30),
+                new WaitScene(game, 40, player + "'s turn", null),
                 new ComputerFactoryOfferingScene(game, player),
-                new WaitScene(game, 30)
+                new WaitScene(game, 30, player + "'s turn", null)
         );
     }
 }

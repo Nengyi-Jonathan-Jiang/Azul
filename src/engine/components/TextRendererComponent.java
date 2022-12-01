@@ -47,6 +47,11 @@ public class TextRendererComponent extends Component {
         return this;
     }
 
+    public TextRendererComponent shrinkParentToFit(double padding){
+        gameObject.setSize(getRenderedSize().plus(new Vec2(padding * 2)));
+        return this;
+    }
+
     public Font getFont() {
         return style.font;
     }

@@ -1,6 +1,6 @@
 package game.scenes;
 
-import engine.core.AbstractScene;
+import engine.core.InstantaneousScene;
 import game.backend.player.Player;
 import game.backend.Tile;
 import game.backend.player.Wall;
@@ -8,7 +8,7 @@ import game.backend.player.Wall;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class UnhighlightWallScene extends AbstractScene {
+public class UnhighlightWallScene extends InstantaneousScene {
     private final Player player;
 
     public UnhighlightWallScene(Player player) {
@@ -16,7 +16,7 @@ public class UnhighlightWallScene extends AbstractScene {
     }
 
     @Override
-    public void onExecutionStart() {
+    public void execute() {
         Wall wall = player.getWall();
         Arrays.stream(wall.getGrid()).flatMap(Arrays::stream).filter(Objects::nonNull).forEach(Tile::unHighlight);
     }

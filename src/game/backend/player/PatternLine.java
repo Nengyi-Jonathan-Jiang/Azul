@@ -35,7 +35,7 @@ public class PatternLine implements ILine {
     }
 
     public boolean canAddTileOfColor(Tile.TileColor t) {
-        return canAddTile() && (
+        return !canAddTile() && (
                 currentTileColor == Tile.TileColor.NONE ||
                         t == Tile.TileColor.FIRST_PLAYER ||
                         t == currentTileColor
@@ -57,7 +57,7 @@ public class PatternLine implements ILine {
     }
 
     public boolean canAddTile() {
-        return numTiles < tiles.length;
+        return numTiles >= tiles.length;
     }
 
     public GameObject getGameObject() {

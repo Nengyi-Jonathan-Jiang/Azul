@@ -1,6 +1,5 @@
 package engine.components;
 
-import engine.core.Component;
 import engine.core.GameCanvas;
 import engine.core.Vec2;
 

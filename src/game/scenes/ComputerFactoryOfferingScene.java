@@ -1,8 +1,8 @@
 package game.scenes;
 
 import engine.components.PositionAnimationComponent;
-import engine.core.AbstractScene;
 import engine.core.GameObject;
+import engine.core.InstantaneousScene;
 import engine.core.Vec2;
 import game.backend.Game;
 import game.backend.Tile;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ComputerFactoryOfferingScene extends AbstractScene {
+public class ComputerFactoryOfferingScene extends InstantaneousScene {
     private final Game game;
     private final Player player;
     public ComputerFactoryOfferingScene(Game game, Player player) {
@@ -24,7 +24,7 @@ public class ComputerFactoryOfferingScene extends AbstractScene {
     }
 
     @Override
-    public void onExecutionStart() {
+    public void execute() {
         ComputerMove move = this.player.getMove(game);
 
         System.out.println("Move Tiles: " + move.selectedTiles);
@@ -34,7 +34,7 @@ public class ComputerFactoryOfferingScene extends AbstractScene {
 
         // Animate tile movement to pattern line
         for (Tile tile : move.selectedTiles) {
-            if (move.selectedLine instanceof FloorLine || !move.selectedLine.canAddTile() || tile.isFirstPlayerMarker()) {
+            if (move.selectedLine instanceof FloorLine || move.selectedLine.canAddTile() || tile.isFirstPlayerMarker()) {
                 if (player.getFloorLine().isFull()) {
                     game.getBag().returnTile(tile);
                     tile.getGameObject().removeFromParent();

@@ -1,7 +1,7 @@
 package game.scenes;
 
-import engine.core.AbstractScene;
 import engine.core.GameObject;
+import engine.core.InstantaneousScene;
 import game.backend.Game;
 import game.backend.player.Player;
 import game.backend.Tile;
@@ -10,7 +10,7 @@ import game.util.PositionAnimation;
 import java.util.List;
 import java.util.Optional;
 
-class FloorLineDeductionScene extends AbstractScene {
+class FloorLineDeductionScene extends InstantaneousScene {
     private final Game game;
     private final Player player;
 
@@ -20,7 +20,7 @@ class FloorLineDeductionScene extends AbstractScene {
     }
 
     @Override
-    public void onExecutionStart() {
+    public void execute() {
         int scoreDeduction = player.getFloorLine().getDeduction();
 
         int score = player.getScoreMarker().getScore();

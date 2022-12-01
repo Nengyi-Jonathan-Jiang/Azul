@@ -10,7 +10,6 @@ import game.frontend.PlayerGameObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Player implements Comparable<Player> {
     private final String name;
@@ -86,6 +85,10 @@ public class Player implements Comparable<Player> {
     }
 
     public String getName() {
+        return name;
+    }
+
+    public String toString(){
         return name;
     }
 

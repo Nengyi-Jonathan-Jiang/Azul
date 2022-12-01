@@ -45,6 +45,6 @@ class ScoringTileMovementScene extends AbstractScene {
 
     @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
-        return makeIterator(new WaitScene(game, 10));
+        return makeIterator(new WaitScene(game, 10, "Scoring " + player, null));
     }
 }

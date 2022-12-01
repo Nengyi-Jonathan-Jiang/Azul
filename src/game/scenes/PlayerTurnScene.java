@@ -1,7 +1,7 @@
 package game.scenes;
 
 import engine.core.AbstractScene;
-import engine.core.GameCanvas;
+import engine.core.InstantaneousScene;
 import engine.core.Vec2;
 import game.App;
 import game.backend.Game;
@@ -10,10 +10,9 @@ import game.util.PositionAnimation;
 
 import java.util.Iterator;
 
-public class PlayerTurnScene extends AbstractScene {
-    public final Game game;
-    public final Player player;
-    private int animation = 0;
+public class PlayerTurnScene extends InstantaneousScene {
+    private final Player player;
+    private final Game game;
 
 
     public PlayerTurnScene(Game game, Player player) {
@@ -22,27 +21,12 @@ public class PlayerTurnScene extends AbstractScene {
     }
 
     @Override
-    public void onExecutionStart() {
+    public void execute() {
         PositionAnimation.animate(game.getGameObject(), () -> game.getGameObject().setPosition(
                 player.getGameObject().getPosition()
                         .scaledBy(-.5, -.5)
                         .plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5))
         ), 10);
-    }
-
-    @Override
-    public void update() {
-        animation++;
-    }
-
-    @Override
-    public void draw(GameCanvas canvas) {
-        game.draw(canvas);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return animation > 10;
     }
 
     @Override

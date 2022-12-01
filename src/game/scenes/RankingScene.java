@@ -20,7 +20,6 @@ import java.util.List;
 
 public class RankingScene extends AbstractScene {
     private final GameObject gObject = new GameObject();
-    private final GameObject background;
     private final GameObject winText;
     private final GameObject playAgainButton;
     private final List<Player> players = new ArrayList<>();
@@ -30,7 +29,7 @@ public class RankingScene extends AbstractScene {
     private static final int TEXT_WIDTH = 560;
 
     public RankingScene(Game game) {
-        background = new GameObject(new ImageRendererComponent("table.jpg"));
+        GameObject background = new GameObject(new ImageRendererComponent("table.jpg"));
         background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
 
         // Logo image
@@ -114,10 +113,6 @@ public class RankingScene extends AbstractScene {
         double screenWidth = canvas.getWidth(), screenHeight = canvas.getHeight();
         gObject.setPosition(new Vec2(screenWidth, screenHeight).scaledBy(.5));
         gObject.draw(canvas);
-
-//        background.draw(canvas);
-//        playerNames.forEach(o -> o.draw(canvas));
-//        playAgainButton.draw(canvas);
     }
 
     public boolean isFinished() {

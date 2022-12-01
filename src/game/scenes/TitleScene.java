@@ -96,7 +96,6 @@ public class TitleScene extends AbstractScene {
         for (int i = 0; i < 3; i++) {
             RectRendererComponent r = playerSelectButtons[i].getComponent(RectRendererComponent.class);
             Color c = i == idx ? Style.BG_COLOR : Style.DM_COLOR;
-//            r.setBorderColor(c);
             r.setFillColor(c);
         }
         numPlayers = idx + 2;

@@ -19,7 +19,7 @@ public class Tile implements Comparable<Tile> {
         gameObj = new GameObject(
                 new ImageRendererComponent("Tiles/Tile " + getTileColorName(color) + ".png"),
                 new ButtonComponent(),
-                new RectRendererComponent(Style.HL_COLOR),
+                new RectRendererComponent(Style.HL2_COLOR),
                 new PositionAnimationComponent()
         );
         gameObj.setSize(new Vec2(SIZE));

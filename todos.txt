@@ -4,7 +4,6 @@ TODO:
 ==============================================
 - player name selection
 - fix ranking scene UI
-- change background (ideas: MC terracotta, palace scene, patterns)
 ==============================================
 - add ambient animations
 - add music and sfx

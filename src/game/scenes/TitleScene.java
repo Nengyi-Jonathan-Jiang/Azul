@@ -89,7 +89,7 @@ public class TitleScene extends AbstractScene {
         selectNumPlayers(2);
 
         help = new TextObject("Azul Rules");
-        help2 = new TextObject("How to play");
+        help2 = new TextObject("Controls");
     }
 
     private void selectNumPlayers(int idx) {
@@ -147,7 +147,7 @@ public class TitleScene extends AbstractScene {
             gotoRules1
             ? new RulesScene()
             : gotoRules2
-            ? new RulesScene()
+            ? new ControlsScene()
             : new GameScene(new Game(
                 (IntStream.range(0, numPlayers)).mapToObj(
                         // Max player name length: 14

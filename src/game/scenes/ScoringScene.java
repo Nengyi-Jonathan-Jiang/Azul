@@ -25,7 +25,7 @@ public class ScoringScene extends InstantaneousScene {
     @Override
     public void execute() {
         game.getGameObject().getComponent(PositionAnimationComponent.class).moveTo(
-                player.getGameObject().getPosition().scaledBy(-1).plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5)),
+                player.getGameObject().getPosition().scaledBy(-.7),
                 10
         );
     }

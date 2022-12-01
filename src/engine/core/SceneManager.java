@@ -4,9 +4,7 @@ import engine.input.MouseEvent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
+import java.awt.event.*;
 import java.util.Queue;
 import java.util.*;
 
@@ -20,6 +18,7 @@ public class SceneManager {
     protected final Deque<Iterator<? extends AbstractScene>> scheduleStack;
     protected final Deque<AbstractScene> sceneStack;
     protected final Queue<MouseEvent> mouseEvents = new ArrayDeque<>();
+    protected int wheelMovement = 0;
     protected final Queue<KeyEvent> keyEvents = new ArrayDeque<>();
     protected final GameCanvas canvas;
     protected final int delay;
@@ -46,7 +45,7 @@ public class SceneManager {
                     button = MouseEvent.MouseButton.RIGHT;
                     Input.mouseDownR = true;
                 }
-                Vec2 pos = new Vec2(e.getPoint().x, e.getPoint().y);
+                Vec2 pos = new Vec2(e.getPoint().x, e.getPoint().y).minus(canvas.get_size().scaledBy(.5));
                 mouseEvents.add(new MouseEvent(pos, button));
             }
 
@@ -70,6 +69,8 @@ public class SceneManager {
                 Input.keysDown.remove(e.getKeyChar());
             }
         });
+
+        SwingUtilities.getWindowAncestor(canvas).addMouseWheelListener(e -> wheelMovement += e.getWheelRotation());
 
         scheduleAction(new AbstractScene() {
             @Override
@@ -130,9 +131,6 @@ public class SceneManager {
     }
 
     protected void scheduleAction(AbstractScene s) {
-
-        System.out.println("Scheduled scene " + s.getClass().getName());
-
         sceneStack.push(s);
 
         s.onSchedule();
@@ -168,15 +166,19 @@ public class SceneManager {
     protected void executeAction(AbstractScene scene) {
         Point mousePosition = canvas.getMousePosition(true);
         if (mousePosition != null) {
-            Input.mousePosition = new Vec2(mousePosition.x, mousePosition.y);
+            Input.mousePosition = new Vec2(mousePosition.x, mousePosition.y).minus(canvas.get_size().scaledBy(.5));
         }
 
-        while (!mouseEvents.isEmpty()) {
+        while (!mouseEvents.isEmpty())
             scene.onMouseClick(mouseEvents.remove());
-        }
-        while (!keyEvents.isEmpty()) {
+
+        while (!keyEvents.isEmpty())
             scene.onKeyPress(keyEvents.remove());
-        }
+
+        if(wheelMovement != 0)
+            scene.scroll(wheelMovement);
+        wheelMovement = 0;
+
         scene.update();
         canvas.repaint(scene);
     }

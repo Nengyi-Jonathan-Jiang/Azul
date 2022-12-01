@@ -1,5 +1,6 @@
 package game.scenes;
 
+import engine.components.PositionAnimationComponent;
 import engine.core.*;
 import game.App;
 import game.backend.Game;
@@ -28,26 +29,38 @@ public abstract class BasicGameScene extends AbstractScene {
             GameObject gObject = game.getGameObject();
             gObject.move(Input.getMousePosition().minus(lastMousePos).scaledBy(1.5));
 
-            if (gObject.getTopLeft().x >= 0) {
-                gObject.move(new Vec2(-gObject.getTopLeft().x, 0));
-            }
-            if (gObject.getTopRight().x <= App.WIDTH) {
-                gObject.move(new Vec2(App.WIDTH - gObject.getTopRight().x, 0));
-            }
-            if (gObject.getTopLeft().y >= 0) {
-                gObject.move(new Vec2(0, -gObject.getTopLeft().y));
-            }
-            if (gObject.getBottomLeft().y <= App.HEIGHT) {
-                gObject.move(new Vec2(0, App.HEIGHT - gObject.getBottomLeft().y));
-            }
+            constrainBackground();
         }
 
         lastMousePos = Input.getMousePosition();
     }
 
+    private void constrainBackground(){
+        GameObject gObject = game.getGameObject();
+        PositionAnimationComponent a = gObject.getComponent(PositionAnimationComponent.class);
+        Vec2 d = App.canvas.get_size().scaledBy(.5);
+
+        if (gObject.getTopLeft().x > -d.x) {
+            gObject.move(new Vec2(-d.x - gObject.getTopLeft().x, 0));
+            a.stopAnimation();
+        }
+        if (gObject.getTopRight().x < d.x) {
+            gObject.move(new Vec2(d.x - gObject.getTopRight().x, 0));
+            a.stopAnimation();
+        }
+        if (gObject.getTopLeft().y > -d.y) {
+            gObject.move(new Vec2(0, -d.y - gObject.getTopLeft().y));
+            a.stopAnimation();
+        }
+        if (gObject.getBottomLeft().y < d.y) {
+            gObject.move(new Vec2(0, d.y - gObject.getBottomLeft().y));
+            a.stopAnimation();
+        }
+    }
 
     @Override
     public void draw(GameCanvas canvas) {
+        constrainBackground();
         game.draw(canvas);
         infoPanel.draw(canvas);
     }

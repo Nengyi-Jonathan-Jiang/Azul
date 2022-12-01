@@ -11,6 +11,7 @@ import game.Style;
 import game.backend.Game;
 import game.backend.ai.styles.GreedyComputer;
 import game.backend.player.Player;
+import game.frontend.TextObject;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -28,17 +29,22 @@ public class TitleScene extends AbstractScene {
     private boolean enableJeremy = false;
     private final GameObject jeremyButton;
 
+    private final GameObject help, help2;
+
+    private boolean gotoRules1 = false;
+    private boolean gotoRules2 = false;
+
     public TitleScene() {
         // The base game object
-        gObject = new GameObject(new Vec2(App.WIDTH, App.HEIGHT));
+        gObject = new GameObject();
 
         // Background image
         GameObject background = new GameObject(new ImageRendererComponent("table.jpg"));
         background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
 
         // Logo image
-        GameObject logo = new GameObject(new Vec2(0, App.HEIGHT * -.25), Vec2.zero, new ImageRendererComponent("logo.png"));
-        logo.setSize(logo.getComponent(ImageRendererComponent.class).getImageSize());
+        GameObject logo = new GameObject(new Vec2(0, -200), Vec2.zero, new ImageRendererComponent("logo.png"));
+        logo.setSize(new Vec2(575, 400).scaledBy(.8));
 
         // Player select text
         GameObject playerSelectText = new GameObject(
@@ -82,6 +88,9 @@ public class TitleScene extends AbstractScene {
         gObject.addChildren(jeremyButton, startButton);
 
         selectNumPlayers(2);
+
+        help = new TextObject("Azul Rules");
+        help2 = new TextObject("How to play");
     }
 
     private void selectNumPlayers(int idx) {
@@ -96,7 +105,9 @@ public class TitleScene extends AbstractScene {
 
     @Override
     public void onMouseClick(MouseEvent me) {
-        if (finished |= startButton.getComponent(ButtonComponent.class).contains(me.position)) return;
+        if(finished = startButton.getComponent(ButtonComponent.class).contains(me.position)) return;
+        if(finished = help.getComponent(ButtonComponent.class).contains(me.position) && (gotoRules1 = true)) return;
+        if(finished = help2.getComponent(ButtonComponent.class).contains(me.position) && (gotoRules2 = true)) return;
 
         if(jeremyButton.getComponent(ButtonComponent.class).contains(me.position)){
             Color c = (enableJeremy ^= true) ? Style.BG_COLOR : Style.DM_COLOR;
@@ -112,19 +123,14 @@ public class TitleScene extends AbstractScene {
     }
 
     @Override
-    public void onKeyPress(KeyEvent ke) {
-        if(ke.getKeyChar() == '`'){
-            finished = true;
-            numPlayers = 1;
-            enableJeremy = true;
-        }
-    }
-
-    @Override
     public void draw(GameCanvas canvas) {
-        double screenWidth = canvas.getWidth(), screenHeight = canvas.getHeight();
-        gObject.setPosition(new Vec2(screenWidth, screenHeight).scaledBy(.5));
+        help2.setBottomRight(canvas.get_size().scaledBy(.5).minus(new Vec2(10)));
+        help.setBottomRight(help2.getBottomRight().minus(new Vec2(0, help2.getSize().y + 10)));
+
         gObject.draw(canvas);
+
+        help.draw(canvas);
+        help2.draw(canvas);
     }
 
     @Override
@@ -134,7 +140,12 @@ public class TitleScene extends AbstractScene {
 
     @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
-        return AbstractScene.makeIterator(new GameScene(new Game(
+        return AbstractScene.makeIterator(
+            gotoRules1
+            ? new RulesScene()
+            : gotoRules2
+            ? new RulesScene()
+            : new GameScene(new Game(
                 (IntStream.range(0, numPlayers)).mapToObj(
                         // Max player name length: 14
                         i -> {
@@ -144,6 +155,7 @@ public class TitleScene extends AbstractScene {
                             return new Player("Player " + (i + 1), i, null);
                         }
                 ).collect(Collectors.toList())
-        )));
+            ))
+        );
     }
 }

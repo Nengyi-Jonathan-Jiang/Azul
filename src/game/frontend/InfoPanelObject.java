@@ -68,7 +68,7 @@ public class InfoPanelObject extends GameObject {
     @Override
     public GameObject draw(GameCanvas canvas) {
         setSize(new Vec2(canvas.getWidth(), HEIGHT));
-        setTopLeft(Vec2.zero);
+        setTopLeft(canvas.get_size().scaledBy(-.5));
 
         Vec2 offset = getTopLeftOffset();
         double left = 0;

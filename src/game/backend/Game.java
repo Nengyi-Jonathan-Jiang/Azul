@@ -34,7 +34,6 @@ public class Game {
         wObject = new WorldGameObject();
 
         gObject = new GameGameObject(this);
-        gObject.setPosition(new Vec2(App.WIDTH / 2f, App.HEIGHT / 2f));
 
         gObject.addChild(middle.getGameObject());
 

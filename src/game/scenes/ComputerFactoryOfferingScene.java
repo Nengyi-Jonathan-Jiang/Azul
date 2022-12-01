@@ -27,8 +27,6 @@ public class ComputerFactoryOfferingScene extends InstantaneousScene {
     public void execute() {
         ComputerMove move = this.player.getMove(game);
 
-        System.out.println("Move Tiles: " + move.selectedTiles);
-
         // Remove selected tiles from tileset
         move.selectedTileSet.removeTilesOfColor(move.color);
 
@@ -38,17 +36,11 @@ public class ComputerFactoryOfferingScene extends InstantaneousScene {
                 if (player.getFloorLine().isFull()) {
                     game.getBag().returnTile(tile);
                     tile.getGameObject().removeFromParent();
-
-                    System.out.println("Floor line overflow on tile " + tile);
                 } else {
                     PositionAnimation.animate(tile.getGameObject(), () -> player.getFloorLine().addTile(tile), 10);
-
-                    System.out.println("Pattern line overflow on tile " + tile);
                 }
             } else {
                 PositionAnimation.animate(tile.getGameObject(), () -> move.selectedLine.addTile(tile), 10);
-
-                System.out.println("Moved " + tile + " to pattern line");
             }
         }
 

@@ -17,6 +17,10 @@ public class PositionAnimationComponent extends Component {
         elapsedTime = 0;
     }
 
+    public void stopAnimation(){
+        startPosition = targetPosition = gameObject.getPosition();
+    }
+
     @Override
     public void drawAndUpdate(GameCanvas canvas) {
         if (elapsedTime >= animationDuration) return;

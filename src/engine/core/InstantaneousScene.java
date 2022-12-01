@@ -17,6 +17,8 @@ public abstract class InstantaneousScene extends AbstractScene {
     @Override
     public final void onMouseClick(MouseEvent me) {}
     @Override
+    public final void scroll(int distance) {}
+    @Override
     public final void onExecutionEnd() {}
     @Override
     public final void onExecutionStart() {
@@ -26,7 +28,6 @@ public abstract class InstantaneousScene extends AbstractScene {
     public final boolean isFinished() {
         return true;
     }
-
     public void execute(){}
 
 }

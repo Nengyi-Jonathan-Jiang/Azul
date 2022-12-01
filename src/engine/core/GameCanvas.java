@@ -2,6 +2,7 @@ package engine.core;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 /**
@@ -35,6 +36,8 @@ public class GameCanvas extends JPanel {
         super.paint(g);
         graphics = (Graphics2D) g;
 
+        graphics.transform(new AffineTransform(1, 0, 0, 1, getWidth()/2., getHeight()/2.));
+
         if (currScene != null) {
             graphics.setRenderingHint(
                     RenderingHints.KEY_TEXT_ANTIALIASING,
@@ -53,6 +56,10 @@ public class GameCanvas extends JPanel {
             graphics.setStroke(new BasicStroke(2));
             currScene.draw(this);
         }
+    }
+
+    public Vec2 get_size() {
+        return new Vec2(getWidth(), getHeight());
     }
 
     // Canvas functions

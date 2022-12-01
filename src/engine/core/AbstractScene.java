@@ -116,6 +116,13 @@ public abstract class AbstractScene {
     }
 
     /**
+     * Called whenever the scene is active and the mouse wheel is moved. Should handle scrolling within the scene.
+     * @param distance the distance the wheel is moved
+     */
+    public void scroll(int distance) {
+    }
+
+    /**
      * Called every frame after event listeners and {@link AbstractScene#onKeyPress} methods are called. This
      * method should handle any logic that does not belong in event listeners or {@link AbstractScene#draw}
      * methods

@@ -3,21 +3,21 @@ package game;
 import engine.core.AbstractScene;
 import engine.core.GameCanvas;
 import engine.core.SceneManager;
+import game.scenes.RulesScene;
 import game.scenes.TitleScene;
 
 import javax.swing.*;
 import java.util.Iterator;
 
 public class App extends JFrame {
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 600;
+    public static GameCanvas canvas;
 
     public App() {
         super();
         setTitle("Azul");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        GameCanvas canvas = new GameCanvas(WIDTH, HEIGHT);
+        canvas = new GameCanvas(1000, 600);
         add(canvas);
         pack();
 

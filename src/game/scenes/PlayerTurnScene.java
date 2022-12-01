@@ -11,8 +11,8 @@ import game.util.PositionAnimation;
 import java.util.Iterator;
 
 public class PlayerTurnScene extends InstantaneousScene {
-    private final Player player;
-    private final Game game;
+    protected final Player player;
+    protected final Game game;
 
 
     public PlayerTurnScene(Game game, Player player) {
@@ -25,7 +25,6 @@ public class PlayerTurnScene extends InstantaneousScene {
         PositionAnimation.animate(game.getGameObject(), () -> game.getGameObject().setPosition(
                 player.getGameObject().getPosition()
                         .scaledBy(-.5, -.5)
-                        .plus(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5))
         ), 10);
     }
 

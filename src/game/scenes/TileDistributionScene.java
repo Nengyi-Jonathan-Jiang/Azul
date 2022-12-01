@@ -1,6 +1,5 @@
 package game.scenes;
 
-import engine.core.GameCanvas;
 import engine.core.Vec2;
 import game.App;
 import game.backend.board.Factory;
@@ -23,7 +22,9 @@ public class TileDistributionScene extends BasicGameScene {
 
     @Override
     public void onExecutionStart() {
-        PositionAnimation.animate(game.getGameObject(), () -> game.getGameObject().setPosition(new Vec2(App.WIDTH, App.HEIGHT).scaledBy(.5)), 10);
+        PositionAnimation.animate(game.getGameObject(),
+                () -> game.getGameObject().setPosition(Vec2.zero),
+            10);
     }
 
     @Override

@@ -33,7 +33,7 @@ public class RankingScene extends AbstractScene {
         background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
 
         // Logo image
-        GameObject logo = new GameObject(new Vec2(0, App.HEIGHT * -.35), Vec2.zero, new ImageRendererComponent("logo.png"));
+        GameObject logo = new GameObject(new Vec2(0, -350), Vec2.zero, new ImageRendererComponent("logo.png"));
         logo.setSize(new Vec2(575, 408).scaledBy(.7));
         background.addChild(logo);
 
@@ -73,8 +73,6 @@ public class RankingScene extends AbstractScene {
     @Override
     public void onExecutionStart() {
         Collections.sort(players);
-
-        Vec2 SCREEN_CENTER = new Vec2(App.WIDTH, App.HEIGHT).scaledBy(0.5);
 
         for (int i = 0; i < players.size(); i++) {
             Player p = players.get(i);

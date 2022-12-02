@@ -93,7 +93,13 @@ public class BonusCalculationScene extends InstantaneousScene {
                 )
                 .collect(Collectors.toList())
                 .iterator(),
-            makeIterator(new ScoringConfirmationScene(game, player))
+            makeIterator(new ScoringConfirmationScene(game, player){
+                @Override
+                public void onExecutionStart() {
+                    super.onExecutionStart();
+                    infoPanel.setChildren("Calculating bonuses for " + player, "Continue");
+                }
+            })
         );
     }
 }

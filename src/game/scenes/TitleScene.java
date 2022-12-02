@@ -1,10 +1,7 @@
 package game.scenes;
 
 import engine.components.*;
-import engine.core.AbstractScene;
-import engine.core.GameCanvas;
-import engine.core.GameObject;
-import engine.core.Vec2;
+import engine.core.*;
 import engine.input.MouseEvent;
 import game.Style;
 import game.backend.Game;
@@ -141,12 +138,21 @@ public class TitleScene extends AbstractScene {
 
     @Override
     public Iterator<? extends AbstractScene> getScenesAfter() {
-        return AbstractScene.makeIterator(
-            gotoRules1
-            ? new RulesScene()
+        return gotoRules1
+            ? makeIterator(new RulesScene(), new InstantaneousScene() {
+            @Override
+                public void execute() {
+                    finished = gotoRules1 = gotoRules2 = false;
+                }
+            }, this)
             : gotoRules2
-            ? new HowToPlayScene()
-            : new GameScene(new Game(
+            ? makeIterator(new HowToPlayScene(), new InstantaneousScene() {
+                @Override
+                public void execute() {
+                    finished = gotoRules1 = gotoRules2 = false;
+                }
+            }, this)
+            : makeIterator(new GameScene(new Game(
                 (IntStream.range(0, numPlayers)).mapToObj(
                         // Max player name length: 14
                         i -> {
@@ -156,7 +162,6 @@ public class TitleScene extends AbstractScene {
                             return new Player("Player " + (i + 1), i, null);
                         }
                 ).collect(Collectors.toList())
-            ))
-        );
+            )));
     }
 }

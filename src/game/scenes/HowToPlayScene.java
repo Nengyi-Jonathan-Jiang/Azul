@@ -100,7 +100,7 @@ public class HowToPlayScene extends SceneGroup {
                     );
                 }
             },
-            new StepScene(() -> g, true, "You can move around the scene by dragging while right clicking"){},
+            new StepScene(() -> g, true, "You can move around by dragging while holding down the right mouse button"){},
             new StepScene(() -> g, false, "When the factories are empty, the scoring will start.") {},
             new StepScene(() -> g, false, "The tiles will automatically be scored as they move from the line to the wall") {
                 @Override
@@ -141,7 +141,10 @@ public class HowToPlayScene extends SceneGroup {
                     {
                         Wall wall = g.getPlayers().get(1).getWall();
                         for (Tile.TileColor color : Tile.allColors) {
-                            if (wall.rowHasTileColor(0, color)) continue;
+                            if (wall.rowHasTileColor(0, color)){
+                                wall.getGrid()[0][wall.getCol(0, color)].highlight();
+                                continue;
+                            }
                             Tile t = new Tile(color);
                             t.highlight();
                             wall.placeTile(0, t);
@@ -176,13 +179,13 @@ public class HowToPlayScene extends SceneGroup {
                     Arrays.stream(game.getPlayers().get(1).getWall().getGrid()).flatMap(Arrays::stream).filter(Objects::nonNull).forEach(Tile::unHighlight);
                 }
             },
-            new StepScene(() -> g, false, "Row, Column, and Color bonuses are calculated."){
+            new StepScene(() -> g, false, "The game will calculate the Row, Column, and Color bonuses."){
                 @Override
                 public Iterator<? extends AbstractScene> getScenesAfter() {
                     return makeLoopIterator(g.getPlayers(), player -> new BonusCalculationScene(player, g));
                 }
             },
-            new StepScene(() -> g, false, "The player with the highest score wins."){},
+            new StepScene(() -> g, false, "The player with the highest final score wins."){},
             new StepScene(() -> g, false, "Have fun playing!"){}
         );
     }

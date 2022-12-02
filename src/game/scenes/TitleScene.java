@@ -6,7 +6,6 @@ import engine.core.GameCanvas;
 import engine.core.GameObject;
 import engine.core.Vec2;
 import engine.input.MouseEvent;
-import game.App;
 import game.Style;
 import game.backend.Game;
 import game.backend.ai.styles.GreedyComputer;
@@ -14,7 +13,6 @@ import game.backend.player.Player;
 import game.frontend.TextObject;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -43,8 +41,8 @@ public class TitleScene extends AbstractScene {
         background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
 
         // Logo image
-        GameObject logo = new GameObject(new Vec2(0, -200), Vec2.zero, new ImageRendererComponent("logo.png"));
-        logo.setSize(new Vec2(575, 400).scaledBy(.8));
+        GameObject logo = new GameObject(new Vec2(0, -170), Vec2.zero, new ImageRendererComponent("logo.png"));
+        logo.setSize(new Vec2(575, 400).scaledBy(.6));
 
         // Player select text
         GameObject playerSelectText = new GameObject(
@@ -88,8 +86,8 @@ public class TitleScene extends AbstractScene {
         gObject.addChildren(jeremyButton, startButton);
         selectNumPlayers(2);
 
-        help = new TextObject("Azul Rules");
-        help2 = new TextObject("Controls");
+        help = new TextObject("Rulebook");
+        help2 = new TextObject("How To Play");
     }
 
     private void selectNumPlayers(int idx) {
@@ -147,7 +145,7 @@ public class TitleScene extends AbstractScene {
             gotoRules1
             ? new RulesScene()
             : gotoRules2
-            ? new ControlsScene()
+            ? new HowToPlayScene()
             : new GameScene(new Game(
                 (IntStream.range(0, numPlayers)).mapToObj(
                         // Max player name length: 14

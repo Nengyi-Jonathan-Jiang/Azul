@@ -37,7 +37,7 @@ public class RulesScene extends AbstractScene {
 
     @Override
     public void scroll(int distance) {
-        scroll -= distance * 50f;
+        scroll -= distance * .02;
         System.out.println(scroll);
     }
 
@@ -49,7 +49,7 @@ public class RulesScene extends AbstractScene {
             pages[i].setSize(new Vec2(canvas.getWidth()).scaledBy(1, imgs[i].getAspectRatio()).scaledBy(.8));
         }
 
-        double top = scroll;
+        double top = scroll * canvas.getWidth();
         for(int i = 0; i < 6; i++){
             pages[i].setPosition(new Vec2(0, top));
             top += pages[i].getSize().y + 20;

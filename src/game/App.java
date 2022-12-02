@@ -7,6 +7,9 @@ import game.scenes.RulesScene;
 import game.scenes.TitleScene;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Iterator;
 
 public class App extends JFrame {
@@ -20,6 +23,10 @@ public class App extends JFrame {
         canvas = new GameCanvas(1000, 600);
         add(canvas);
         pack();
+
+        setMinimumSize(getSize());
+
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         SceneManager.run(new AbstractScene() {
             @Override

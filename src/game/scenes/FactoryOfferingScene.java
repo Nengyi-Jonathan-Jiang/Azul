@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FactoryOfferingScene extends BasicGameScene {
-    private final Player player;
-    private boolean finished = false;
+    protected final Player player;
+    boolean finished = false;
 
-    private List<Tile> selectedTiles = null;
-    private AbstractTileSet selectedTileSet = null;
-    private Tile selectedTile = null;
+    protected List<Tile> selectedTiles = null;
+    protected AbstractTileSet selectedTileSet = null;
+    protected Tile.TileColor selectedTileColor = Tile.TileColor.NONE;
     private List<ILine> availableLines = null;
-    private ILine selectedLine = null;
+    protected ILine selectedLine = null;
 
 
     public FactoryOfferingScene(Game game, Player player) {
@@ -70,7 +70,7 @@ public class FactoryOfferingScene extends BasicGameScene {
 
         // Handle click on rows
         if (selectedTiles != null) {
-            for (ILine line : player.getAvailableLinesForColor(selectedTile.getColor())) {
+            for (ILine line : player.getAvailableLinesForColor(selectedTileColor)) {
                 if (line.getGameObject().getComponent(ButtonComponent.class).contains(me.position)) {
                     unselectPatternLine();
                     selectPatternLine(line);
@@ -104,8 +104,8 @@ public class FactoryOfferingScene extends BasicGameScene {
     private void selectTile(AbstractTileSet s, Tile t) {
         selectedTiles = s.getTilesOfColor(t.getColor());
         selectedTileSet = s;
-        selectedTile = t;
-        availableLines = player.getAvailableLinesForColor(selectedTile.getColor());
+        selectedTileColor = t.getColor();
+        availableLines = player.getAvailableLinesForColor(selectedTileColor);
 
         setInstructions("Click on the pattern line you will place the tile in");
     }
@@ -113,7 +113,7 @@ public class FactoryOfferingScene extends BasicGameScene {
     private void unselectTiles() {
         selectedTiles = null;
         selectedTileSet = null;
-        selectedTile = null;
+        selectedTileColor = Tile.TileColor.NONE;
         availableLines = null;
         selectedLine = null;
 
@@ -127,7 +127,6 @@ public class FactoryOfferingScene extends BasicGameScene {
         player.getFloorLine().unHighlight();
         if (selectedLine != null) selectedLine.unHighlight();
         if (selectedTiles != null) selectedTiles.forEach(Tile::unHighlight);
-        if (selectedTile != null) selectedTile.unHighlight();
         if (availableLines != null) availableLines.forEach(ILine::unHighlight);
     }
 
@@ -137,7 +136,7 @@ public class FactoryOfferingScene extends BasicGameScene {
         unHighlightAll();
 
         // Remove selected tiles from tileset
-        selectedTileSet.removeTilesOfColor(selectedTile.getColor());
+        selectedTileSet.removeTilesOfColor(selectedTileColor);
 
         // Animate tile movement to pattern line
         for (Tile tile : selectedTiles) {
@@ -184,7 +183,7 @@ public class FactoryOfferingScene extends BasicGameScene {
         selectedLine = null;
         selectedTiles = null;
         selectedTileSet = null;
-        selectedTile = null;
+        selectedTileColor = Tile.TileColor.NONE;
         availableLines = null;
 
         finished = true;
@@ -192,7 +191,7 @@ public class FactoryOfferingScene extends BasicGameScene {
 
     @Override
     public void draw(GameCanvas canvas) {
-        if(selectedLine != null && selectedTile != null){
+        if(selectedLine != null && selectedTileColor != null){
             infoPanel.getRight().enable();
         } else infoPanel.getRight().disable();
 
@@ -206,7 +205,6 @@ public class FactoryOfferingScene extends BasicGameScene {
         Vec2 mp = Input.getMousePosition();
 
         unHighlightAll();
-        if (selectedTile != null) selectedTile.highlight();
         if (selectedTiles != null) selectedTiles.forEach(Tile::highlight);
         if (availableLines != null) availableLines.forEach(ILine::highlight);
         if (selectedLine != null) selectedLine.highlight2();

@@ -37,7 +37,7 @@ public class PatternLine implements ILine {
     public boolean canAddTileOfColor(Tile.TileColor t) {
         return !canAddTile() && (
                 currentTileColor == Tile.TileColor.NONE ||
-                        t == Tile.TileColor.FIRST_PLAYER ||
+                        t == Tile.TileColor.FIRST ||
                         t == currentTileColor
         );
     }

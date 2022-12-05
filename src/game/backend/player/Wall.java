@@ -13,11 +13,11 @@ import static game.backend.Tile.TileColor;
 
 public class Wall {
     private static final TileColor[][] referencePattern = {
-            {TileColor.BLUE, TileColor.YELLOW, TileColor.RED, TileColor.BLACK, TileColor.WHITE},
-            {TileColor.WHITE, TileColor.BLUE, TileColor.YELLOW, TileColor.RED, TileColor.BLACK},
-            {TileColor.BLACK, TileColor.WHITE, TileColor.BLUE, TileColor.YELLOW, TileColor.RED},
-            {TileColor.RED, TileColor.BLACK, TileColor.WHITE, TileColor.BLUE, TileColor.YELLOW},
-            {TileColor.YELLOW, TileColor.RED, TileColor.BLACK, TileColor.WHITE, TileColor.BLUE},
+            {TileColor.BLUE, TileColor.ORANGE, TileColor.RED, TileColor.BLACK, TileColor.SNOW},
+            {TileColor.SNOW, TileColor.BLUE, TileColor.ORANGE, TileColor.RED, TileColor.BLACK},
+            {TileColor.BLACK, TileColor.SNOW, TileColor.BLUE, TileColor.ORANGE, TileColor.RED},
+            {TileColor.RED, TileColor.BLACK, TileColor.SNOW, TileColor.BLUE, TileColor.ORANGE},
+            {TileColor.ORANGE, TileColor.RED, TileColor.BLACK, TileColor.SNOW, TileColor.BLUE},
     };
 
     private final Tile[][] grid;
@@ -116,8 +116,8 @@ public class Wall {
             for (int j = 0; j < 5; j++) {
                 res.append(grid[i][j] == null ? "_" : switch (grid[i][j].getColor()) {
                     case RED -> "R";
-                    case YELLOW -> "Y";
-                    case WHITE -> "W";
+                    case ORANGE -> "Y";
+                    case SNOW -> "W";
                     case BLUE -> "B";
                     case BLACK -> "K";
                     default -> "?";

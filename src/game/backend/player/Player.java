@@ -46,7 +46,7 @@ public class Player implements Comparable<Player> {
         boardObject.addChild(scoreMarker.getGameObject());
 
         if (playerNum == 0) {
-            setFirstPlayerTile(new Tile(Tile.TileColor.FIRST_PLAYER));
+            setFirstPlayerTile(new Tile(Tile.TileColor.FIRST));
         }
     }
 

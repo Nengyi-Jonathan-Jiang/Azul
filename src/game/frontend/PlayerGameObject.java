@@ -7,6 +7,7 @@ import engine.core.Vec2;
 import game.Style;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class PlayerGameObject extends GameObject {
     private final GameObject boardObject;
@@ -14,10 +15,10 @@ public class PlayerGameObject extends GameObject {
     public PlayerGameObject(String playerName, int playerNum) {
         boardObject = new GameObject(
                 new ImageRendererComponent(
-                        "Azul Board.jpg",
+                        "board",
                         ImageRendererComponent.RenderSpeed.FAST
                 ),
-                new RectRendererComponent(Style.FG_COLOR, new Color(0, 0, 0, 0))
+                new RectRendererComponent(Style.FG_COLOR, new AtomicReference<>(new Color(0, 0, 0, 0)))
         );
         boardObject.setSize(boardObject.getComponent(ImageRendererComponent.class).getImageSize());
 

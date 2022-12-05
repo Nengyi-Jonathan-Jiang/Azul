@@ -6,6 +6,7 @@ import engine.core.GameObject;
 import engine.core.Vec2;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ScoreMarker {
     private static final double SIZE = 20;
@@ -18,7 +19,7 @@ public class ScoreMarker {
 
     public ScoreMarker(Player p) {
         this.p = p;
-        gameObject = new GameObject(new Vec2(SIZE), new RectRendererComponent(Color.BLACK, Color.BLACK), new PositionAnimationComponent());
+        gameObject = new GameObject(new Vec2(SIZE), new RectRendererComponent(new AtomicReference<>(Color.BLACK), new AtomicReference<>(Color.BLACK)), new PositionAnimationComponent());
         gameObject.setTopLeft(new Vec2(22, 1).plus(p.getBoardObject().getTopLeftOffset()));
     }
 

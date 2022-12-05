@@ -15,7 +15,7 @@ public class Bag {
         returnedTiles = new ArrayList<>();
 
         for (var color : new Tile.TileColor[]{
-                Tile.TileColor.RED, Tile.TileColor.YELLOW, Tile.TileColor.BLACK, Tile.TileColor.BLUE, Tile.TileColor.WHITE
+                Tile.TileColor.RED, Tile.TileColor.ORANGE, Tile.TileColor.BLACK, Tile.TileColor.BLUE, Tile.TileColor.SNOW
         }) {
             for (int i = 0; i < 20; i++) {
                 returnedTiles.add(new Tile(color));

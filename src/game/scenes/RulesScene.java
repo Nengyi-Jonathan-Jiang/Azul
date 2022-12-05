@@ -21,7 +21,7 @@ public class RulesScene extends AbstractScene {
     private boolean finished = false;
 
     public RulesScene(){
-        background = createImageObject("table.jpg");
+        background = createImageObject("background");
         for(int i = 0; i < 6; i++){
             pages[i] = createImageObject("rules/Azul Rulebook-" + (i + 1) + ".png");
             imgs[i] = pages[i].getComponent(ImageRendererComponent.class);
@@ -38,7 +38,6 @@ public class RulesScene extends AbstractScene {
     @Override
     public void scroll(int distance) {
         scroll -= distance * .02;
-        System.out.println(scroll);
     }
 
     @Override

@@ -14,15 +14,17 @@ import java.awt.image.BufferedImage;
  * @noinspection unused
  */
 public class ImageRendererComponent extends Component {
-    protected final BufferedImage image;
+    protected final String imageName;
+    //protected final BufferedImage image;
     protected final Object imageScaling, renderSpeed;
 
-    public ImageRendererComponent(String fileName) {
-        this(fileName, RenderSpeed.BALANCED);
+    public ImageRendererComponent(String imgName) {
+        this(imgName, RenderSpeed.BALANCED);
     }
 
-    public ImageRendererComponent(String fileName, RenderSpeed renderSpeed) {
-        image = ImageLoader.get(fileName);
+    public ImageRendererComponent(String imageName, RenderSpeed renderSpeed) {
+        //image = ImageLoader.get(imgName);
+        this.imageName = imageName;
         this.imageScaling = switch (renderSpeed) {
             case FAST -> RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR;
             case SLOW -> RenderingHints.VALUE_INTERPOLATION_BICUBIC;
@@ -38,15 +40,15 @@ public class ImageRendererComponent extends Component {
     @Override
     public void drawAndUpdate(GameCanvas canvas) {
         canvas.graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, imageScaling);
-        canvas.drawImage(image, gameObject.getAbsoluteTopLeft(), gameObject.getSize());
+        canvas.drawImage(ImageLoader.get(imageName), gameObject.getAbsoluteTopLeft(), gameObject.getSize());
     }
 
     public Vec2 getImageSize() {
-        return new Vec2(image.getWidth(), image.getHeight());
+        return new Vec2(ImageLoader.get(imageName).getWidth(), ImageLoader.get(imageName).getHeight());
     }
 
     public double getAspectRatio() {
-        return 1.0 * image.getWidth() / image.getHeight();
+        return 1.0 * ImageLoader.get(imageName).getWidth() / ImageLoader.get(imageName).getHeight();
     }
 
     public enum RenderSpeed {

@@ -11,9 +11,9 @@ public class WallCompleteRowTest {
 
         System.out.println(p.getWall().hasCompletedRow());
 
-        p.getWall().placeTile(0, new Tile(Tile.TileColor.WHITE));
+        p.getWall().placeTile(0, new Tile(Tile.TileColor.SNOW));
         p.getWall().placeTile(0, new Tile(Tile.TileColor.RED));
-        p.getWall().placeTile(0, new Tile(Tile.TileColor.YELLOW));
+        p.getWall().placeTile(0, new Tile(Tile.TileColor.ORANGE));
 
         System.out.println(p.getWall());
 

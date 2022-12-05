@@ -1,6 +1,7 @@
 package engine.components;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @noinspection unused
@@ -17,14 +18,14 @@ public final class TextStyle {
     public static final int ALIGN_CENTER = 10;
 
     private static final Font DEFAULT_FONT = new Font("Times New Roman", Font.PLAIN, 12);
-    private static final Color DEFAULT_FG_COLOR = Color.BLACK;
-    private static final Color DEFAULT_BG_COLOR = new Color(0, 0, 0, 0);
+    private static final AtomicReference<Color> DEFAULT_FG_COLOR = new AtomicReference<>(Color.BLACK);
+    private static final AtomicReference<Color> DEFAULT_BG_COLOR = new AtomicReference<>(new Color(0, 0, 0, 0));
     private static final int DEFAULT_ALIGNMENT = ALIGN_LEFT | ALIGN_TOP;
 
     public final Font font;
     public final int alignment;
-    public final Color fg_color;
-    public final Color bg_color;
+    public final AtomicReference<Color> fg_color;
+    public final AtomicReference<Color> bg_color;
 
     public TextStyle() {
         this(DEFAULT_FONT);
@@ -34,7 +35,7 @@ public final class TextStyle {
         this(font, DEFAULT_ALIGNMENT);
     }
 
-    public TextStyle(Color fg_color) {
+    public TextStyle(AtomicReference<Color> fg_color) {
         this(DEFAULT_FONT, fg_color);
     }
 
@@ -42,7 +43,7 @@ public final class TextStyle {
         this(DEFAULT_FONT, alignment);
     }
 
-    public TextStyle(Color fg_color, int alignment) {
+    public TextStyle(AtomicReference<Color> fg_color, int alignment) {
         this(DEFAULT_FONT, fg_color, alignment);
     }
 
@@ -50,27 +51,27 @@ public final class TextStyle {
         this(font, DEFAULT_FG_COLOR, alignment);
     }
 
-    public TextStyle(Font font, Color fg_color) {
+    public TextStyle(Font font, AtomicReference<Color> fg_color) {
         this(font, fg_color, DEFAULT_ALIGNMENT);
     }
 
-    public TextStyle(Color fg_color, Color bg_color) {
+    public TextStyle(AtomicReference<Color> fg_color, AtomicReference<Color> bg_color) {
         this(DEFAULT_FONT, fg_color, bg_color);
     }
 
-    public TextStyle(Color fg_color, Color bg_color, int alignment) {
+    public TextStyle(AtomicReference<Color> fg_color, AtomicReference<Color> bg_color, int alignment) {
         this(DEFAULT_FONT, fg_color, bg_color, alignment);
     }
 
-    public TextStyle(Font font, Color fg_color, Color bg_color) {
+    public TextStyle(Font font, AtomicReference<Color> fg_color, AtomicReference<Color> bg_color) {
         this(font, fg_color, bg_color, 0);
     }
 
-    public TextStyle(Font font, Color fg_color, int alignment) {
+    public TextStyle(Font font, AtomicReference<Color> fg_color, int alignment) {
         this(font, fg_color, DEFAULT_BG_COLOR, alignment);
     }
 
-    public TextStyle(Font font, Color fg_color, Color bg_color, int alignment) {
+    public TextStyle(Font font, AtomicReference<Color> fg_color, AtomicReference<Color> bg_color, int alignment) {
         this.font = font;
         this.fg_color = fg_color;
         this.bg_color = bg_color;

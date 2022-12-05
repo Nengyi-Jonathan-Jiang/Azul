@@ -9,6 +9,7 @@ import game.Style;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 public class InfoPanelObject extends GameObject {
@@ -20,7 +21,7 @@ public class InfoPanelObject extends GameObject {
     private String[] args;
 
     public InfoPanelObject(String... text){
-        super(new RectRendererComponent(Style.FG_COLOR, Style.makeTransparent(Style.DM_COLOR, 127)));
+        super(new RectRendererComponent(Style.FG_COLOR, new AtomicReference<>(Style.makeTransparent(Style.DM_COLOR, 127))));
         setChildren(text);
     }
 

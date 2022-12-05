@@ -6,17 +6,16 @@ import engine.core.GameCanvas;
 import engine.core.GameObject;
 import engine.core.Vec2;
 import engine.input.MouseEvent;
-import game.App;
 import game.Style;
 import game.backend.Game;
 import game.backend.player.Player;
-import game.frontend.ButtonObject;
 import game.frontend.TextObject;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class RankingScene extends AbstractScene {
     private final GameObject gObject = new GameObject();
@@ -29,11 +28,11 @@ public class RankingScene extends AbstractScene {
     private static final int TEXT_WIDTH = 560;
 
     public RankingScene(Game game) {
-        GameObject background = new GameObject(new ImageRendererComponent("table.jpg"));
+        GameObject background = new GameObject(new ImageRendererComponent("background"));
         background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
 
         // Logo image
-        GameObject logo = new GameObject(new Vec2(0, -350), Vec2.zero, new ImageRendererComponent("logo.png"));
+        GameObject logo = new GameObject(new Vec2(0, -350), Vec2.zero, new ImageRendererComponent("logo"));
         logo.setSize(new Vec2(575, 408).scaledBy(.7));
         background.addChild(logo);
 
@@ -44,7 +43,7 @@ public class RankingScene extends AbstractScene {
                 new RoundedRectRendererComponent(30, Style.FG_COLOR, Style.BG_COLOR),
                 new TextRendererComponent(
                         "",
-                        new TextStyle(Style.font_huge, new Color(152, 0, 0), TextStyle.ALIGN_CENTER)
+                        new TextStyle(Style.font_huge, new AtomicReference<>(new Color(152, 0, 0)), TextStyle.ALIGN_CENTER)
                 )
         );
 
@@ -58,13 +57,10 @@ public class RankingScene extends AbstractScene {
                 )
         );
 
-        playAgainButton = new ButtonObject(
-                new Vec2(0, 350),
-                new Vec2(240, 80),
+        playAgainButton = new TextObject(
                 "Play Again?",
-                new TextStyle(Style.font_large, TextStyle.ALIGN_CENTER),
-                () -> new RoundedRectRendererComponent(30, Style.FG_COLOR, Style.BG_COLOR)
-        );
+                new TextStyle(Style.font_large, TextStyle.ALIGN_CENTER)
+        ).setPosition(new Vec2(0, 350)).setSize(new Vec2(240, 80));
 
         background.addChildren(winText, playAgainButton, text1);
         gObject.addChild(background);

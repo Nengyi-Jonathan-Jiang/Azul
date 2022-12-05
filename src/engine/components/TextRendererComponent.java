@@ -92,10 +92,10 @@ public class TextRendererComponent extends Component {
         );
 
         canvas
-                .setColor(style.bg_color)
+                .setColor(style.bg_color.get())
                 .fillRect(rect_start, gameObject.getSize())
 
-                .setColor(style.fg_color)
+                .setColor(style.fg_color.get())
                 .setDrawFont(style.font)
                 .drawText(text, text_start);
     }

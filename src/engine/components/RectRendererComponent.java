@@ -4,24 +4,26 @@ import engine.core.Component;
 import engine.core.GameCanvas;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @noinspection UnusedReturnValue, unused
  */
 public class RectRendererComponent extends Component {
-    protected final static Color DEFAULT_BORDER_COLOR = Color.BLACK,
-            DEFAULT_FILL_COLOR = new Color(255, 255, 255, 0);
-    protected Color border_color, fill_color;
+    protected final static AtomicReference<Color> DEFAULT_BORDER_COLOR = new AtomicReference<>(Color.BLACK);
+    protected final static AtomicReference<Color> DEFAULT_FILL_COLOR = new AtomicReference<>(new Color(255, 255, 255, 0));
+    protected AtomicReference<Color> border_color;
+    protected AtomicReference<Color> fill_color;
 
     public RectRendererComponent() {
         this(DEFAULT_BORDER_COLOR);
     }
 
-    public RectRendererComponent(Color border_color) {
+    public RectRendererComponent(AtomicReference<Color> border_color) {
         this(border_color, DEFAULT_FILL_COLOR);
     }
 
-    public RectRendererComponent(Color border_color, Color fill_color) {
+    public RectRendererComponent(AtomicReference<Color> border_color, AtomicReference<Color> fill_color) {
         this.border_color = border_color;
         this.fill_color = fill_color;
     }
@@ -29,24 +31,24 @@ public class RectRendererComponent extends Component {
     @Override
     public void drawAndUpdate(GameCanvas canvas) {
         canvas
-                .setColor(fill_color)
+                .setColor(fill_color.get())
                 .fillRect(
                         gameObject.getAbsoluteTopLeft(),
                         gameObject.getSize()
                 )
-                .setColor(border_color)
+                .setColor(border_color.get())
                 .drawRect(
                         gameObject.getAbsoluteTopLeft(),
                         gameObject.getSize()
                 );
     }
 
-    public RectRendererComponent setBorderColor(Color color) {
+    public RectRendererComponent setBorderColor(AtomicReference<Color> color) {
         border_color = color;
         return this;
     }
 
-    public RectRendererComponent setFillColor(Color color) {
+    public RectRendererComponent setFillColor(AtomicReference<Color> color) {
         fill_color = color;
         return this;
     }

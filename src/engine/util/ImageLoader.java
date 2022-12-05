@@ -20,21 +20,26 @@ public final class ImageLoader {
      * Gets an image by filename. Images are cached, so no image is loaded twice
      */
     public static BufferedImage get(String filename) {
-        if (images.containsKey(filename)) return images.get(filename);
-        else return load(filename);
+        return get(filename, filename);
     }
 
+    /**
+     * Gets an image by name. Images are cached, so no image is loaded twice
+     */
+    public static BufferedImage get(String name, String filename) {
+        if (images.containsKey(name)) return images.get(name);
+        else return load(name, filename);
+    }
 
     /**
      * Loads a file into the class and returns it
-     *
      * @param filename The location of the image file
      */
-    private static BufferedImage load(String filename) {
+    public static BufferedImage load(String name, String filename) {
         try (InputStream inputStream = ImageLoader.class.getResourceAsStream("/" + filename)) {
             if (inputStream != null) {
                 BufferedImage image = ImageIO.read(inputStream);
-                images.put(filename, image);
+                images.put(name, image);
                 return image;
             } else {
                 throw new IOException("Null input stream");

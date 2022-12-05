@@ -6,7 +6,7 @@ import engine.core.Vec2;
 
 public class FactoryGameObject extends GameObject {
     public FactoryGameObject() {
-        super(new Vec2(144), new ImageRendererComponent("factory.png"));
+        super(new Vec2(144), new ImageRendererComponent("factory"));
     }
 
     @Override

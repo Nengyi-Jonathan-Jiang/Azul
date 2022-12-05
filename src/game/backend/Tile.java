@@ -10,14 +10,14 @@ import game.Style;
 
 public class Tile implements Comparable<Tile> {
     public static final double SIZE = 40;
-    public final static TileColor[] allColors = {TileColor.RED, TileColor.YELLOW, TileColor.WHITE, TileColor.BLUE, TileColor.BLACK};
+    public final static TileColor[] allColors = {TileColor.RED, TileColor.ORANGE, TileColor.SNOW, TileColor.BLUE, TileColor.BLACK};
     private final TileColor color;
     private final GameObject gameObj;
 
     public Tile(TileColor color) {
         this.color = color;
         gameObj = new GameObject(
-                new ImageRendererComponent("Tiles/Tile " + getTileColorName(color) + ".png"),
+                new ImageRendererComponent(getTileColorName(color)),
                 new ButtonComponent(),
                 new RectRendererComponent(Style.HL2_COLOR),
                 new PositionAnimationComponent()
@@ -29,13 +29,13 @@ public class Tile implements Comparable<Tile> {
 
     public static String getTileColorName(TileColor color) {
         return switch (color) {
-            case RED -> "Red";
-            case YELLOW -> "Yellow";
-            case WHITE -> "White";
-            case BLUE -> "Blue";
-            case BLACK -> "Black";
-            case NONE -> "None";
-            case FIRST_PLAYER -> "First Player";
+            case RED -> "red";
+            case ORANGE -> "orange";
+            case SNOW -> "snow";
+            case BLUE -> "blue";
+            case BLACK -> "black";
+            case NONE -> "none";
+            case FIRST -> "first";
         };
     }
 
@@ -66,7 +66,7 @@ public class Tile implements Comparable<Tile> {
     }
 
     public boolean isFirstPlayerMarker() {
-        return color == TileColor.FIRST_PLAYER;
+        return color == TileColor.FIRST;
     }
 
     public boolean isColorTile() {
@@ -74,10 +74,10 @@ public class Tile implements Comparable<Tile> {
     }
 
     public enum TileColor {
-        FIRST_PLAYER,
+        FIRST,
         RED,
-        YELLOW,
-        WHITE,
+        ORANGE,
+        SNOW,
         BLUE,
         BLACK,
         NONE

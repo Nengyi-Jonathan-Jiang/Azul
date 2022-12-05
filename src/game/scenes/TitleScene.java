@@ -3,6 +3,7 @@ package game.scenes;
 import engine.components.*;
 import engine.core.*;
 import engine.input.MouseEvent;
+import game.App;
 import game.Style;
 import game.backend.Game;
 import game.backend.ai.styles.GreedyComputer;
@@ -11,6 +12,7 @@ import game.frontend.TextObject;
 
 import java.awt.*;
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -26,19 +28,24 @@ public class TitleScene extends AbstractScene {
 
     private final GameObject help, help2;
 
+    private final GameObject themeSelect;
+
     private boolean gotoRules1 = false;
     private boolean gotoRules2 = false;
+
+    private static final String[] themes = "Classic Geometric Aqua Stars".split(" ");
+    private int theme = 0;
 
     public TitleScene() {
         // The base game object
         gObject = new GameObject();
 
         // Background image
-        GameObject background = new GameObject(new ImageRendererComponent("table.jpg"));
+        GameObject background = new GameObject(new ImageRendererComponent("background"));
         background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
 
         // Logo image
-        GameObject logo = new GameObject(new Vec2(0, -170), Vec2.zero, new ImageRendererComponent("logo.png"));
+        GameObject logo = new GameObject(new Vec2(0, -170), Vec2.zero, new ImageRendererComponent("logo"));
         logo.setSize(new Vec2(575, 400).scaledBy(.6));
 
         // Player select text
@@ -85,12 +92,15 @@ public class TitleScene extends AbstractScene {
 
         help = new TextObject("Rulebook");
         help2 = new TextObject("How To Play");
+
+        themeSelect = new TextObject("Theme: Classic");
+        themeSelect.setSize(new Vec2(200, 45));
     }
 
     private void selectNumPlayers(int idx) {
         for (int i = 0; i < 3; i++) {
             RectRendererComponent r = playerSelectButtons[i].getComponent(RectRendererComponent.class);
-            Color c = i == idx ? Style.BG_COLOR : Style.DM_COLOR;
+            AtomicReference<Color> c = i == idx ? Style.BG_COLOR : Style.DM_COLOR;
             r.setFillColor(c);
         }
         numPlayers = idx + 2;
@@ -101,9 +111,17 @@ public class TitleScene extends AbstractScene {
         if(finished = startButton.getComponent(ButtonComponent.class).contains(me.position)) return;
         if(finished = help.getComponent(ButtonComponent.class).contains(me.position) && (gotoRules1 = true)) return;
         if(finished = help2.getComponent(ButtonComponent.class).contains(me.position) && (gotoRules2 = true)) return;
+        if(themeSelect.getComponent(ButtonComponent.class).contains(me.position)){
+            theme = (theme + 1) & 3;
+            App.loadTheme(themes[theme]);
+            themeSelect.getComponent(TextRendererComponent.class).setText(
+                    "Theme: " + themes[theme]
+            );
+            return;
+        }
 
         if(jeremyButton.getComponent(ButtonComponent.class).contains(me.position)){
-            Color c = (enableJeremy ^= true) ? Style.BG_COLOR : Style.DM_COLOR;
+            AtomicReference<Color> c = (enableJeremy ^= true) ? Style.BG_COLOR : Style.DM_COLOR;
             jeremyButton.getComponent(RectRendererComponent.class).setFillColor(c);
             jeremyButton.getComponent(TextRendererComponent.class).setText(
                     enableJeremy
@@ -124,11 +142,13 @@ public class TitleScene extends AbstractScene {
     public void draw(GameCanvas canvas) {
         help2.setBottomRight(canvas.get_size().scaledBy(.5).minus(new Vec2(10)));
         help.setBottomRight(help2.getBottomRight().minus(new Vec2(0, help2.getSize().y + 10)));
+        themeSelect.setBottomLeft(canvas.get_size().scaledBy(.5).minus(new Vec2(10)).scaledBy(-1,1));
 
         gObject.draw(canvas);
 
         help.draw(canvas);
         help2.draw(canvas);
+        themeSelect.draw(canvas);
     }
 
     @Override

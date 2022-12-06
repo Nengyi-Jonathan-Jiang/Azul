@@ -1,11 +1,15 @@
 package game.backend.player;
 
+import engine.components.RectRendererComponent;
+import engine.components.TextStyle;
 import engine.core.GameObject;
 import engine.core.Vec2;
+import game.Style;
 import game.backend.*;
 import game.backend.ai.ComputerMove;
 import game.backend.ai.PlayStyle;
 import game.frontend.PlayerGameObject;
+import game.frontend.TextObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +25,7 @@ public class Player implements Comparable<Player> {
     private final Wall wall;
     private Tile firstPlayerTile = null;
     private final PlayStyle playStyle;
+    public final TextObject scoreText;
 
     public Player(String playerName, int playerNum, PlayStyle playStyle) {
         name = playerName;
@@ -48,6 +53,14 @@ public class Player implements Comparable<Player> {
         if (playerNum == 0) {
             setFirstPlayerTile(new Tile(Tile.TileColor.FIRST));
         }
+
+        scoreText = new TextObject("0 pts", new TextStyle(
+                Style.font_d.deriveFont(15f),
+                TextStyle.ALIGN_RIGHT
+        ));
+        scoreText.getComponent(RectRendererComponent.class).disable();
+        playerObject.addChild(scoreText);
+        scoreText.setTopRight(boardObject.getBottomRight().plus(new Vec2(-5, 3)));
     }
 
     public ScoreMarker getScoreMarker() {

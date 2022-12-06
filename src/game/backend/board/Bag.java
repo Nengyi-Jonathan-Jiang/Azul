@@ -49,4 +49,11 @@ public class Bag {
         returnedTiles.clear();
         Collections.shuffle(tiles);
     }
+
+    public int getCount(){
+        return tiles.size();
+    }
+    public int getReturnedCount(){
+        return returnedTiles.size();
+    }
 }

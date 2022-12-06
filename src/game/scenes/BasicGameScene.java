@@ -4,6 +4,7 @@ import engine.components.PositionAnimationComponent;
 import engine.core.*;
 import game.App;
 import game.backend.Game;
+import game.frontend.BagCountDisplay;
 import game.frontend.InfoPanelObject;
 
 public abstract class BasicGameScene extends AbstractScene {
@@ -12,6 +13,7 @@ public abstract class BasicGameScene extends AbstractScene {
     protected final InfoPanelObject infoPanel;
 
     private final boolean disablePanning;
+    private final BagCountDisplay bagCountText;
 
     public BasicGameScene(Game game) {
         this(game, false);
@@ -21,6 +23,7 @@ public abstract class BasicGameScene extends AbstractScene {
         this.game = game;
         this.infoPanel = new InfoPanelObject();
         this.disablePanning = disablePanning;
+        bagCountText = new BagCountDisplay(game);
     }
 
     @Override
@@ -63,5 +66,6 @@ public abstract class BasicGameScene extends AbstractScene {
         constrainBackground();
         game.draw(canvas);
         infoPanel.draw(canvas);
+        bagCountText.draw(canvas);
     }
 }

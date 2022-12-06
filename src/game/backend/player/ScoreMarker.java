@@ -2,8 +2,11 @@ package game.backend.player;
 
 import engine.components.PositionAnimationComponent;
 import engine.components.RectRendererComponent;
+import engine.components.TextStyle;
 import engine.core.GameObject;
 import engine.core.Vec2;
+import game.Style;
+import game.frontend.TextObject;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -40,6 +43,11 @@ public class ScoreMarker {
         )).minus(gameObject.getTopLeftOffset());
 
         gameObject.getComponent(PositionAnimationComponent.class).moveTo(newPos, 10);
+
+
+
+        p.scoreText.setText(score + "pts");
+        p.scoreText.setTopRight(p.getBoardObject().getBottomRight().plus(new Vec2(-5, 3)));
     }
 
     public GameObject getGameObject() {

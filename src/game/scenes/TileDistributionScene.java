@@ -1,10 +1,13 @@
 package game.scenes;
 
+import engine.core.GameCanvas;
 import engine.core.Vec2;
-import game.App;
+import game.Style;
 import game.backend.board.Factory;
 import game.backend.Game;
 import game.backend.Tile;
+import game.frontend.BagCountDisplay;
+import game.frontend.TextObject;
 import game.util.PositionAnimation;
 
 import java.util.Collections;

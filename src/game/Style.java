@@ -17,8 +17,8 @@ public class Style {
     }
 
     public final static double TEXT_PADDING = 10.;
-
     public static final Font font = FontLoader.load("Algerian Regular.ttf");
+    public static final Font font_d = FontLoader.load("AbrilFatface-Regular.ttf");
     public static final Font font_medium = font.deriveFont(20f);
     public static final Font font_large = font.deriveFont(30f);
     public static final Font font_huge = font.deriveFont(40f);

@@ -92,7 +92,8 @@ public class Player implements Comparable<Player> {
             }
         }
 
-        if (res.isEmpty()) return Collections.singletonList(floorLine);
+        //if (res.isEmpty()) return Collections.singletonList(floorLine);
+        res.add(floorLine);
 
         return res;
     }

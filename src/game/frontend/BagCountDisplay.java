@@ -14,20 +14,25 @@ public class BagCountDisplay extends GameObject {
     public BagCountDisplay(Game game) {
         this.game = game;
 
-        remTiles = new TextObject("Remaining Tiles: " + game.getBag().getCount());
-        retTiles = new TextObject("Returned Tiles: " + game.getBag().getReturnedCount());
-
-        retTiles.setBottomLeft(new Vec2(0,0));
-        remTiles.setBottomLeft(new Vec2(0,-55));
+        remTiles = new TextObject("");
+        retTiles = new TextObject("");
 
         addChildren(remTiles, retTiles);
+
+        updateText();
+    }
+
+    private void updateText(){
+        remTiles.setText("Bag: " + game.getBag().getCount() + " tiles");
+        retTiles.setText("Returned: " + game.getBag().getReturnedCount() + " tiles");
+        retTiles.setBottomLeft(new Vec2(0,0));
+        remTiles.setBottomLeft(new Vec2(0,-55));
     }
 
     @Override
     public GameObject draw(GameCanvas canvas) {
-        remTiles.setText("Remaining Tiles: " + game.getBag().getCount());
-        retTiles.setText("Returned Tiles: " + game.getBag().getReturnedCount());
         setPosition(canvas.get_size().scaledBy(.5).minus(new Vec2(Style.TEXT_PADDING)).scaledBy(-1, 1));
+        updateText();
         return super.draw(canvas);
     }
 }

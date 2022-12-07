@@ -47,7 +47,7 @@ public class ScoreMarker {
 
 
         p.scoreText.setText(score + "pts");
-        p.scoreText.setTopRight(p.getBoardObject().getBottomRight().plus(new Vec2(-5, 3)));
+        p.scoreText.setTopRight(p.getTextObject().getTopRight().plus(new Vec2(-5, 3)));
     }
 
     public GameObject getGameObject() {

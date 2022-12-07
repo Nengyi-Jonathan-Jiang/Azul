@@ -60,7 +60,7 @@ public class Player implements Comparable<Player> {
         ));
         scoreText.getComponent(RectRendererComponent.class).disable();
         playerObject.addChild(scoreText);
-        scoreText.setTopRight(boardObject.getBottomRight().plus(new Vec2(-5, 3)));
+        scoreText.setTopRight(p.getTextObject().getTopRight().plus(new Vec2(-5, 3)));
     }
 
     public ScoreMarker getScoreMarker() {
@@ -70,6 +70,11 @@ public class Player implements Comparable<Player> {
     public GameObject getBoardObject() {
         return boardObject;
     }
+
+    public GameObject getTextObject() {
+        return playerObject.getTextObject();
+    }
+
 
     public PlayerGameObject getGameObject() {
         return playerObject;
@@ -136,7 +141,7 @@ public class Player implements Comparable<Player> {
 
     public ComputerMove getMove(Game game){
         if(isHumanPlayer()){
-            throw new Error("Cannot get computed move for physical player");
+            throw new Error("Cannot get computed move for human player");
         }
         return playStyle.getMove(this, game);
     }

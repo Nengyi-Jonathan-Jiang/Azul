@@ -48,7 +48,7 @@ public class TextRendererComponent extends Component {
     }
 
     public TextRendererComponent shrinkParentToFit(double padding){
-        gameObject.setSize(getRenderedSize().plus(new Vec2(padding * 2)));
+        gameObject.resize(getRenderedSize().plus(new Vec2(padding * 2)));
         return this;
     }
 
@@ -81,19 +81,19 @@ public class TextRendererComponent extends Component {
         Vec2 text_start = rect_start.plus(textOffset).plus(new Vec2(
                 switch (style.getHorizontalAlignment()) {
                     case START -> 0;
-                    case CENTER -> gameObject.getSize().x() / 2.;
-                    case END -> gameObject.getSize().x();
+                    case CENTER -> gameObject.size().x() / 2.;
+                    case END -> gameObject.size().x();
                 },
                 switch (style.getVerticalAlignment()) {
                     case START -> 0;
-                    case CENTER -> gameObject.getSize().y() / 2.;
-                    case END -> gameObject.getSize().y();
+                    case CENTER -> gameObject.size().y() / 2.;
+                    case END -> gameObject.size().y();
                 })
         );
 
         canvas
                 .setColor(style.bg_color.get())
-                .fillRect(rect_start, gameObject.getSize())
+                .fillRect(rect_start, gameObject.size())
 
                 .setColor(style.fg_color.get())
                 .setDrawFont(style.font)

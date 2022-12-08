@@ -59,7 +59,7 @@ public class InfoPanelObject extends GameObject {
     public void set(int i, String text){
         get(i).getComponent(TextRendererComponent.class)
                 .setText(text)
-                .shrinkParentToFit(Style.TEXT_PADDING * 1.25);
+                .shrinkParentToFit(Style.PADDING * 1.25);
     }
 
     public void setRight(String text){
@@ -68,21 +68,21 @@ public class InfoPanelObject extends GameObject {
 
     @Override
     public GameObject draw(GameCanvas canvas) {
-        setSize(new Vec2(canvas.getWidth(), HEIGHT));
+        resize(new Vec2(canvas.getWidth(), HEIGHT));
         setTopLeft(canvas.get_size().scaledBy(-.5));
 
         Vec2 offset = getTopLeftOffset();
         double left = 0;
         for(GameObject o : textObjects){
-            left += Style.TEXT_PADDING;
-            o.setTopLeft(new Vec2(left, Style.TEXT_PADDING).plus(offset));
-            left += o.getSize().x;
+            left += Style.PADDING;
+            o.setTopLeft(new Vec2(left, Style.PADDING).plus(offset));
+            left += o.size().x;
         }
 
         if(right != null) {
             right.setTopRight(new Vec2(
-                    canvas.getWidth() - Style.TEXT_PADDING,
-                    Style.TEXT_PADDING
+                    canvas.getWidth() - Style.PADDING,
+                    Style.PADDING
             ).plus(offset));
         }
 

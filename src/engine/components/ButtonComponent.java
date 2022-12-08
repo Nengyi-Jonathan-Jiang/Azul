@@ -14,7 +14,7 @@ public class ButtonComponent extends Component {
      */
     public final boolean contains(Vec2 v) {
         Vec2 difference = v.minus(gameObject.getAbsolutePosition());
-        return difference.map(Math::abs).scaledBy(2).compareCoordinates(gameObject.getSize());
+        return difference.map(Math::abs).scaledBy(2).compareCoordinates(gameObject.size());
     }
 
     @Override

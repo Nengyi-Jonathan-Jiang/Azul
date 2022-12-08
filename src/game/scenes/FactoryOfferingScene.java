@@ -11,6 +11,7 @@ import game.backend.player.ILine;
 import game.backend.player.PatternLine;
 import game.backend.player.Player;
 import game.frontend.BagCountDisplay;
+import game.frontend.TileToolTipObject;
 import game.util.PositionAnimation;
 
 import java.util.Iterator;
@@ -28,6 +29,8 @@ public class FactoryOfferingScene extends BasicGameScene {
     private List<ILine> availableLines = null;
     protected ILine selectedLine = null;
     private final BagCountDisplay bagCountText;
+
+    private TileToolTipObject ttto = null;
 
 
     public FactoryOfferingScene(Game game, Player player) {
@@ -200,6 +203,7 @@ public class FactoryOfferingScene extends BasicGameScene {
 
         super.draw(canvas);
         bagCountText.draw(canvas);
+        if(ttto != null) ttto.draw(canvas);
     }
 
     @Override
@@ -213,6 +217,7 @@ public class FactoryOfferingScene extends BasicGameScene {
         if (availableLines != null) availableLines.forEach(ILine::highlight);
         if (selectedLine != null) selectedLine.highlight2();
 
+        ttto = null;
         // Handle hover on tile
         for (AbstractTileSet factory : Stream.concat(
                 game.getMiddle().getFactories().stream(),
@@ -222,9 +227,15 @@ public class FactoryOfferingScene extends BasicGameScene {
                 if (t.isFirstPlayerMarker()) continue;
                 if (t.getGameObject().getComponent(ButtonComponent.class).contains(mp)) {
                     if (selectedTiles != null) selectedTiles.forEach(Tile::unHighlight);
-                    factory.getTilesOfColor(t.getColor()).forEach(Tile::highlight);
+                    List<Tile> tiles = factory.getTilesOfColor(t.getColor());
+                    tiles.forEach(Tile::highlight);
                     player.getPatternLines().getLines().forEach(ILine::unHighlight);
                     player.getAvailableLinesForColor(t.getColor()).forEach(ILine::highlight);
+
+                    int cnt = tiles.size();
+                    boolean hasFirstPlayer = tiles.stream().anyMatch(Tile::isFirstPlayerMarker);
+                    ttto = new TileToolTipObject(t.getColor(), cnt - (hasFirstPlayer ? 1 : 0), hasFirstPlayer);
+                    ttto.setBottomLeft(mp);
                     return;
                 }
             }

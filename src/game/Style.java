@@ -16,7 +16,7 @@ public class Style {
         return new Color(c.get().getRed(), c.get().getGreen(), c.get().getBlue(), alpha);
     }
 
-    public final static double TEXT_PADDING = 10.;
+    public final static double PADDING = 10.;
     public static final Font font = FontLoader.load("Algerian Regular.ttf");
     public static final Font font_d = FontLoader.load("AbrilFatface-Regular.ttf");
     public static final Font font_medium = font.deriveFont(20f);

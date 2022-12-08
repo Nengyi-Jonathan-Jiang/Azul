@@ -27,7 +27,7 @@ public class TextObject extends GameObject {
 
     public void setText(String text) {
         getComponent(TextRendererComponent.class).setText(text).shrinkParentToFit(
-                Style.TEXT_PADDING * 1.25
+                Style.PADDING * 1.25
         );
     }
 

@@ -29,7 +29,7 @@ public class GameObject {
     public GameObject(Vec2 position, Vec2 size, Component... components) {
         this.children = new ArrayList<>();
 
-        this.setPosition(position).setSize(size);
+        this.setPosition(position).resize(size);
         this.componentMap = new TreeMap<>();
         this.componentList = new ArrayList<>();
 
@@ -191,14 +191,14 @@ public class GameObject {
     /**
      * @return the size of the GameObject in pixels
      */
-    public final Vec2 getSize() {
+    public final Vec2 size() {
         return size;
     }
 
     /**
      * Set the size of the GameObject
      */
-    public final GameObject setSize(Vec2 size) {
+    public final GameObject resize(Vec2 size) {
         this.size = size;
         return this;
     }

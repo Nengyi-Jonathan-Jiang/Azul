@@ -17,7 +17,7 @@ public class GameGameObject extends GameObject {
                 new PositionAnimationComponent()
         );
 
-        setSize(new Vec2(4200, 2240));
+        resize(new Vec2(4200, 2240));
 
         for (int i = 0; i < game.getPlayers().size(); i++) {
             GameObject o = game.getPlayers().get(i).getGameObject();

@@ -31,7 +31,7 @@ public class BagCountDisplay extends GameObject {
 
     @Override
     public GameObject draw(GameCanvas canvas) {
-        setPosition(canvas.get_size().scaledBy(.5).minus(new Vec2(Style.TEXT_PADDING)).scaledBy(-1, 1));
+        setPosition(canvas.get_size().scaledBy(.5).minus(new Vec2(Style.PADDING)).scaledBy(-1, 1));
         updateText();
         return super.draw(canvas);
     }

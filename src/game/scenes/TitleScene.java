@@ -42,11 +42,11 @@ public class TitleScene extends AbstractScene {
 
         // Background image
         GameObject background = new GameObject(new ImageRendererComponent("background"));
-        background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
+        background.resize(background.getComponent(ImageRendererComponent.class).getImageSize());
 
         // Logo image
         GameObject logo = new GameObject(new Vec2(0, -170), Vec2.zero, new ImageRendererComponent("logo"));
-        logo.setSize(new Vec2(575, 400).scaledBy(.6));
+        logo.resize(new Vec2(575, 400).scaledBy(.6));
 
         // Player select text
         GameObject playerSelectText = new GameObject(
@@ -54,8 +54,8 @@ public class TitleScene extends AbstractScene {
                 new TextRendererComponent("Select number of players", new TextStyle(Style.font_large, Style.FG_COLOR, TextStyle.ALIGN_CENTER))
         );
         final Vec2 TEXT_SIZE = playerSelectText.getComponent(TextRendererComponent.class).getRenderedSize()
-                .plus(new Vec2(Style.TEXT_PADDING * 2.5));
-        playerSelectText.setSize(TEXT_SIZE);
+                .plus(new Vec2(Style.PADDING * 2.5));
+        playerSelectText.resize(TEXT_SIZE);
 
         // Player select buttons - the player will click on these
         playerSelectButtons = new GameObject[3];
@@ -94,7 +94,7 @@ public class TitleScene extends AbstractScene {
         help2 = new TextObject("How To Play");
 
         themeSelect = new TextObject("Theme: Classic");
-        themeSelect.setSize(new Vec2(200, 45));
+        themeSelect.resize(new Vec2(200, 45));
     }
 
     private void selectNumPlayers(int idx) {
@@ -141,7 +141,7 @@ public class TitleScene extends AbstractScene {
     @Override
     public void draw(GameCanvas canvas) {
         help2.setBottomRight(canvas.get_size().scaledBy(.5).minus(new Vec2(10)));
-        help.setBottomRight(help2.getBottomRight().minus(new Vec2(0, help2.getSize().y + 10)));
+        help.setBottomRight(help2.getBottomRight().minus(new Vec2(0, help2.size().y + 10)));
         themeSelect.setBottomLeft(canvas.get_size().scaledBy(.5).minus(new Vec2(10)).scaledBy(-1,1));
 
         gObject.draw(canvas);

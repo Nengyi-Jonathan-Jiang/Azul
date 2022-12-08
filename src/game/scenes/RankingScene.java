@@ -29,11 +29,11 @@ public class RankingScene extends AbstractScene {
 
     public RankingScene(Game game) {
         GameObject background = new GameObject(new ImageRendererComponent("background"));
-        background.setSize(background.getComponent(ImageRendererComponent.class).getImageSize());
+        background.resize(background.getComponent(ImageRendererComponent.class).getImageSize());
 
         // Logo image
         GameObject logo = new GameObject(new Vec2(0, -350), Vec2.zero, new ImageRendererComponent("logo"));
-        logo.setSize(new Vec2(575, 408).scaledBy(.7));
+        logo.resize(new Vec2(575, 408).scaledBy(.7));
         background.addChild(logo);
 
         players.addAll(game.getPlayers());
@@ -60,7 +60,7 @@ public class RankingScene extends AbstractScene {
         playAgainButton = new TextObject(
                 "Play Again?",
                 new TextStyle(Style.font_large, TextStyle.ALIGN_CENTER)
-        ).setPosition(new Vec2(0, 350)).setSize(new Vec2(240, 80));
+        ).setPosition(new Vec2(0, 350)).resize(new Vec2(240, 80));
 
         background.addChildren(winText, playAgainButton, text1);
         gObject.addChild(background);
@@ -74,7 +74,7 @@ public class RankingScene extends AbstractScene {
             Player p = players.get(i);
 
             GameObject back = new GameObject(new RoundedRectRendererComponent(20, Style.FG_COLOR, Style.BG_COLOR));
-            back.setSize(new Vec2(TEXT_WIDTH, 40));
+            back.resize(new Vec2(TEXT_WIDTH, 40));
 
             TextObject nameObject = new TextObject(
                     (i + 1) + ". " + p.getName(),
@@ -85,8 +85,8 @@ public class RankingScene extends AbstractScene {
                     new TextStyle(Style.font_medium, Style.FG_COLOR, TextStyle.ALIGN_RIGHT | TextStyle.ALIGN_VERTICAL)
             );
 
-            nameObject.setSize(nameObject.getSize().scaledBy(0, 1).plus(new Vec2(TEXT_WIDTH - 40, 0)));
-            scoreObject.setSize(nameObject.getSize().scaledBy(0, 1).plus(new Vec2(TEXT_WIDTH - 40, 0)));
+            nameObject.resize(nameObject.size().scaledBy(0, 1).plus(new Vec2(TEXT_WIDTH - 40, 0)));
+            scoreObject.resize(nameObject.size().scaledBy(0, 1).plus(new Vec2(TEXT_WIDTH - 40, 0)));
 
             nameObject.getRectComponent().disable();
             scoreObject.getRectComponent().disable();

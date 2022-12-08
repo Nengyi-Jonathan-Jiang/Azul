@@ -22,7 +22,7 @@ public class Tile implements Comparable<Tile> {
                 new RectRendererComponent(Style.HL2_COLOR),
                 new PositionAnimationComponent()
         );
-        gameObj.setSize(new Vec2(SIZE));
+        gameObj.resize(new Vec2(SIZE));
 
         unHighlight();
     }

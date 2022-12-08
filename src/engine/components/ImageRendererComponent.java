@@ -6,7 +6,6 @@ import engine.core.Vec2;
 import engine.util.ImageLoader;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 /**
  * A Button that displays an image
@@ -40,7 +39,7 @@ public class ImageRendererComponent extends Component {
     @Override
     public void drawAndUpdate(GameCanvas canvas) {
         canvas.graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, imageScaling);
-        canvas.drawImage(ImageLoader.get(imageName), gameObject.getAbsoluteTopLeft(), gameObject.getSize());
+        canvas.drawImage(ImageLoader.get(imageName), gameObject.getAbsoluteTopLeft(), gameObject.size());
     }
 
     public Vec2 getImageSize() {

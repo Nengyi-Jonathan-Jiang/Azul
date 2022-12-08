@@ -34,12 +34,12 @@ public class RectRendererComponent extends Component {
                 .setColor(fill_color.get())
                 .fillRect(
                         gameObject.getAbsoluteTopLeft(),
-                        gameObject.getSize()
+                        gameObject.size()
                 )
                 .setColor(border_color.get())
                 .drawRect(
                         gameObject.getAbsoluteTopLeft(),
-                        gameObject.getSize()
+                        gameObject.size()
                 );
     }
 

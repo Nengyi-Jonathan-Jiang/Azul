@@ -45,13 +45,13 @@ public class RulesScene extends AbstractScene {
         background.draw(canvas);
 
         for(int i = 0; i < 6; i++){
-            pages[i].setSize(new Vec2(canvas.getWidth()).scaledBy(1, imgs[i].getAspectRatio()).scaledBy(.8));
+            pages[i].resize(new Vec2(canvas.getWidth()).scaledBy(1, imgs[i].getAspectRatio()).scaledBy(.8));
         }
 
         double top = scroll * canvas.getWidth();
         for(int i = 0; i < 6; i++){
             pages[i].setPosition(new Vec2(0, top));
-            top += pages[i].getSize().y + 20;
+            top += pages[i].size().y + 20;
             pages[i].draw(canvas);
         }
 

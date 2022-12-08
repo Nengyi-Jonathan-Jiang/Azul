@@ -24,7 +24,7 @@ public class ScaledImageRendererComponent extends Component {
         canvas.drawImage(
                 image,
                 gameObject.getAbsoluteTopLeft(),
-                gameObject.getSize()
+                gameObject.size()
         );
     }
 

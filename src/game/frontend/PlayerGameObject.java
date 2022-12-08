@@ -20,12 +20,12 @@ public class PlayerGameObject extends GameObject {
                 ),
                 new RectRendererComponent(Style.FG_COLOR, new AtomicReference<>(new Color(0, 0, 0, 0)))
         );
-        boardObject.setSize(boardObject.getComponent(ImageRendererComponent.class).getImageSize());
+        boardObject.resize(boardObject.getComponent(ImageRendererComponent.class).getImageSize());
 
         GameObject textObject = new TextObject(playerName);
-        textObject.setSize(new Vec2(boardObject.getSize().x, textObject.getSize().y));
+        textObject.resize(new Vec2(boardObject.size().x, textObject.size().y));
 
-        setSize(boardObject.getSize().plus(new Vec2(0, textObject.getSize().y)));
+        resize(boardObject.size().plus(new Vec2(0, textObject.size().y)));
 
         if (playerNum < 2) {
             boardObject.setTopLeft(getTopLeftOffset());

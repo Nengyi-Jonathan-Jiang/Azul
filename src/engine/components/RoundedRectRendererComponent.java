@@ -19,7 +19,7 @@ public class RoundedRectRendererComponent extends RectRendererComponent {
     @Override
     public void drawAndUpdate(GameCanvas canvas) {
         Vec2 tl = gameObject.getAbsoluteTopLeft();
-        Vec2 size = gameObject.getSize();
+        Vec2 size = gameObject.size();
 
         canvas.setColor(fill_color.get());
         canvas.graphics.fillRoundRect(

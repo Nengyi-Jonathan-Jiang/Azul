@@ -32,10 +32,10 @@ public class BagCountDisplay extends GameObject {
     private void updateText(){
         remTiles.setText("Bag: " + game.getBag().getCount() + " tiles");
         retTiles.setText("Returned: " + game.getBag().getReturnedCount() + " tiles");
-        retTiles.setSize(new Vec2(200, 45));
-        remTiles.setSize(new Vec2(200, 45));
-        retTiles.setBottomLeft(new Vec2(Style.TEXT_PADDING,-Style.TEXT_PADDING).plus(getBottomLeftOffset()));
-        remTiles.setBottomLeft(new Vec2(Style.TEXT_PADDING,-55-Style.TEXT_PADDING).plus(getBottomLeftOffset()));
+        retTiles.resize(new Vec2(200, 45));
+        remTiles.resize(new Vec2(200, 45));
+        retTiles.setBottomLeft(new Vec2(Style.PADDING,-Style.PADDING).plus(getBottomLeftOffset()));
+        remTiles.setBottomLeft(new Vec2(Style.PADDING,-55-Style.PADDING).plus(getBottomLeftOffset()));
     }
 
     @Override

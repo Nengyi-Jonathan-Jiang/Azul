@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class PlayerGameObject extends GameObject {
     private final GameObject boardObject;
+    private final GameObject textObject;
 
     public PlayerGameObject(String playerName, int playerNum) {
         boardObject = new GameObject(
@@ -22,7 +23,7 @@ public class PlayerGameObject extends GameObject {
         );
         boardObject.resize(boardObject.getComponent(ImageRendererComponent.class).getImageSize());
 
-        GameObject textObject = new TextObject(playerName);
+        textObject = new TextObject(playerName);
         textObject.resize(new Vec2(boardObject.size().x, textObject.size().y));
 
         resize(boardObject.size().plus(new Vec2(0, textObject.size().y)));
@@ -41,6 +42,8 @@ public class PlayerGameObject extends GameObject {
     public GameObject getBoardObject() {
         return boardObject;
     }
+
+    public GameObject getTextObject(){return textObject;}
 
     public void highlight(){
         children.forEach(c -> c.getComponent(RectRendererComponent.class).setBorderColor(Style.HL_COLOR));

@@ -27,8 +27,6 @@ public class FactoryOfferingScene extends BasicGameScene {
     protected Tile.TileColor selectedTileColor = Tile.TileColor.NONE;
     private List<ILine> availableLines = null;
     protected ILine selectedLine = null;
-    private final BagCountDisplay bagCountText;
-
 
     public FactoryOfferingScene(Game game, Player player) {
         super(game);
@@ -37,7 +35,6 @@ public class FactoryOfferingScene extends BasicGameScene {
         infoPanel.setChildren(player.getName() + "'s Turn", "", "Next");
 
         setInstructions("Click on a tile in the factories or the center to select it");
-        bagCountText = new BagCountDisplay(game);
     }
 
     @Override
@@ -199,7 +196,6 @@ public class FactoryOfferingScene extends BasicGameScene {
         } else infoPanel.getRight().disable();
 
         super.draw(canvas);
-        bagCountText.draw(canvas);
     }
 
     @Override

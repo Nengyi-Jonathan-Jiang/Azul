@@ -17,7 +17,7 @@ public class BagCountDisplay extends GameObject {
     public BagCountDisplay(Game game) {
         super(
                 new Vec2(220, 120),
-                new RectRendererComponent(Style.FG_COLOR, new AtomicReference<>(Style.makeTransparent(Style.DM_COLOR, 0)))
+                new RectRendererComponent(Style.FG_COLOR, new AtomicReference<>(Style.makeTransparent(Style.DM_COLOR, 127)))
         );
         this.game = game;
 
@@ -31,18 +31,16 @@ public class BagCountDisplay extends GameObject {
 
     private void updateText(){
         remTiles.setText("Bag: " + game.getBag().getCount() + " tiles");
-        retTiles.setText("Discard: " + game.getBag().getReturnedCount() + " tiles");
-        remTiles.setSize(new Vec2(200, 45));
+        retTiles.setText("Returned: " + game.getBag().getReturnedCount() + " tiles");
         retTiles.setSize(new Vec2(200, 45));
+        remTiles.setSize(new Vec2(200, 45));
         retTiles.setBottomLeft(new Vec2(Style.TEXT_PADDING,-Style.TEXT_PADDING).plus(getBottomLeftOffset()));
         remTiles.setBottomLeft(new Vec2(Style.TEXT_PADDING,-55-Style.TEXT_PADDING).plus(getBottomLeftOffset()));
     }
 
     @Override
     public GameObject draw(GameCanvas canvas) {
-        //setBottomLeft(canvas.get_size().scaledBy(.5).scaledBy(-1, 1));
-        setTopLeft(canvas.get_size().scaledBy(.5).scaledBy(-1).plus(new Vec2(0, 65)));
-        setSize(new Vec2(220, 120));
+        setBottomLeft(canvas.get_size().scaledBy(.5).scaledBy(-1, 1));
         updateText();
         return super.draw(canvas);
     }
